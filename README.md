@@ -1,4 +1,4 @@
-# MultiChannel_ObjectTracking
+# AbnormalBehaviorDetection-System
 
 ## git commit message head
 feat : 새로운 기능 추가, 기존의 기능을 요구 사항에 맞추어 수정  
