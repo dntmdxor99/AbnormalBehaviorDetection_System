@@ -1,4 +1,4 @@
-HELP.md
+detection/HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -18,7 +18,7 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-.idea
+../.idea
 *.iws
 *.iml
 *.ipr
