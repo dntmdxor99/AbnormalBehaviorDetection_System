@@ -9,13 +9,8 @@ public class Cctv {
     private String protocol;
     private String videoSize;
 
-    public Cctv(Long cctvId, String cctvName, String location, Boolean is360Degree, String protocol, String videoSize) {
-        this.cctvId = cctvId;
-        this.cctvName = cctvName;
-        this.location = location;
-        this.is360Degree = is360Degree;
-        this.protocol = protocol;
-        this.videoSize = videoSize;
+    public Cctv() {
+
     }
 
     public Long getCctvId() {

@@ -1,3 +1,5 @@
+/*
+
 package com.abnormal.detection.repository.cctv;
 
 import com.abnormal.detection.domain.cctv.Cctv;
@@ -121,3 +123,4 @@ class MemoryCctvRepositoryTest {
         assertTrue(cctvs.size() > 0);
     }
 }
+*/

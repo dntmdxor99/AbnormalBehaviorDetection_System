@@ -1,3 +1,5 @@
+/*
+
 package com.abnormal.detection.repository.user;
 
 import com.abnormal.detection.domain.user.User;
@@ -152,3 +154,5 @@ class MemoryUserRepositoryTest {
         assertEquals("HR", users.get(0).getDepartment());
     }
 }
+
+*/

@@ -12,15 +12,8 @@ public class User {
     private String department;
     private String employeeNumber;
 
-    public User(String userId, String userEmail, String userPhoneNumber, String password, Date createTime, String userName, String department, String employeeNumber) {
-        this.userId = userId;
-        this.userEmail = userEmail;
-        this.userPhoneNumber = userPhoneNumber;
-        this.password = password;
-        this.createTime = createTime;
-        this.userName = userName;
-        this.department = department;
-        this.employeeNumber = employeeNumber;
+    public User() {
+
     }
     public String getUserId() {
         return userId;
