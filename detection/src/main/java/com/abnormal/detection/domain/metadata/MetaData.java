@@ -1,11 +1,19 @@
 package com.abnormal.detection.domain.metadata;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.util.Date;
 
+@Entity
 public class MetaData {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long metaDataId;
     Date foundTime;
-    Date entityFoundTIme;
+    Date entityFoundTime;
     Long cctvId;
     EntityType type;
     AbnormalType abnormalType;
@@ -30,12 +38,12 @@ public class MetaData {
         this.foundTime = foundTime;
     }
 
-    public Date getEntityFoundTIme() {
-        return entityFoundTIme;
+    public Date getEntityFoundTime() {
+        return entityFoundTime;
     }
 
-    public void setEntityFoundTIme(Date entityFoundTIme) {
-        this.entityFoundTIme = entityFoundTIme;
+    public void setEntityFoundTime(Date entityFoundTIme) {
+        this.entityFoundTime = entityFoundTIme;
     }
 
     public Long getCctvId() {
