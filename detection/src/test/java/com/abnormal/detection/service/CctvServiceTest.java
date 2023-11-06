@@ -71,7 +71,7 @@ class CctvServiceTest {
         // Then
         assertNotNull(createdCctv.getCctvId());
     }
-/*
+
     @Test
     void getCctvById() {
         // Given
@@ -84,7 +84,7 @@ class CctvServiceTest {
         assertTrue(cctv.isPresent());
         assertEquals("Cctv1", cctv.get().getCctvName());
     }
-*/
+
     @Test
     void getAllCctvs() {
         // When
