@@ -1,6 +1,14 @@
 package com.abnormal.detection.domain.video;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Video {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long videoId;
     String videoName;
     String videoLocation;
