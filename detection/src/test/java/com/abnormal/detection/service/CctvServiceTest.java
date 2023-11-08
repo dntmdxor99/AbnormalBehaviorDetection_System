@@ -81,6 +81,7 @@ class CctvServiceTest {
         Optional<Cctv> cctv = Optional.ofNullable(cctvService.getCctvById(cctvId));
 
         // Then
+        System.out.println("시발 값 언제 있어" + cctv.isPresent());
         assertTrue(cctv.isPresent());
         assertEquals("Cctv1", cctv.get().getCctvName());
     }
