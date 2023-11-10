@@ -1,24 +1,29 @@
 import logo from './logo.svg';
 import './App.css';
+import React from "react";
+import { Route, Routes, BrowserRouter} from "react-router-dom";
+import MainPage from './pages/MainPage';
+import AbnormalBehaviorPage from './pages/AbnormalBehaviorPage';
+import CctvPage from './pages/CctvPage';
+import LoginPage from './pages/LoginPage';
+import ResultPage from './pages/ResultPage';
+import SearchPage from './pages/SearchPage';
+import SignupPage from './pages/SignupPage';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainPage/>} /> {/* 홈화면 페이지 <Route path="/" element={<MainPage/>}/>*/}
+        <Route path="/abnormal" element={<AbnormalBehaviorPage/>}/>
+        <Route path="/cctv" element={<CctvPage />}/>
+        <Route path="/login" element={<LoginPage/>}/>
+        <Route path="/result" element={<ResultPage/>}/>
+        <Route path="/search" element={<SearchPage/>}/>
+        <Route path="/signup" element={<SignupPage/>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
