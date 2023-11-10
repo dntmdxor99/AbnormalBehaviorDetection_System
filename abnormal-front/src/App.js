@@ -13,17 +13,18 @@ import SignupPage from './pages/SignupPage';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainPage/>} /> {/* 홈화면 페이지 <Route path="/" element={<MainPage/>}/>*/}
-        <Route path="/abnormal" element={<AbnormalBehaviorPage/>}/>
-        <Route path="/cctv" element={<CctvPage />}/>
-        <Route path="/login" element={<LoginPage/>}/>
-        <Route path="/result" element={<ResultPage/>}/>
-        <Route path="/search" element={<SearchPage/>}/>
-        <Route path="/signup" element={<SignupPage/>}/>
-      </Routes>
-    </BrowserRouter>
+
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainPage/>} /> {/* 홈화면 페이지 <Route path="/" element={<MainPage/>}/>*/}
+          <Route path="/abnormal" element={<AbnormalBehaviorPage/>}/>
+          <Route path="/cctv" element={<CctvPage />}/>
+          <Route path="/login" element={<LoginPage/>}/>
+          <Route path="/result" element={<ResultPage/>}/>
+          <Route path="/search" element={<SearchPage/>}/>
+          <Route path="/signup" element={<SignupPage/>}/>
+        </Routes>
+      </BrowserRouter>
   );
 }
 

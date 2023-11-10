@@ -2,6 +2,21 @@
   text-align: center;
 }
 
+.menu-bar{
+  background-color: ffffff;
+  width: 100%;
+  color: black;
+  display: flex;
+  padding: 10px;
+
+  text-align: center;
+  align-items: center;
+}
+
+.item{
+  margin-left: 20px;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
