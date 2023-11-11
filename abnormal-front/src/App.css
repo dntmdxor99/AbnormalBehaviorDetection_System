@@ -13,9 +13,45 @@
   align-items: center;
 }
 
-.item{
+.menu-bar-item{
   margin-left: 20px;
 }
+
+.home {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 20px;
+}
+
+.home-main {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  padding-left: 5vw;
+
+}
+
+.home-main-title {
+  width: 100%;
+  text-align: left;
+  font-size: 3.5em;
+  margin-top: 5px;
+}
+
+/* .home-image {
+  display: none;
+  max-width: 100%;
+  height: auto;
+  margin-top: 5px;
+  margin-left: 0; 
+}
+
+@media (min-width: 700px) {
+  .home-image {
+    display: block; 
+    margin-left: auto;
+  }
+} */
 
 .App-logo {
   height: 40vmin;
