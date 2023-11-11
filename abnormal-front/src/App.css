@@ -27,7 +27,7 @@
   display: flex;
   align-items: center;
   height: 100vh;
-  /* padding-left: 5vw; */
+  padding-left: 7vw;
 
 }
 
@@ -50,9 +50,8 @@
 .home-image-proto{
   width:100%;
 }
-@media (min-width: 700px) {
+@media (min-width: 800px) {
   .home-image {
-    /* justify-content: space-between; */
     display: block; 
     width: 300px;
     margin: auto auto;
