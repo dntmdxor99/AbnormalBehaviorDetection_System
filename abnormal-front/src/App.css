@@ -7,7 +7,7 @@
   width: 100%;
   color: black;
   display: flex;
-  padding: 10px;
+  /* padding: 10px; */
 
   text-align: center;
   align-items: center;
@@ -18,16 +18,16 @@
 }
 
 .home {
-  display: grid;
+  display: flex;
   grid-template-columns: 1fr 1fr;
-  padding: 20px;
+  /* padding: 20px; */
 }
 
 .home-main {
   display: flex;
   align-items: center;
   height: 100vh;
-  padding-left: 5vw;
+  /* padding-left: 5vw; */
 
 }
 
@@ -38,20 +38,24 @@
   margin-top: 5px;
 }
 
-/* .home-image {
+.home-image {
   display: none;
-  max-width: 100%;
+  max-width: 600px;
   height: auto;
   margin-top: 5px;
   margin-left: 0; 
 }
 
+.home-image-proto{
+  width:100%;
+}
 @media (min-width: 700px) {
   .home-image {
     display: block; 
+    width: 120px;
     margin-left: auto;
   }
-} */
+}
 
 .App-logo {
   height: 40vmin;
