@@ -36,6 +36,7 @@
   text-align: left;
   font-size: 3.5em;
   margin-top: 5px;
+  margin-left: 5px;
 }
 
 .home-image {
@@ -51,9 +52,10 @@
 }
 @media (min-width: 700px) {
   .home-image {
+    /* justify-content: space-between; */
     display: block; 
-    width: 120px;
-    margin-left: auto;
+    width: 300px;
+    margin: auto auto;
   }
 }
 
