@@ -21,5 +21,10 @@ def parseOptions():
     opt['middleDim'] = opt[backbone]['middleDim']
     opt['outputDim'] = opt[backbone]['outputDim']
     opt['stageBlocks'] = opt[backbone]['stageBlocks']
+    
+    if opt['numGpus'] >= 1:
+        opt['device'] = 'cuda'
+    else:
+        opt['device'] = 'cpu'
 
     return opt

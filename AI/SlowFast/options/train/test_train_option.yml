@@ -1,16 +1,17 @@
-T : 4
+T : 8
+tau : 8
 alpha : 8
 beta : 8
-inputFrames : 64
 
-backbone : 'ResNet-101'
+backbone : 'ResNet-50'
+trainDataPath : '/Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/SlowFast/datasets/train'
+metaInfoFile : '/Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/data/meta_info/meta_info_data.txt'
 
 ResNet-50 : {
   middleDim : [0, 0, 64, 128, 256, 512],
   outputDim : [0, 64, 256, 512, 1024, 2048],
   stageBlocks : [0, 0, 3, 4, 6, 3]
 }
-
 ResNet-101 : {
   middleDim : [0, 0, 64, 128, 256, 512],
   outputDim : [0, 64, 256, 512, 1024, 2048],
@@ -18,4 +19,8 @@ ResNet-101 : {
 }
 
 numGpus : 0
-numClasses : 5
+shuffle : True
+batchSize : 2
+numClasses : 2
+numWorker : 1
+iterations : 2
