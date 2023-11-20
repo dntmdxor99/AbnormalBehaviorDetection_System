@@ -1,8 +1,18 @@
 package com.abnormal.detection.domain.user;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.util.Date;
 
+@Entity
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userNumber;
+
     private String userId;
     private String userEmail;
     private String userPhoneNumber;
@@ -14,6 +24,13 @@ public class User {
 
     public User() {
 
+    }
+    public Long getUserNumber() {
+        return userNumber;
+    }
+
+    public void setUserNumber(Long userNumber) {
+        this.userNumber = userNumber;
     }
     public String getUserId() {
         return userId;
