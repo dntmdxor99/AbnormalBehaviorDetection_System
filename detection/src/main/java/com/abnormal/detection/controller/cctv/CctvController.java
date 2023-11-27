@@ -1,4 +1,4 @@
-package com.abnormal.detection.controller;
+package com.abnormal.detection.controller.cctv;
 
 import com.abnormal.detection.domain.cctv.Cctv;
 import com.abnormal.detection.service.CctvService;
