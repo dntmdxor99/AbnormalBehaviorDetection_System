@@ -13,14 +13,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userNumber;
 
+    private String employeeNumber; //사업자등록번호
+    private String department; //기업명
     private String userId;
+    private String password;
+    private String userName;
+    private Date birthDate; //생년월일
     private String userEmail;
     private String userPhoneNumber;
-    private String password;
-    private Date createTime;
-    private String userName;
-    private String department;
-    private String employeeNumber;
+
+
 
     public User() {
 
@@ -64,12 +66,12 @@ public class User {
         this.password = password;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getUserName() {

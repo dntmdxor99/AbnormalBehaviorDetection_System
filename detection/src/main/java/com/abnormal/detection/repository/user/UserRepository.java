@@ -3,12 +3,17 @@ package com.abnormal.detection.repository.user;
 import com.abnormal.detection.domain.user.User;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface UserRepository {
+    User save(User User);
+
+    Optional<User> findById(String userId);
+
+    Optional<User> findByEmail(String userEmail);
     // 사용자를 생성하는 메서드
     User createUser(User user);
-
 
     // 사용자 고유 ID로 사용자를 조회하는 메서드
     User getUserById(String userId);

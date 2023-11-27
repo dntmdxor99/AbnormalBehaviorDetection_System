@@ -1,21 +1,138 @@
 package com.abnormal.detection.service.user;
 
 
+import com.abnormal.detection.domain.user.JoinStatus;
+import com.abnormal.detection.domain.user.LoginStatus;
 import com.abnormal.detection.domain.user.User;
 import com.abnormal.detection.repository.user.JpaUserRepository;
+import com.abnormal.detection.repository.user.UserRepository;
+import com.abnormal.detection.util.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
-@Service
+
+@Slf4j
+@Transactional
 public class UserService {
-    private final JpaUserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    public UserService(JpaUserRepository userRepository) {
+    @Value("${jwt.secret}")
+    private String secretKey;
+    private Long expiredMs = 1000 * 60 * 60l;
+
+
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+    public JoinStatus join(User user){
+
+        try{
+            validateDuplicateMember(user);
+        }
+        catch (IllegalStateException e){
+            System.out.println(e);
+            return JoinStatus.DUPLICATE;
+        }
+        try{
+            checkPasswordLength(user);
+        }
+        catch (IllegalStateException e){
+            System.out.println(e);
+            return JoinStatus.INVALID_PASSWORD_LENGTH;
+        }
+        try{
+            checkStrongPassword(user);
+        }
+        catch (IllegalStateException e)
+        {
+            System.out.println(e);
+            return JoinStatus.INVALID_PASSWORD_STRENGTH;
+        }
+
+        userRepository.save(user);
+        return JoinStatus.SUCCESS;
+    }
+    //////////jwt
+    public String afterSuccessLogin(String userId) {
+        //return JwtUtil.createJwt(userEmail, "normal", secretKey, expiredMs);
+        return JwtUtil.createJwt(userId, secretKey, expiredMs);
+    }
+
+    public User getUserInfoByJWT(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        String jwtToken = "";
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwtToken = authorizationHeader.substring(7);
+        }
+
+        String userEmail = JwtUtil.getUserName(jwtToken, secretKey);
+        Optional<User> ret = userRepository.findByEmail(userEmail);
+        return ret.orElse(null);
+    }
+
+
+    //////////////jwt
+    public LoginStatus login(String userId, String userPassword) {
+        User user = userRepository.getUserById(userId);
+        log.info(userId);
+        log.info(user.getUserName());
+        log.info(user.getUserId());
+        log.info(user.getPassword());
+        log.info(userPassword);
+        if (user == null || !user.getPassword().equals(userPassword)) {
+            return LoginStatus.FAIL;
+        }
+        return LoginStatus.SUCCESS;
+    }
+
+
+    private void validateDuplicateMember(User user) {
+        // 이미 존재하는 사용자인지 확인
+        Optional<User> existingUser = userRepository.findById(user.getUserId());
+        if (existingUser.isPresent()) {
+            throw new IllegalStateException("이미 존재하는 회원입니다.");
+        }
+    }
+
+
+
+    private void checkPasswordLength(User user) {
+        String password = user.getPassword();
+        if (password.length() < 8 || password.length() > 16) {
+            throw new IllegalStateException("비밀번호는 8 ~ 16자 사이여야 합니다.");
+        }
+    }
+
+    private void checkStrongPassword(User user) {
+        String password = user.getPassword();
+        boolean hasUpperCase = false;
+        boolean hasLowerCase = false;
+        boolean hasSpecialChar = false;
+
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                hasUpperCase = true;
+            } else if (Character.isLowerCase(c)) {
+                hasLowerCase = true;
+            } else if ("!@#$%^&*()-_=+[]{}|;:'\",.<>/?".indexOf(c) != -1) {
+                hasSpecialChar = true;
+            }
+        }
+
+        if (!(hasUpperCase && hasLowerCase && hasSpecialChar)) {
+            throw new IllegalStateException("비밀번호는 영문 소문자, 대문자, 특수문자를 포함해야됩니다.");
+        }
+    }
+
 
     public User createUser(User user) {
         return userRepository.createUser(user);

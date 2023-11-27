@@ -3,17 +3,30 @@ package com.abnormal.detection.repository.user;
 import com.abnormal.detection.domain.cctv.Cctv;
 import com.abnormal.detection.domain.user.User;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-@Repository
+import java.util.Optional;
+
+
+@Slf4j
 public class JpaUserRepository implements UserRepository {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    //@PersistenceContext
+    private final EntityManager entityManager;
+    public JpaUserRepository(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+    @Override
+    public User save(User User) {
+        entityManager.persist(User);
+        return User;
+    }
 
     @Override
     @Transactional
@@ -29,9 +42,28 @@ public class JpaUserRepository implements UserRepository {
     public User getUserById(String userId) {
         return entityManager.find(User.class, userId);
     }
-
-
  */
+    @Override
+    public Optional<User> findById(String userId) {
+        try {
+            User user = entityManager.createQuery("select m from User m where m.userId = :usersId", User.class).setParameter("usersId", userId).getSingleResult();
+            return Optional.ofNullable(user);
+        }catch(NoResultException e){
+            return Optional.empty();
+        }
+
+    }
+    @Override
+    public Optional<User> findByEmail(String userEmail) {
+        try {
+            User user = entityManager.createQuery("select m from User m where m.userEmail = :emailAddress", User.class).setParameter("emailAddress", userEmail).getSingleResult();
+            return Optional.ofNullable(user);
+        }catch(NoResultException e){
+            return Optional.empty();
+        }
+
+    }
+
     @Override
     public User getUserById(String userId) {
         String jpql = "SELECT u FROM User u WHERE u.userId = :userId";
