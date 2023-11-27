@@ -7,7 +7,11 @@ import styled, { useTheme } from 'styled-components';
 const AskPage = () => {
 
 
-    return {
-        
-    }
+    return (
+        <PageLayout>
+            문의하기
+        </PageLayout>
+    )
 }
+
+export default AskPage;

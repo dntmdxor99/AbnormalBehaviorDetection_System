@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Header from '../components/Header.jsx';
 import PageLayout from '../components/PageLayout.js';
 import styled, { useTheme } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 
 const SignupForm = styled.form`
@@ -108,10 +109,10 @@ const AgreementContainer = styled.div`
 `
 
 const SignUpPage = () => {
-  const [RegisterNum, setRegisterNum] = useState("")
-  const [Id, setId] = useState("")
-  const [Password, setPassWord] = useState("")
-  const [PasswordCheck, setPassWordCheck] = useState("")
+  const navigate = useNavigate();
+  const [inputValue, setInputValue] = useState({
+    
+  })
   
   
 
@@ -126,6 +127,9 @@ const SignUpPage = () => {
                     <input type='text' required />
                     <button className='authentication-button' type='button'>인증</button>
                   </div>
+
+                  <label>회사명</label>
+                  <input tpye='text' required />
                     
                   <label> 아이디</label>
                   <div className='container'>

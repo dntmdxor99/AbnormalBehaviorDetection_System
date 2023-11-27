@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header.jsx";
 import PageLayout from "../components/PageLayout.js";
 import styled, { useTheme } from "styled-components";
+import API from "../utils/API.js";
+import { useNavigate } from 'react-router-dom';
+
 
 const LoginForm = styled.form`
   display: flex;
@@ -42,13 +45,52 @@ const LoginFormContainer = styled.div`
 `;
 
 const LoginPage = () => {
-  const [Id, setId] = useState("");
-  const [Password, setPassWord] = useState("");
+  const navigate = useNavigate();
+  const [inputValue, setInputValue] = useState({
+    id: '',
+    password: '',
+  });
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // 로그인 처리
+  const inputChangeHandler = (e, name) => {
+    const {value} = e.target;
+
+    setInputValue((prevInputValue) => ({
+      ...prevInputValue,
+      [name]: value,
+    }));
   };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    console.log("로그인 버튼 클릭됨");
+
+    const data = {
+      userId: inputValue.id,
+      userPassword: inputValue.password,
+    };
+
+    try {
+      const response = await API.post('/users/login', data);
+
+      console.log("서버응답", response);
+
+      if (response.status === 200) {
+        const {postId} = response.data;
+        console.log("로그인 성공!");
+        navigate('/')
+      }
+      else if (response.status === 400) {
+        console.log("아이디와 비밀번호가 일치하지않습니다.");
+      }
+      else {
+        console.log("로그인 실패!");
+        navigate('/login')
+      }
+    }
+    catch (error) {
+      console.error("서버와의 통신 중 오류 발생", error);
+    }
+  }; 
 
   return (
     <PageLayout>
@@ -60,8 +102,22 @@ const LoginPage = () => {
         </h1>
         <LoginFormContainer>
           <LoginForm onSubmit={handleLogin}>
-            <input type="text" placeholder="아이디" required />
-            <input type="password" placeholder="비밀번호" required />
+            <input 
+              type="text" 
+              placeholder="아이디" 
+              required 
+              name="userId"
+              value={inputValue.id}
+              onChange={(e) => inputChangeHandler(e, 'id')}
+            />
+            <input 
+              type="password" 
+              placeholder="비밀번호" 
+              required 
+              name="userPassword"
+              value={inputValue.password}
+              onChange={(e) => inputChangeHandler(e, 'password')}
+            />
             <button type="submit">로그인</button>
           </LoginForm>
         </LoginFormContainer>
@@ -71,3 +127,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
