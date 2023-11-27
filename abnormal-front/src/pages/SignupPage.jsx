@@ -3,6 +3,10 @@ import Header from '../components/Header.jsx';
 import PageLayout from '../components/PageLayout.js';
 import styled, { useTheme } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { async } from 'q';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import API from "../utils/API.js";
 
 
 const SignupForm = styled.form`
@@ -111,53 +115,154 @@ const AgreementContainer = styled.div`
 const SignUpPage = () => {
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
-    
-  })
-  
-  
+    userNumber: "",
+    employeeNumber: "",
+    department: "",
+    userId: "",
+    password: "",
+    userName: "",
+    birthDate: "",
+    userEmail: "",
+    userPhoneNumber: ""
+  });
 
+  const inputChangeHandler = (e, name) => {
+    const { value } = e.target;
+
+    setInputValue((prevInputValue) => ({
+      ...prevInputValue,
+      [name]: value,
+    }));
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault()
+
+    console.log("회원가입 버튼 클릭");
+
+    const data = {
+      userNumber:null,
+      employeeNumber: inputValue.employeeNumber,
+      department: inputValue.department,
+      userId: inputValue.userId,
+      password: inputValue.password,
+      userName: inputValue.userName,
+      birthDate: inputValue.birthDate,
+      userEmail: inputValue.userEmail,
+      userPhoneNumber: inputValue.userPhoneNumber, 
+    };
+    console.log(data);
+    try {
+      console.log("서버응답*******************8");
+      const response = await API.post('/users/signup', data);
+      console.log(data);
+      console.log("서버응답");
+      console.log(response);
+      
+      navigate('/')
+    }
+    catch (error) {
+      console.error("서버와의 통신 중 오류 발생", error);
+    }
+  };
+  
   return (
     <PageLayout>
         <CenteredContainer>
             <h1 style={{fontSize: '40px', marginBottom: '25px', marginTop: '55px'}}>가입하기</h1>
             <SignupFormContainer>
-                <SignupForm>
+                <SignupForm onSubmit={handleSignUp}>
                   <label>사업자등록번호</label>
                   <div className='container'>
-                    <input type='text' required />
+                    <input 
+                      type='text' 
+                      required 
+                      name='employeeNumber'
+                      value={inputValue.employeeNumber}
+                      onChange={(e) => inputChangeHandler(e, 'employeeNumber')}
+                    />
                     <button className='authentication-button' type='button'>인증</button>
                   </div>
 
                   <label>회사명</label>
-                  <input tpye='text' required />
+                  <input 
+                    type='text' 
+                    required 
+                    name='department'
+                    value={inputValue.department}
+                    onChange={(e) => inputChangeHandler(e, 'department')}
+                  />
                     
                   <label> 아이디</label>
                   <div className='container'>
-                    <input type='id' required />
+                    <input 
+                      type='id' 
+                      required 
+                      name='userId'
+                      value={inputValue.userId}
+                      onChange={(e) => inputChangeHandler(e, 'userId')}
+                    />
                     <button className='doublecheck-button' type='button'>중복확인</button>
                   </div>
                   
                   <label>비밀번호</label>
-                  <input type="password" required />
+                  <input 
+                    type="password" 
+                    required 
+                    // name='password'
+                    // value={inputValue.password}
+                    // onChange={(e) => inputChangeHandler(e, 'password')}
+                  />
                         
                   <label>비밀번호 확인</label>
-                  <input type="password" required />
+                  <input 
+                    type="password" 
+                    required 
+                    name='password'
+                    value={inputValue.password}
+                    onChange={(e) => inputChangeHandler(e, 'password')}
+                  />
                         
                   <label>이름</label>
-                  <input type='text'required />
+                  <input 
+                    type='text'
+                    required
+                    name='userName' 
+                    value={inputValue.name}
+                    onChange={(e) => inputChangeHandler(e, 'userName')}
+                  />
 
                   <label>생년월일</label>
-                  <input type='text' placeholder='YYYY.MM.DD' required />
+                  <input 
+                    type='text' 
+                    placeholder='YYYY.MM.DD' 
+                    required 
+                    name='birthDate'
+                    value={inputValue.birthDate}
+                    onChange={(e) => inputChangeHandler(e, 'birthDate')}
+                  />
 
                   <label>이메일</label>
                   <div className='container'>
-                    <input type='email' required />
+                    <input 
+                      type='email' 
+                      required 
+                      name='userEmail'
+                      value={inputValue.email}
+                      onChange={(e) => inputChangeHandler(e, 'userEmail')}
+                    />
                     <button className='doublecheck-button' type='button'>중복확인</button>
                   </div>
 
                   <label>휴대전화</label>
                   <div className='container'>
-                    <input type='text' required />
+                    <input 
+                      type='text'  
+                      required 
+                      name='userPhoneNumber'
+                      value={inputValue.phoneNumber}
+                      onChange={(e) => inputChangeHandler(e, 'userPhoneNumber')}
+                    />
                     <button className='authentication-button' type='button'>인증</button>
                   </div>
                   
