@@ -6,7 +6,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
+@Getter
+@Setter
 public class Cctv {
 
     @Id
@@ -14,14 +19,14 @@ public class Cctv {
     private Long cctvId;
     private String cctvName;
     private String location;
-    private Boolean is360Degree;
+    private Boolean is360Degree;//true,f로 초기화
     private String protocol;
     private String videoSize;
 
     public Cctv() {
 
     }
-
+/*
     public Long getCctvId() {
         return cctvId;
     }
@@ -69,4 +74,6 @@ public class Cctv {
     public void setVideoSize(String videoSize) {
         this.videoSize = videoSize;
     }
+
+ */
 }

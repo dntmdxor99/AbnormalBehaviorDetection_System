@@ -2,21 +2,63 @@ package com.abnormal.detection.repository.cctv;
 
 import com.abnormal.detection.domain.cctv.Cctv;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 
 @Repository
-@Transactional
+@Slf4j
+@RequiredArgsConstructor
 public class JpaMemoryCctvRepository implements CctvRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
+/*
 
+@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long cctvId;
+
+    private String cctvName;
+    private String location;
+    private Boolean is360Degree;//true,f로 초기화
+    private String protocol;
+    private String videoSize;
+ */
+    private final JpaCctvRepositoryLegend jpaCctvRepositoryLegend;
+    public Cctv makeCctv(String cctvName, String location, Boolean is360Degree,String protocol, String videoSize){
+        Cctv cctv = new Cctv();
+        cctv.setCctvName(cctvName);
+        cctv.setLocation(location);
+        cctv.setIs360Degree(is360Degree);
+        cctv.setProtocol(protocol);
+        cctv.setVideoSize(videoSize);
+
+        return cctv;
+    }
+
+    @PostConstruct
+    public void init() {
+        try {
+            List<Cctv> cctvs = new ArrayList<>();
+            cctvs.add(makeCctv("우경정보길", "대구광역시 북구 대현로15길 17", Boolean.TRUE, "35.884216f", "1920x1080"));
+            cctvs.add(makeCctv("끝돈", "대구광역시 북구 대학로23길 5", Boolean.TRUE, "35.884216f", "1920x1080"));
+            for (Cctv cctv : cctvs) {
+                jpaCctvRepositoryLegend.createCctv(cctv);
+                log.info("Cctv inserted: {}", cctv.getCctvName());
+            }
+        } catch (Exception e) {
+            log.error("Error during initialization: " + e.getMessage());
+        }
+    }
     @Override
     public Cctv createCctv(Cctv cctv) {
         entityManager.persist(cctv);

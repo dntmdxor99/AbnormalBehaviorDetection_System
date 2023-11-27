@@ -18,7 +18,7 @@ public class CctvController {
         this.cctvService = cctvService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public Cctv createCctv(@RequestBody Cctv cctv) {
         return cctvService.createCctv(cctv);
     }
@@ -28,7 +28,7 @@ public class CctvController {
         return cctvService.getCctvById(cctvId);
     }
 
-    @GetMapping
+    @GetMapping("/allCctv")
     public List<Cctv> getAllCctvs() {
         return cctvService.getAllCctvs();
     }

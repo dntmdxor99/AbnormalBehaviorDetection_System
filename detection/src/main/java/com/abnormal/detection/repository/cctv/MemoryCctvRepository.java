@@ -1,3 +1,4 @@
+/*
 package com.abnormal.detection.repository.cctv;
 
 import com.abnormal.detection.domain.cctv.Cctv;
@@ -126,3 +127,6 @@ public class MemoryCctvRepository implements CctvRepository {
                 .collect(Collectors.toList());
     }
 }
+
+
+ */
