@@ -6,6 +6,6 @@ const useMouseClickEventListener = (map, callback) => {
       window.kakao.maps.event.addListener(map, 'click', callback);
     }
   }, [map, callback]);
-}
+};
 
 export default useMouseClickEventListener;
