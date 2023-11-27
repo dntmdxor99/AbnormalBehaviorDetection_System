@@ -1,7 +1,7 @@
 package com.abnormal.detection.controller.cctv;
 
 import com.abnormal.detection.domain.cctv.Cctv;
-import com.abnormal.detection.service.CctvService;
+import com.abnormal.detection.service.cctv.CctvService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
