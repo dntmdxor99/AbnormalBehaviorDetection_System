@@ -2,7 +2,7 @@
   text-align: center;
 }
 
-.menu-bar{
+.menu-bar {
   background-color: ffffff;
   width: 100%;
   color: black;
@@ -13,7 +13,11 @@
   align-items: center;
 }
 
-.menu-bar-item{
+.menu-home-item {
+  margin-left: 20px;
+}
+
+.menu-bar-item {
   margin-left: 20px;
 }
 
@@ -28,7 +32,7 @@
   align-items: center;
   height: 100vh;
   padding-left: 7vw;
-
+  /* display: block; */
 }
 
 .home-main-title {
@@ -37,6 +41,12 @@
   font-size: 3.5em;
   margin-top: 5px;
   margin-left: 5px;
+  
+}
+
+.home-to-search {
+  margin-top: 20px;
+  align-items: left;
 }
 
 .home-image {
@@ -44,18 +54,72 @@
   max-width: 600px;
   height: auto;
   margin-top: 5px;
-  margin-left: 0; 
+  margin-left: 0;
 }
 
-.home-image-proto{
-  width:100%;
+.home-image-proto {
+  width: 100%;
 }
 @media (min-width: 800px) {
   .home-image {
-    display: block; 
+    display: block;
     width: 300px;
     margin: auto auto;
   }
+}
+
+.abnormal {
+  display: flex;
+}
+
+.abnormal-main {
+  display: flex;
+  height: 100vh;
+  padding-left: 5vw;
+  margin-top: 50px;
+}
+
+.abnormal-main-title {
+  width: 100%;
+  text-align: left;
+  font-size: 3.5em;
+  margin-left: 5px;
+}
+
+.cctv {
+  display: flex;
+}
+
+.cctv-main {
+  display: flex;
+  height: 100vh;
+  padding-left: 5vw;
+  margin-top: 50px;
+}
+
+.cctv-main-title {
+  width: 100%;
+  text-align: left;
+  font-size: 3.5em;
+  margin-left: 5px;
+}
+
+.ask {
+  display: flex;
+}
+
+.ask-main {
+  display: flex;
+  height: 100vh;
+  padding-left: 5vw;
+  margin-top: 50px;
+}
+
+.ask-main-title {
+  width: 100%;
+  text-align: left;
+  font-size: 3.5em;
+  margin-left: 5px;
 }
 
 .App-logo {

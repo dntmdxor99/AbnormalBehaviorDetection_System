@@ -10,9 +10,9 @@ import LoginPage from "./pages/LoginPage";
 import ResultPage from "./pages/ResultPage";
 import SearchPage from "./pages/SearchPage";
 import SignupPage from "./pages/SignupPage";
-import Header from "./components/Header";
-import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import Header from "./components/Header";
+import PageLayout from "./components/PageLayout";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
         <Header>
           <div className="menu">
             <div className="menu-bar">
-              <Link to="/" className="menu-bar-item">
+              <Link to="/" className="menu-home-item">
                 7팀
               </Link>
               <Link to="/abnormal" className="menu-bar-item">
@@ -33,14 +33,16 @@ function App() {
               <Link to="/ask" className="menu-bar-item">
                 문의하기
               </Link>
-              <Link>
-                <Link to="/login">
-                  <Button variant="outlined">로그인</Button>
+              <div className="menu-bar-buttons">
+                <Link>
+                  <Link to="/login">
+                    <Button variant="outlined">로그인</Button>
+                  </Link>
                 </Link>
-              </Link>
-              <Link to="/signup">
-                <Button variant="contained">가입하기</Button>
-              </Link>
+                <Link to="/signup">
+                  <Button variant="contained">가입하기</Button>
+                </Link>
+              </div>
             </div>
           </div>
         </Header>
