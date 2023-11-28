@@ -1,0 +1,26 @@
+T : 4
+tau : 8
+alpha : 8
+beta : 8
+
+backbone : 'ResNet-50'
+testDataPath : '/Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/datasets/test'
+pretrainedModelPath : '/Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/SlowFast/pretrained/20231128114916/epoch_1.pth'
+
+ResNet-50 : {
+  middleDim : [0, 0, 64, 128, 256, 512],
+  outputDim : [0, 64, 256, 512, 1024, 2048],
+  stageBlocks : [0, 0, 3, 4, 6, 3]
+}
+ResNet-101 : {
+  middleDim : [0, 0, 64, 128, 256, 512],
+  outputDim : [0, 64, 256, 512, 1024, 2048],
+  stageBlocks : [0, 0, 3, 4, 23, 3]
+}
+
+numGpus : 0
+shuffle : True
+batchSize : 2
+numClasses : 3
+numWorker : 1
+iterations : 8
