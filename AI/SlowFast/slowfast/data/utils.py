@@ -73,15 +73,14 @@ def toNomalize(imgs):
     return [_toNomalize(img) for img in imgs]
 
 
-def toPair(imgs, alpha = 8):
-    # slow_input = torch.index_select(imgs, 1, torch.linspace(0, imgs.shape[1] - 1, imgs.shape[1] // configs.alpha).long())
+def toPair(imgs, cnt = 8):
     fastData = imgs
-    slowData = torch.index_select(imgs, 1, torch.linspace(0, len(imgs) - 1, alpha).long())
+    slowData = torch.index_select(imgs, 1, torch.linspace(0, len(imgs) - 1, cnt).long())
 
     return slowData, fastData
 
 
-def allTransform(imgs, alpha):
+def allTransform(imgs, cnt):
     imgs = toRandomResize(imgs)
     imgs = toRandomCrop(imgs)
     imgs = toRandomHorizontalFlip(imgs)
@@ -90,6 +89,5 @@ def allTransform(imgs, alpha):
     imgs = torch.stack(imgs, dim = 0)
     imgs = imgs.transpose(0, 1)
     
-    slowImgs, fastImgs = toPair(imgs, alpha)
-    # print(len(imgs))
+    slowImgs, fastImgs = toPair(imgs, cnt)
     return slowImgs, fastImgs
