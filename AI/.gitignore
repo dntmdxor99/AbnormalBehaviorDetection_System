@@ -4,3 +4,4 @@ datasets/
 pretrained/
 .DS_Store
 yolov5/
+nohup.out

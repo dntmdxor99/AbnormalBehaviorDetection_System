@@ -4,8 +4,8 @@ alpha : 8
 beta : 8
 
 backbone : 'ResNet-50'
-testDataPath : '/Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/datasets/test'
-pretrainedModelPath : '/Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/SlowFast/pretrained/20231128114916/epoch_1.pth'
+testDataPath : '/home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/data/meta_info/meta_info_test.txt'
+pretrainedModelPath : '/Users/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/pretrained/20231128114916/epoch_1.pth'
 
 ResNet-50 : {
   middleDim : [0, 0, 64, 128, 256, 512],

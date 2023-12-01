@@ -4,10 +4,10 @@ alpha : 8
 beta : 8
 
 backbone : 'ResNet-50'
-trainDataPath : '/Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/datasets/train'
-valDataPath : '/Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/datasets/val'
-trainMetaInfoFile : '/Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/data/meta_info/meta_info_train.txt'
-valMetaInfoFile : '/Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/data/meta_info/meta_info_val.txt'
+trainDataPath : /home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/datasets/train
+valDataPath : /home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/datasets/val
+trainMetaInfoFile : /home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/data/meta_info/meta_info_train.txt
+valMetaInfoFile : /home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/data/meta_info/meta_info_val.txt
 
 ResNet-50 : {
   middleDim : [0, 0, 64, 128, 256, 512],
@@ -20,9 +20,10 @@ ResNet-101 : {
   stageBlocks : [0, 0, 3, 4, 23, 3]
 }
 
-numGpus : 0
+numGpus : 1
 shuffle : True
-batchSize : 2
-numClasses : 3
-numWorker : 1
-iterations : 8
+batchSize : 8
+numClasses : 4
+numWorker : 4
+iterations : 200000
+storeNumber : 1000
