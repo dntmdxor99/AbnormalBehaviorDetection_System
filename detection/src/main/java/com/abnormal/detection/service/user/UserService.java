@@ -7,6 +7,7 @@ import com.abnormal.detection.domain.user.User;
 import com.abnormal.detection.repository.user.JpaUserRepository;
 import com.abnormal.detection.repository.user.UserRepository;
 import com.abnormal.detection.util.JwtUtil;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,31 @@ public class UserService {
         Optional<User> ret = userRepository.findByEmail(userEmail);
         return ret.orElse(null);
     }
+
+    //////////////refresh
+
+    public String createRefreshToken(String userId) {
+        return JwtUtil.createRefreshToken(userId, secretKey, expiredMs);
+    }
+
+    public boolean validateRefreshToken(String refreshToken) {
+        try {
+            Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(refreshToken);
+            return true;
+        } catch (Exception e) {
+            log.error("리프레시 토큰 검증 실패: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    public String refreshAccessToken(String refreshToken) {
+        if (validateRefreshToken(refreshToken)) {
+            String userId = JwtUtil.getUserName(refreshToken, secretKey);
+            return JwtUtil.createJwt(userId, secretKey, expiredMs);
+        }
+        return null;
+    }
+
 
 
     //////////////jwt

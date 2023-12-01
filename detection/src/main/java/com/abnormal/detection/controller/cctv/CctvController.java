@@ -3,6 +3,7 @@ package com.abnormal.detection.controller.cctv;
 import com.abnormal.detection.domain.cctv.Cctv;
 import com.abnormal.detection.service.cctv.CctvService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +33,38 @@ public class CctvController {
     public List<Cctv> getAllCctvs() {
         return cctvService.getAllCctvs();
     }
+
+    //위도경도
+    /*
+    @GetMapping("/location")
+    public ResponseEntity<List<Cctv>> getCctvsByLocation(
+            @RequestParam("latitude") Float latitude,
+            @RequestParam("longitude") Float longitude) {
+        List<Cctv> cctvs = cctvService.getCctvsByLocation(latitude, longitude);
+        return ResponseEntity.ok(cctvs);
+    }
+
+    @GetMapping("/location/near")
+    public ResponseEntity<List<Cctv>> getCctvsNearLocation(
+            @RequestParam("latitude") Float latitude,
+            @RequestParam("longitude") Float longitude,
+            @RequestParam("distance") double distance) {
+        List<Cctv> cctvs = cctvService.getCctvsNearLocation(latitude, longitude, distance);
+        return ResponseEntity.ok(cctvs);
+    }
+
+    @GetMapping("/location/distance")
+    public ResponseEntity<List<Cctv>> getCctvsByLocationAndDistance(
+            @RequestParam("latitude") Float latitude,
+            @RequestParam("longitude") Float longitude,
+            @RequestParam("distance") double distance) {
+        List<Cctv> cctvs = cctvService.getCctvsByLocationAndDistance(latitude, longitude, distance);
+        return ResponseEntity.ok(cctvs);
+    }
+
+     */
+
+    //
 
     @PutMapping("/{cctvId}")
     public Cctv updateCctv(@PathVariable Long cctvId, @RequestBody Cctv updatedCctv) {

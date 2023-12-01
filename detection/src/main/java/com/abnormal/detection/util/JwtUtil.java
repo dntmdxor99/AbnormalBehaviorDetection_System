@@ -15,13 +15,13 @@ public class JwtUtil {
                 .getBody().get("userName", String.class);
     }
 
-    /*
+
     public static String getUserType(String token, String secretKey){
         return Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(token)
                 .getBody().get("userType", String.class);
     }
 
-     */
+
 
     public static boolean isExpired(String token, String secretKey) {
         return Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(token)
@@ -44,4 +44,20 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
                 .compact();
     }
+    //refresh token 발급
+
+    public static String createRefreshToken(String userName, String secretKey, Long expireMs) {
+        Claims claims = Jwts.claims();
+        claims.put("userName", userName);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expireMs))
+                .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
+                .compact();
+    }
+
+
+
 }

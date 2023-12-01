@@ -36,6 +36,23 @@ public class CctvService {
         return cctvRepository.getAllCctvs();
     }
 
+    // 위도경도
+    /*
+    public List<Cctv> getCctvsByLocation(Float latitude, Float longitude) {
+        return cctvRepository.getCctvsByLocation(latitude, longitude);
+    }
+
+    public List<Cctv> getCctvsNearLocation(Float latitude, Float longitude, double distance) {
+        return cctvRepository.getCctvsNearLocation(latitude, longitude, distance);
+    }
+
+    public List<Cctv> getCctvsByLocationAndDistance(Float latitude, Float longitude, double distance) {
+        return cctvRepository.getCctvsByLocationAndDistance(latitude, longitude, distance);
+    }
+
+     */
+    //
+
     @Transactional
     public Cctv updateCctv(Long cctvId, Cctv updatedCctv) {
         return cctvRepository.updateCctv(cctvId, updatedCctv);

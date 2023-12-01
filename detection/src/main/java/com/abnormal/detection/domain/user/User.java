@@ -4,15 +4,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Entity
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userNumber;
-
     private String employeeNumber; //사업자등록번호
     private String department; //기업명
     private String userId;
@@ -21,6 +24,7 @@ public class User {
     private Date birthDate; //생년월일
     private String userEmail;
     private String userPhoneNumber;
+    // private String refreshToken; //리프레쉬토큰
 
 
 

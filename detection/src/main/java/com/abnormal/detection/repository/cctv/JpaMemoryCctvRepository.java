@@ -8,6 +8,7 @@ import java.util.List;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -29,15 +30,19 @@ public class JpaMemoryCctvRepository implements CctvRepository {
 
     private String cctvName;
     private String location;
+    private Float latitude;// 위도
+    private Float longitude;// 경도
     private Boolean is360Degree;//true,f로 초기화
     private String protocol;
     private String videoSize;
  */
     private final JpaCctvRepositoryLegend jpaCctvRepositoryLegend;
-    public Cctv makeCctv(String cctvName, String location, Boolean is360Degree,String protocol, String videoSize){
+    public Cctv makeCctv(String cctvName, String location, Float latitude, Float longitude, Boolean is360Degree,String protocol, String videoSize){
         Cctv cctv = new Cctv();
         cctv.setCctvName(cctvName);
-        cctv.setLocation(location);
+        cctv.setLocation(location);//주소값
+        cctv.setLatitude(latitude);//위도
+        cctv.setLongitude(longitude);//경도
         cctv.setIs360Degree(is360Degree);
         cctv.setProtocol(protocol);
         cctv.setVideoSize(videoSize);
@@ -49,8 +54,8 @@ public class JpaMemoryCctvRepository implements CctvRepository {
     public void init() {
         try {
             List<Cctv> cctvs = new ArrayList<>();
-            cctvs.add(makeCctv("우경정보길", "대구광역시 북구 대현로15길 17", Boolean.TRUE, "35.884216f", "1920x1080"));
-            cctvs.add(makeCctv("끝돈", "대구광역시 북구 대학로23길 5", Boolean.TRUE, "35.884216f", "1920x1080"));
+            cctvs.add(makeCctv("우경정보길", "대구광역시 북구 대현로15길 17", (float)128.608639, (float)35.8845360, Boolean.TRUE, "35.884216f", "1920x1080"));
+            cctvs.add(makeCctv("끝돈", "대구광역시 북구 대학로23길 5", (float)128.611282, (float)35.8947285,Boolean.TRUE, "35.884216f", "1920x1080"));
             for (Cctv cctv : cctvs) {
                 jpaCctvRepositoryLegend.createCctv(cctv);
                 log.info("Cctv inserted: {}", cctv.getCctvName());
@@ -64,6 +69,46 @@ public class JpaMemoryCctvRepository implements CctvRepository {
         entityManager.persist(cctv);
         return cctv;
     }
+
+    //위도경도
+    /*
+    @Override
+    public List<Cctv> getCctvsByLocation(Float latitude, Float longitude) {
+        TypedQuery<Cctv> query = entityManager.createQuery(
+                "SELECT c FROM Cctv c WHERE c.latitude = :latitude AND c.longitude = :longitude",
+                Cctv.class
+        );
+        query.setParameter("latitude", latitude);
+        query.setParameter("longitude", longitude);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Cctv> getCctvsNearLocation(Float latitude, Float longitude, double distance) {
+        TypedQuery<Cctv> query = entityManager.createQuery(
+                "SELECT c FROM Cctv c WHERE FUNCTION('distance', c.latitude, c.longitude, :latitude, :longitude) <= :distance",
+                Cctv.class
+        );
+        query.setParameter("latitude", latitude);
+        query.setParameter("longitude", longitude);
+        query.setParameter("distance", distance);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Cctv> getCctvsByLocationAndDistance(Float latitude, Float longitude, double distance) {
+        TypedQuery<Cctv> query = entityManager.createQuery(
+                "SELECT c FROM Cctv c WHERE c.latitude = :latitude AND c.longitude = :longitude AND FUNCTION('distance', c.latitude, c.longitude, :latitude, :longitude) <= :distance",
+                Cctv.class
+        );
+        query.setParameter("latitude", latitude);
+        query.setParameter("longitude", longitude);
+        query.setParameter("distance", distance);
+        return query.getResultList();
+    }
+
+     */
+    //위도경도
 
     @Override
     public Cctv getCctvById(Long cctvId) {
@@ -81,6 +126,8 @@ public class JpaMemoryCctvRepository implements CctvRepository {
         if (existingCctv != null) {
             existingCctv.setCctvName(updatedCctv.getCctvName());
             existingCctv.setLocation(updatedCctv.getLocation());
+            existingCctv.setLatitude(updatedCctv.getLatitude());
+            existingCctv.setLongitude(updatedCctv.getLongitude());
             existingCctv.setIs360Degree(updatedCctv.getIs360Degree());
             existingCctv.setProtocol(updatedCctv.getProtocol());
             existingCctv.setVideoSize(updatedCctv.getVideoSize());

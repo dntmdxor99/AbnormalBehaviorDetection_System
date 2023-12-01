@@ -1,13 +1,12 @@
 package com.abnormal.detection.controller.user;
 
 
-import com.abnormal.detection.domain.user.JoinStatus;
-import com.abnormal.detection.domain.user.LoginRequest;
-import com.abnormal.detection.domain.user.LoginStatus;
-import com.abnormal.detection.domain.user.User;
+import com.abnormal.detection.domain.user.*;
 import com.abnormal.detection.service.user.UserService;
+import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +42,28 @@ public class UserController {
         return ResponseEntity.ok().body(token);
     }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshAccessToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+        String refreshToken = refreshTokenRequest.getRefreshToken();
+
+        if (StringUtils.isBlank(refreshToken)) {
+            return ResponseEntity.badRequest().body("리프레시 토큰이 제공되지 않았습니다.");
+        }
+
+        if (userService.validateRefreshToken(refreshToken)) {
+            String newAccessToken = userService.refreshAccessToken(refreshToken);
+
+            if (newAccessToken != null) {
+                return ResponseEntity.ok(new AccessTokenResponse(newAccessToken));
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("새로운 액세스 토큰 생성에 실패했습니다.");
+            }
+        } else {
+            return ResponseEntity.badRequest().body("유효하지 않은 리프레시 토큰입니다.");
+        }
+    }
+
+
 
 
 /*
@@ -52,6 +73,7 @@ public class UserController {
     }
 
  */
+
 
     @GetMapping("/{userId}")
     public User getUserById(@PathVariable String userId) {

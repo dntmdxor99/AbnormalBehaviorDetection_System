@@ -10,6 +10,17 @@ public interface CctvRepository{
     Cctv getCctvById(Long cctvId);
 
     List<Cctv> getAllCctvs();
+    /*
+
+    List<Cctv> getCctvsByLocation(Float latitude, Float longitude);
+
+    // 특정 위치 주변의 CCTV를 검색하는 메서드
+    List<Cctv> getCctvsNearLocation(Float latitude, Float longitude, double distance);
+
+    // 위도, 경도, 거리를 사용하여 CCTV를 검색하는 메서드
+    List<Cctv> getCctvsByLocationAndDistance(Float latitude, Float longitude, double distance);
+
+     */
 
     Cctv updateCctv(Long cctvId, Cctv updatedCctv);
 

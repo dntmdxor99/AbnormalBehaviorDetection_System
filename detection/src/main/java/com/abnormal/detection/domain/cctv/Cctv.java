@@ -19,6 +19,8 @@ public class Cctv {
     private Long cctvId;
     private String cctvName;
     private String location;
+    private Float latitude;// 위도
+    private Float longitude;// 경도
     private Boolean is360Degree;//true,f로 초기화
     private String protocol;
     private String videoSize;

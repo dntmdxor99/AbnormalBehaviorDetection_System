@@ -8,6 +8,7 @@ public enum JoinStatus {
     INVALID_PASSWORD_LENGTH(3, "비밀번호는 8 ~ 16자 사이여야 합니다.", HttpStatus.BAD_REQUEST),
     INVALID_PASSWORD_STRENGTH(4, "비밀번호는 영문 소문자, 대문자, 특수문자를 포함해야됩니다.", HttpStatus.BAD_REQUEST);
 
+
     private final int code;
     private final String message;
     private final HttpStatus status;
