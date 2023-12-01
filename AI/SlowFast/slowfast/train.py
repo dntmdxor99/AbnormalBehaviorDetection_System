@@ -2,7 +2,7 @@ import os
 import sys
 
 import torch
-from torchsummary import summary 
+# from torchsummary import summary 
 
 import torch.nn.functional as F
 
@@ -17,7 +17,7 @@ from tqdm import tqdm
 from datetime import datetime
 
 
-def num_topK_correct(preds, labels, k_list=(1, 3)):
+def num_topK_correct(preds, labels, k_list=(0, 3)):
     _, top_k_indices = torch.topk(preds, max(k_list))
     expanded_labels = labels.view(-1, 1).expand_as(top_k_indices)
     match_matrix = ((expanded_labels - top_k_indices) == 0)
@@ -28,7 +28,8 @@ def num_topK_correct(preds, labels, k_list=(1, 3)):
 def trainPipeline():
     opt = parseOptions()
     device = opt['device']
-    model = modelBuild(opt).to(device)
+    model = modelBuild(opt)
+    model = model.to(device)
 
     optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=0.0001, nesterov=True)
     schduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=opt['iterations'], eta_min=0.001)
@@ -39,7 +40,8 @@ def trainPipeline():
     trainLoader = construct_loader(opt, 'train')
     valLoader = construct_loader(opt, 'val')
 
-    epochs = opt['iterations']  // len(trainLoader)
+    epochs = opt['iterations']  // len(trainLoader.dataset)
+    print(f'epochs : {epochs}, iterations : {opt["iterations"]}, len(trainDataset) : {len(trainLoader.dataset)}')
 
     currentTime = datetime.now().strftime('%Y%m%d%H%M%S')
     savePath = os.path.join('./pretrained', currentTime)
@@ -56,9 +58,9 @@ def trainPipeline():
         with tqdm(total = len(trainLoader), desc=f'Epoch {epoch}, training') as pbar:
             for i, (slowData, fastData, label) in enumerate(trainLoader):
                 if opt['device'] == 'cuda':
-                    slowData = slowData.to(device, non_blocking = True)
-                    fastData = fastData.to(device, non_blocking = True)
-                    label = label.to(device, non_blocking = True)
+                    slowData = slowData.to(device)
+                    fastData = fastData.to(device)
+                    label = label.to(device)
 
                 label = torch.Tensor(label)
                 optimizer.zero_grad()
@@ -108,7 +110,7 @@ def trainPipeline():
             pbar.update()
 
             print(f'top1 acc: {sum_top1_correct / data_size * 100: .4f}%, '
-                f'top5 acc: {sum_top5_correct / data_size * 100: .4f}%', flush=True)
+                f'top4 acc: {sum_top5_correct / data_size * 100: .4f}%', flush=True)
         
         torch.save(model.state_dict(), os.path.join(savePath, f'epoch_{epoch}.pth'))
         

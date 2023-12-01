@@ -33,39 +33,39 @@ class SlowFast(nn.Module):
         beta = opt['beta']
         block = ResNet
 
-        self.stages = [Stage1(opt), Fuse(opt, outputDim[1] // beta)]
+        # self.stages = [Stage1(opt), Fuse(opt, outputDim[1] // beta)]
 
-        for i in range(2, 5):
-            self.stages.append(StageBuild(opt, i, block))
-            self.stages.append(Fuse(opt, outputDim[i] // beta))
-        self.stages.append(StageBuild(opt, 5, block))
-        self.classification = Classification(opt)
-        # self.stage1 = Stage1(opt)
-        # self.stage1_fuse = Fuse(opt, outputDim[1] // beta)
-        # self.stage2 = StageBuild(opt, 2, block)
-        # self.stage2_fuse = Fuse(opt, outputDim[2] // beta)
-        # self.stage3 = StageBuild(opt, 3, block)
-        # self.stage3_fuse = Fuse(opt, outputDim[3] // beta)
-        # self.stage4 = StageBuild(opt, 4, block)
-        # self.stage4_fuse = Fuse(opt, outputDim[4] // beta)
-        # self.stage5 = StageBuild(opt, 5, block)
+        # for i in range(2, 5):
+        #     self.stages.append(StageBuild(opt, i, block))
+        #     self.stages.append(Fuse(opt, outputDim[i] // beta))
+        # self.stages.append(StageBuild(opt, 5, block))
         # self.classification = Classification(opt)
+        self.stage1 = Stage1(opt)
+        self.stage1_fuse = Fuse(opt, outputDim[1] // beta)
+        self.stage2 = StageBuild(opt, 2, block)
+        self.stage2_fuse = Fuse(opt, outputDim[2] // beta)
+        self.stage3 = StageBuild(opt, 3, block)
+        self.stage3_fuse = Fuse(opt, outputDim[3] // beta)
+        self.stage4 = StageBuild(opt, 4, block)
+        self.stage4_fuse = Fuse(opt, outputDim[4] // beta)
+        self.stage5 = StageBuild(opt, 5, block)
+        self.classification = Classification(opt)
 
 
     def forward(self, slowInput, fastInput):
-        # slowInput, fastInput = self.stage1(slowInput, fastInput)
-        # slowInput, fastInput = self.stage1_fuse(slowInput, fastInput)
-        # slowInput, fastInput = self.stage2(slowInput, fastInput)
-        # slowInput, fastInput = self.stage2_fuse(slowInput, fastInput)
-        # slowInput, fastInput = self.stage3(slowInput, fastInput)
-        # slowInput, fastInput = self.stage3_fuse(slowInput, fastInput)
-        # slowInput, fastInput = self.stage4(slowInput, fastInput)
-        # slowInput, fastInput = self.stage4_fuse(slowInput, fastInput)
-        # slowInput, fastInput = self.stage5(slowInput, fastInput)
-        # x = self.classification(slowInput, fastInput)
-
-        for net in self.stages:
-            slowInput, fastInput = net(slowInput, fastInput)
+        slowInput, fastInput = self.stage1(slowInput, fastInput)
+        slowInput, fastInput = self.stage1_fuse(slowInput, fastInput)
+        slowInput, fastInput = self.stage2(slowInput, fastInput)
+        slowInput, fastInput = self.stage2_fuse(slowInput, fastInput)
+        slowInput, fastInput = self.stage3(slowInput, fastInput)
+        slowInput, fastInput = self.stage3_fuse(slowInput, fastInput)
+        slowInput, fastInput = self.stage4(slowInput, fastInput)
+        slowInput, fastInput = self.stage4_fuse(slowInput, fastInput)
+        slowInput, fastInput = self.stage5(slowInput, fastInput)
         x = self.classification(slowInput, fastInput)
+
+        # for net in self.stages:
+        #     slowInput, fastInput = net(slowInput, fastInput)
+        # x = self.classification(slowInput, fastInput)
         
         return x

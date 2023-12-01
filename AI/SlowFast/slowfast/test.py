@@ -12,7 +12,7 @@ from data.build_test_loader import construct_loader
 from tqdm import tqdm
 
 
-def num_topK_correct(preds, labels, k_list=(1, 3)):
+def num_topK_correct(preds, labels, k_list=(0, 3)):
     _, top_k_indices = torch.topk(preds, max(k_list))
     expanded_labels = labels.view(-1, 1).expand_as(top_k_indices)
     match_matrix = ((expanded_labels - top_k_indices) == 0)
