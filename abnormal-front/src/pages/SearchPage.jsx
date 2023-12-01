@@ -124,12 +124,12 @@ function SearchPage() {
   useEffect(() => {
     console.log("oooooooooo111111112");
     console.log(positions);
-  }, [positions]);
+  }, []);
 
-  const [markerPosition, setMarkerPosition] = useState(null); // 클릭한 위치를 저장할 상태
-  const onMapClick = (event) => {
-    console.log(event); // 이벤트 객체 구조 확인
-  };
+  // const [markerPosition, setMarkerPosition] = useState(); // 클릭한 위치를 저장할 상태
+  // const onMapClick = (event) => {
+  //   console.log(event); // 이벤트 객체 구조 확인
+  // };
 
   return (
     <PageLayout>
@@ -166,8 +166,8 @@ function SearchPage() {
                   console.log(event);
                 }}
               >
-                {markerPosition && <MapMarker position={markerPosition} />}{" "}
-                {/* markerPosition이 있을 때만 Marker 컴포넌트를 렌더링 */}
+                {/* {markerPosition && <MapMarker position={markerPosition} />}{" "}
+                markerPosition이 있을 때만 Marker 컴포넌트를 렌더링 */}
                 <InsideMap cctvData={cctvData} />
               </Map>
             </MapContainer>

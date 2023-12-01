@@ -8,4 +8,6 @@ const useMouseClickEventListener = (map, callback) => {
   }, [map, callback]);
 };
 
+
+
 export default useMouseClickEventListener;
