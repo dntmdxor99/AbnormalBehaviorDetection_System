@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Cctv {
-
+//이름 주소 360도 비디오사이즈 필터링 검색기능
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cctvId;

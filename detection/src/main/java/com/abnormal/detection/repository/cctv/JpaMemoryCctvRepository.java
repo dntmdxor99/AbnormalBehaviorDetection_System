@@ -179,7 +179,7 @@ public class JpaMemoryCctvRepository implements CctvRepository {
         Long count = (Long) entityManager.createQuery("SELECT COUNT(c) FROM Cctv c").getSingleResult();
         return count.intValue();
     }
-
+/*
     @Override
     public List<Cctv> searchCctvsByOptions(String cctvName, String location, Boolean is360Degree, String protocol) {
         String query = "SELECT c FROM Cctv c " +
@@ -194,5 +194,24 @@ public class JpaMemoryCctvRepository implements CctvRepository {
                 .setParameter("protocol", protocol)
                 .getResultList();
     }
+
+ */
+    @Override
+    public List<Cctv> searchCctvsByOptions(String cctvName, String location, Boolean is360Degree, String protocol) {
+        String query = "SELECT c FROM Cctv c " +
+                "WHERE (COALESCE(:cctvName, '') = '' OR LOWER(c.cctvName) LIKE LOWER(CONCAT('%', :cctvName, '%'))) " +
+                "AND (COALESCE(:location, '') = '' OR LOWER(c.location) LIKE LOWER(CONCAT('%', :location, '%'))) " +
+                "AND (:is360Degree IS NULL OR c.is360Degree = :is360Degree) " +
+                "AND (COALESCE(:protocol, '') = '' OR LOWER(c.protocol) LIKE LOWER(CONCAT('%', :protocol, '%')))";
+        return entityManager.createQuery(query, Cctv.class)
+                .setParameter("cctvName", cctvName)
+                .setParameter("location", location)
+                .setParameter("is360Degree", is360Degree)
+                .setParameter("protocol", protocol)
+                .getResultList();
+    }
+
+
+
 }
 
