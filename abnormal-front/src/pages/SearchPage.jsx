@@ -1,18 +1,16 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Map } from 'react-kakao-maps-sdk';
-
-
+import { Map } from "react-kakao-maps-sdk";
+import { MapMarker } from "react-kakao-maps-sdk";
 
 import PageLayout from "../components/PageLayout";
 import InsideMap from "../components/InsideMap";
 import API from "../utils/API.js";
 import useUserPosition from "../hooks/useUserPosition";
 import useWindowSize from "../hooks/useWindowSize";
-import '../App.css';
+import "../App.css";
 
 const Frame = styled.div`
   width: 100vw;
@@ -23,7 +21,7 @@ const Frame = styled.div`
 const MapContainer = styled.div`
   position: relative;
 `;
-  
+
 const Rectangle = styled.div`
   position: absolute;
   top: 30px;
@@ -49,7 +47,7 @@ const SelectCCtvContents = styled.p`
   font-size: 20px;
   font-style: normal;
   font-weight: 500;
-  line-height: 0.5
+  line-height: 0.5;
 `;
 
 const SearchSettings = styled.p`
@@ -80,41 +78,58 @@ const RadioButton = styled.div`
   display: block;
 `;
 
-const SearchPage = () => {
+function SearchPage() {
   const windowSize = useWindowSize();
   const userPosition = useUserPosition();
   const [cctvData, setCctvData] = useState([]);
+  const [positions, setPositions] = useState({
+    cctvId: "",
+    cctvName: "",
+    location: "",
+    latitude: "",
+    longitude: "",
+    is360Degree: "",
+    protocol: "",
+    videoSize: "",
+  });
 
-  let positions = [
-    {
-      cctvId: "",
-      cctvName: "",
-      location: "",
-      is360Degree: "",
-      protocol: "",
-      videoSize: ""
-    }
-  ]
-  
+
   useEffect(() => {
-    console.log("ooooooooooooooooooooooo");
-    API.get('/cctvs/allCctv')
-      .then(response => {
-        positions = response.data.map(item => ({
-          cctvId: item.cctvId,
-          cctvName: item.cctvName,
-          location: item.location,
-          is360Degree: item.is360Degree,
-          protocol: item.protocol,
-          videoSize: item.videoSize,
-        }))
-        console.log('서버 응답:', response.data);
-      })
-      .catch(error => {
+    //console.log("ooooooooooooooooooooooo");
+    const fetchData = async () => {
+      try {
+        //세아두번호출됨 refactoring해야함
+        const response = await API.get("/cctvs/allCctv");
+        console.log("ooooooooooooooooooooooo1");
+
+        //console.log(response);
+        if (response.status === 200) {
+          const data = response.data;
+          console.log("ooooooooooooooooooooooo2");
+          console.log(data);
+          setPositions(data);
+          // console.log("oooooooooo111111112");
+          // console.log(positions);
+        } else {
+          console.error("API 호출 실패");
+        }
+      } catch (error) {
         console.log("에러부분임-----------------");
-        console.error('CCTV 데이터를 받아오는데 실패했습니다.', error);
-      });
+        console.error("CCTV 데이터를 받아오는데 실패했습니다.", error);
+      }
+    };
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    console.log("oooooooooo111111112");
+    console.log(positions);
+  }, [positions]);
+
+  const [markerPosition, setMarkerPosition] = useState(null); // 클릭한 위치를 저장할 상태
+  const onMapClick = (event) => {
+    console.log(event); // 이벤트 객체 구조 확인
+  };
 
   return (
     <PageLayout>
@@ -144,10 +159,15 @@ const SearchPage = () => {
                 center={userPosition}
                 style={{
                   width: `${windowSize.width}px`,
-                  height: `${windowSize.height}px`
+                  height: `${windowSize.height}px`,
                 }}
                 level={3}
+                onClick={(event) => {
+                  console.log(event);
+                }}
               >
+                {markerPosition && <MapMarker position={markerPosition} />}{" "}
+                {/* markerPosition이 있을 때만 Marker 컴포넌트를 렌더링 */}
                 <InsideMap cctvData={cctvData} />
               </Map>
             </MapContainer>
@@ -156,6 +176,6 @@ const SearchPage = () => {
       </Frame>
     </PageLayout>
   );
-};
+}
 
 export default SearchPage;
