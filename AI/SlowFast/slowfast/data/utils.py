@@ -66,7 +66,7 @@ def toRandomHorizontalFlip(imgs):
 
 def toNomalize(imgs):
     def _toNomalize(img):
-        transforms.Normalize([0.45, 0.45, 0.45], [0.225, 0.225, 0.225], inplace = True)(img)
+        img = transforms.Normalize([0.45, 0.45, 0.45], [0.225, 0.225, 0.225], inplace = True)(img)
 
         return img
 
