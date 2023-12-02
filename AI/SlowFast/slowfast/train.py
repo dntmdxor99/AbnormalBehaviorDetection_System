@@ -8,8 +8,6 @@ import torch.nn.functional as F
 
 from models.model_build import modelBuild
 from utils.options import parseOptions
-# from data.dataset import VideoDataset
-# from data.build_loader import construct_loader
 from data.build_train_loader import construct_loader
 
 from tqdm import tqdm
@@ -17,7 +15,7 @@ from tqdm import tqdm
 from datetime import datetime
 
 
-def num_topK_correct(preds, labels, k_list=(0, 3)):
+def num_topK_correct(preds, labels, k_list=(1, 3)):
     _, top_k_indices = torch.topk(preds, max(k_list))
     expanded_labels = labels.view(-1, 1).expand_as(top_k_indices)
     match_matrix = ((expanded_labels - top_k_indices) == 0)
@@ -62,15 +60,15 @@ def trainPipeline():
                     fastData = fastData.to(device)
                     label = label.to(device)
 
-                label = torch.Tensor(label)
+                label = F.one_hot(torch.Tensor(label), num_classes = opt['numClasses'])
+                label = label.type(torch.float32)
+
                 optimizer.zero_grad()
-                optimizer.param_groups[0]['lr'] = schduler.get_lr()[0]
 
                 preds = model(slowData, fastData)
                 loss = lossFunction(preds, label)
                 sumLoss += loss
 
-                optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
 
@@ -92,11 +90,9 @@ def trainPipeline():
                 for i, (slowData, fastData, label) in enumerate(valLoader):
                     # Transfer the data to the current GPU device.
                     if opt['numGpus'] > 0:
-                        # for i in range(len(inputs)):
-                            # inputs[i] = inputs[i].cuda(non_blocking=True)
-                        slowData = slowData.cuda(non_blocking=True)
-                        fastData = fastData.cuda(non_blocking=True)
-                        label = label.cuda(non_blocking=True)
+                        slowData = slowData.to(device)
+                        fastData = fastData.to(device)
+                        label = label.to(device)
 
                     label = torch.Tensor(label)
                     preds = model(slowData, fastData)
