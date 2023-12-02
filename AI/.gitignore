@@ -5,3 +5,4 @@ pretrained/
 .DS_Store
 yolov5/
 nohup.out
+meta_info/
