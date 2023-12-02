@@ -1,13 +1,28 @@
+name : 'train'
 T : 4
 tau : 8
 alpha : 8
 beta : 8
 
 backbone : 'ResNet-50'
-trainDataPath : /home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/datasets/train
-valDataPath : /home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/datasets/val
-trainMetaInfoFile : /home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/data/meta_info/meta_info_train.txt
-valMetaInfoFile : /home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/data/meta_info/meta_info_val.txt
+# trainDataPath : /home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/datasets/train
+# valDataPath : /home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/datasets/val
+# trainMetaInfoFile : /home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/data/meta_info/meta_info_train.txt
+# valMetaInfoFile : /home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/data/meta_info/meta_info_val.txt
+
+# Mac_TrainDataPath : /Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/datasets/train
+# Mac_ValDataPath : /Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/datasets/val
+# Mac_TrainMetaInfoFile : /Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/data/meta_info/meta_info_train.txt
+# Mac_ValMetaInfoFile : /Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/data/meta_info/meta_info_val.txt
+Mac_trainDataPath : './datasets/train'
+Mac_valDataPath : './datasets/val'
+Mac_trainMetaInfoFile : './slowfast/data/meta_info/mac_meta_info_train.txt'
+Mac_valMetaInfoFile : './slowfast/data/meta_info/mac_meta_info_val.txt'
+
+Ubuntu_trainDataPath : '/home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/datasets/train'
+Ubuntu_valDataPath : '/home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/datasets/val'
+Ubuntu_trainMetaInfoFile : '/home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/data/meta_info/meta_info_train.txt'
+Ubuntu_valMetaInfoFile : '/home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/data/meta_info/meta_info_val.txt'
 
 ResNet-50 : {
   middleDim : [0, 0, 64, 128, 256, 512],
@@ -21,9 +36,16 @@ ResNet-101 : {
 }
 
 numGpus : 1
-shuffle : True
+shuffle : False
 batchSize : 8
 numClasses : 4
 numWorker : 4
 iterations : 200000
 storeNumber : 1000
+
+## YOLO Option
+inputSize : [640, 640]
+confThres : 0.25  # confidence threshold
+iouThres : 0.45  # NMS IOU threshold
+maxDet : 1000
+yoloPretrained : '/Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/SlowFast/pretrained/yolo_pretrained/yolov5s.pt'
