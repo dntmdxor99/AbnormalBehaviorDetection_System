@@ -74,17 +74,15 @@ class VideoDataset(Dataset):
         fastInternal = 1
         
         for i in range(firstFrameNum, firstFrameNum + self.frameNums, fastInternal):
-            image = cv2.imread(os.path.join(self.opt[f'{self.split}DataPath'], clipName, f'{i:08d}.png'))
+            image = cv2.imread(os.path.join(self.opt[f'{self.split}DataPath'], clipName, f'{i:08d}.jpg'))
 
             imageOri = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             imageOri = imageOri.transpose((2, 0, 1))  # HWC to CHW, BGR to RGB
-            imageOri = np.ascontiguousarray(imageOri)  # contiguous
             imagesOri.append(imageOri)
 
-            image = letterbox(image, self.yoloInputSize)
+            image = cv2.resize(image, (860, 540))
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             image = image.transpose((2, 0, 1))
-            image = np.ascontiguousarray(image)  # contiguous
 
             images.append(image)
 

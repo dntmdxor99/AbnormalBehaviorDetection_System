@@ -65,7 +65,7 @@ class VideoDataset(Dataset):
         fastInternal = self.opt['tau'] // self.opt['alpha']
         
         for i in range(firstFrameNum, firstFrameNum + self.frameNums, fastInternal):
-            image = cv2.imread(os.path.join(self.opt[f'{self.split}DataPath'], clipName, f'{i:08d}.png'))
+            image = cv2.imread(os.path.join(self.opt[f'{self.split}DataPath'], clipName, f'{i:08d}.jpg'))
             fastData.append(image)
 
         slowData, fastData = allTransform(fastData, self.frameNums // self.opt['tau'])

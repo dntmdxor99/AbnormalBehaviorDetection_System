@@ -11,8 +11,9 @@ backbone : 'ResNet-50'
 Mac_testDataPath : './datasets/test'
 Mac_pretrainedModelPath : '/Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/SlowFast/pretrained/20231128114916/epoch_1.pth'
 
-Ubuntu_testDataPath : '/home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/datasets/test'
-Ubuntu_pretrainedModelPath : '/home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/pretrained/20231128114916/epoch_1.pth'
+Ubuntu_testDataPath : './datasets/test'
+Ubuntu_testMetaInfoFile : './slowfast/data/meta_info/meta_info_test.txt'
+Ubuntu_pretrainedModelPath : '/home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/pretrained/20231203173632/top1_epoch_4.pth'
 
 ResNet-50 : {
   middleDim : [0, 0, 64, 128, 256, 512],
@@ -27,13 +28,14 @@ ResNet-101 : {
 
 numGpus : 1
 shuffle : False
-batchSize : 2
-numClasses : 3
-numWorker : 1
+batchSize : 1
+numClasses : 6
+numWorker : 4
 
 ## YOLO Option
 inputSize : [640, 640]
 confThres : 0.25  # confidence threshold
 iouThres : 0.45  # NMS IOU threshold
-maxDet : 1000
-yoloPretrained : '/Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/SlowFast/pretrained/yolo_pretrained/yolov5s.pt'
+maxDet : 10
+# yoloPretrained : '/Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/SlowFast/pretrained/yolo_pretrained/yolov5s.pt'
+yoloPretrained : '/home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/yolov5s.pt'
