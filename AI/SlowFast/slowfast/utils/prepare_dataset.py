@@ -11,7 +11,7 @@ startDirName = int(max(os.listdir('./frame'))) if startDirName else 1
 cnt = 0
 cmds = []   
 
-label = {'fight' : 1, 'assault' : 2, 'drunken' : 3, 'datefight' : 1}
+label = {'fight' : 1, 'datefight' :1, 'assault' : 2, 'drunken' : 3, 'swoon' : 4, 'kidnap' : 5}
 
 with open('meta_info_train.txt', 'a') as f:
     for i, xml in enumerate(xmls):
@@ -41,10 +41,14 @@ with open('meta_info_train.txt', 'a') as f:
             timeDuration = int(second * (duration / frameNum)) + 0.2
             
             for i, startTIme in enumerate(startTImeIdx):
-                if i == 0 and random.random() > 0.3:
-                    continue
-                if i == 1 and random.random() > 0.4:
-                    continue
+                if actionName in ('fight', 'datefight', 'assault'):
+                    if i == 0 and random.random() > 0.2:
+                        continue
+                    if i == 1 and random.random() > 0.5:
+                        continue
+                else:
+                    if i == 0 and random.random() > 0.3:
+                        continue
 
                 outputDir = f'{str(startDirName + cnt).zfill(3)}'
                 os.makedirs(f'./frame/{outputDir}', exist_ok=True)
