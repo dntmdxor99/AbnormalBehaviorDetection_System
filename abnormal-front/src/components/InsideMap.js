@@ -1,18 +1,13 @@
 import { useEffect } from "react";
 import { MapMarker } from "react-kakao-maps-sdk";
+import KakaoMarker from "./KakaoMarker";
 
 const InsideMap = ({ positions }) => {
 
   return (
     <>
         {positions.map((position) => (
-            <MapMarker
-                key={position.cctvId}
-                position={{lat: position.latitude, lng: position.longitude}}
-                onClick={() => {
-                    console.log("click");
-                }}
-            />
+            <KakaoMarker cctvId={position.cctvId} lat={position.latitude} lng={position.longitude}/>
         ))}
     </>
 )

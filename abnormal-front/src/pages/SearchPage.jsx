@@ -11,6 +11,8 @@ import API from "../utils/API.js";
 import useUserPosition from "../hooks/useUserPosition";
 import useWindowSize from "../hooks/useWindowSize";
 import "../App.css";
+import cctvIdState from "../recoil/cctvIdState.js";
+import { useRecoilState } from "recoil";
 
 const Frame = styled.div`
   width: 100vw;
@@ -55,7 +57,7 @@ const Contents = styled.div`
 `;
 
 const RadioButtonGroup = styled.div`
-margin-top: 15px;
+  margin-top: 15px;
   margin-bottom: 20px;
   margin-left: 10px;
   font-size: 15px;
@@ -84,6 +86,16 @@ function SearchPage() {
   //   videoSize: "",
   // }]
 
+  /*
+  {
+    "cctvId": "",
+    "cctvName": "",
+    "location": "대구광역시 북구 대현로15길 17",
+    "is360Degree": true,
+    "channel" : ""
+}
+  */
+
   const [positions, setPositions] = useState([]);
 
   useEffect(() => {
@@ -107,6 +119,8 @@ function SearchPage() {
   useEffect(() => {
     console.log(positions);
   }, [positions]);
+
+  const [positionData, setPositionData] = useRecoilState(cctvIdState);
 
   return (
     <PageLayout>
@@ -157,7 +171,6 @@ function SearchPage() {
                 level={3}
               >
                 <InsideMap positions={positions} />
-                
               </Map>
             </MapContainer>
           </div>

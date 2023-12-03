@@ -13,10 +13,11 @@ import SignupPage from "./pages/SignupPage";
 import Button from "@mui/material/Button";
 import Header from "./components/Header";
 import PageLayout from "./components/PageLayout";
+import { RecoilRoot } from "recoil";
 
 function App() {
   return (
-    <>
+    <RecoilRoot>
       <BrowserRouter>
         <Header>
           <div className="menu">
@@ -56,7 +57,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
         </Routes>
       </BrowserRouter>
-    </>
+    </RecoilRoot>
   );
 }
 
