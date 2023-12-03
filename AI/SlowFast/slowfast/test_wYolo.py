@@ -39,14 +39,19 @@ def yoloInference(opt, yolo, inputs, originals, label, device):
     fastInternal = opt['tau'] // opt['alpha']
 
     fastData = torch.zeros((batchSize, frameNums // fastInternal, 3, 224, 224), dtype = torch.float32).to(device)
-    xyxys = [[0] * (frameNums // fastInternal) for _ in range(batchSize)]
-                # slowData = torch.zeros((batchSize, frameNums // tau, 3, 224, 224), dtype = torch.float32).to(device)
+    # xyxys = [0] * batchSize
+    xyxys = [[0] * frameNums for _ in range(batchSize)]
+
     with torch.no_grad():
         inputs = inputs.to(yolo.device)
         inputs = inputs.half() if yolo.fp16 else inputs.float()  # uint8 to fp16/32
         inputs /= 255  # 0 - 255 to 0.0 - 1.0
         if len(inputs.shape) == 3:
             inputs = inputs[None]  # expand for batch dim
+
+        # temp = inputs[:, frameNums // 2, :, :, :]
+        # pred = yolo(temp)
+        # pred = non_max_suppression(pred, opt['confThres'], opt['iouThres'], 0, False, max_det = opt['maxDet'])
 
         for b in range(inputs.shape[0]):
             pred = yolo(inputs[b])
@@ -56,26 +61,29 @@ def yoloInference(opt, yolo, inputs, originals, label, device):
             original = originals[b]
             for i, det in enumerate(pred):  # per image
                 if len(det):
-                    # Rescale boxes from img_size to im0 size
-                    det[:, :4] = scale_boxes(inputs[0].shape[2:], det[:, :4], originals[b].shape[2:]).round()
+                    det[:, :4] = scale_boxes(inputs[0].shape[2:], det[:, :4], originals[0].shape[2:]).round()
 
-                    # Write results
-                    x1 = int(det[:, 0].min())
-                    y1 = int(det[:, 1].min())
-                    x2 = int(det[:, 2].max())
-                    y2 = int(det[:, 3].max())
+                    x1 = int(det[:, 0].min()) - 50
+                    y1 = int(det[:, 1].min()) - 50
+                    x2 = int(det[:, 2].max()) + 50
+                    y2 = int(det[:, 3].max()) + 50
+
                     xyxys[b][i] = [x1, y1, x2, y2]
 
-                    temp = resize(original[i][:, y1:y2, x1:x2]).float() / 255.0
-                    fastData[b][i] = normalize(temp)
-                elif i:
-                    temp = resize(original[i][:, y1:y2, x1:x2]).float() / 255.0
-                    fastData[b][i] = normalize(temp)
+                    try:
+                        temp = resize(originals[b][i][:, :, y1:y2, x1:x2]).float() / 255.0
+                        fastData[b][i] = normalize(temp)
+                    except:
+                        temp = resize(originals[b][i]).float() / 255.0
+                        fastData[b][i] = normalize(temp)
                 else:
-                    temp = resize(original[i]).float() / 255.0
+                    temp = resize(originals[b][i]).float() / 255.0
                     fastData[b][i] = normalize(temp)
+        
 
-    slowData = torch.index_select(fastData, 1, torch.linspace(0, len(fastData) - 1, frameNums // tau).long()).to(device)
+    slowData = torch.index_select(fastData, 1, torch.linspace(0, len(fastData) - 1, frameNums // tau).long().to(device))
+    slowData = slowData.to(device)
+    slowData = slowData.to(torch.float32)
     fastData = fastData.transpose(1, 2)
     slowData = slowData.transpose(1, 2)
     label = label.to(device)
@@ -96,13 +104,13 @@ def testPipeline():
     device = opt['device']
 
     model = modelBuild(opt).to(device)
-    model.load_state_dict(torch.load(opt['pretrainedModelPath'], map_location=device))
+    model.load_state_dict(torch.load(opt['pretrainedModelPath']))
     model.eval()
 
     yolo = DetectMultiBackend(opt['yoloPretrained'], device=torch.device(device), dnn=False, fp16=False)
     yolo.eval()
 
-    valLoader = construct_loader(opt, 'test')
+    testLoader = construct_loader(opt, 'test')
 
     currentTime = datetime.now().strftime('%Y%m%d%H%M%S')
     savePath = os.path.join('./results', currentTime)
@@ -110,33 +118,28 @@ def testPipeline():
 
     data_size = 0
     sum_top1_correct = 0
-    sum_top5_correct = 0
+    sum_top3_correct = 0
 
-    with tqdm(total = len(valLoader), desc = 'testing') as pbar:
+    with tqdm(total = len(testLoader), desc = 'testing') as pbar:
         with torch.no_grad():
-            for idx, (inputs, originals, label), folderName in enumerate(valLoader):
+            for inputs, originals, label, folderName in testLoader:
                 slowData, fastData, label, xyxys = yoloInference(opt, yolo, inputs, originals, label, device)
-                # Transfer the data to the current GPU device.
-                # if opt['numGpus'] > 0:
-                    # for i in range(len(inputs)):
-                        # inputs[i] = inputs[i].cuda(non_blocking=True)
-                    # slowData = slowData.cuda(non_blocking=True)
-                    # fastData = fastData.cuda(non_blocking=True)
 
                 label = torch.Tensor(label)
                 preds = model(slowData, fastData)
-                input_box_label(originals, preds, xyxys, savePath, folderName)
+                prob = F.softmax(preds, dim=1)
+                input_box_label(originals, prob, xyxys, savePath, folderName)
                 top1_correct, top3_correct = num_topK_correct(preds, label, (1, 3))
 
                 # Evaluating stats
                 sum_top1_correct += top1_correct
-                sum_top5_correct += top3_correct
+                sum_top3_correct += top3_correct
                 data_size += len(label)
 
-        pbar.update()
+                pbar.update()
 
         print(f'top1 acc: {sum_top1_correct / data_size * 100: .4f}%, '
-            f'top4 acc: {sum_top5_correct / data_size * 100: .4f}%', flush=True)
+            f'top3 acc: {sum_top3_correct / data_size * 100: .4f}%', flush=True)
         
 if __name__ == "__main__":
     testPipeline()
