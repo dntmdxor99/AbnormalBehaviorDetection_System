@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -107,14 +108,22 @@ public class CctvController {
         return cctvService.getCctvByName(cctvName);
     }
     @PostMapping("/search")
-    public List<Cctv> searchCctvs(@RequestBody Map<String, String> searchRequest) {
-        // SearchRequest는 검색 조건을 담고 있는 DTO 클래스입니다.
-        String cctvName = searchRequest.get("cctvName");
-        String location = searchRequest.get("location");
-        Boolean is360Degree = Boolean.valueOf(searchRequest.get("is360Degree"));
-        String channel = searchRequest.get("Channel");
+    public List<Cctv> searchCctvs(@RequestBody List<Map<String, String>> searchRequests) {
+        List<Cctv> result = new ArrayList<>();
 
-        return cctvService.searchCctvsByOptions(cctvName, location, is360Degree, channel);
+        for (Map<String, String> searchRequest : searchRequests) {
+            String cctvIdStr = searchRequest.get("cctvId");
+            Long cctvId = (cctvIdStr != null && !cctvIdStr.isEmpty()) ? Long.valueOf(cctvIdStr) : null;
+            String cctvName = searchRequest.get("cctvName");
+            String location = searchRequest.get("location");
+            Boolean is360Degree = Boolean.valueOf(searchRequest.get("is360Degree"));
+            String channel = searchRequest.get("channel");
+
+            List<Cctv> cctvList = cctvService.searchCctvsByOptions(cctvId, cctvName, location, is360Degree, channel);
+            result.addAll(cctvList);
+        }
+
+        return result;
     }
 
 

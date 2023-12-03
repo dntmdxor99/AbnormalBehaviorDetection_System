@@ -177,13 +177,14 @@ class CctvServiceTest {
     @Test
     void searchCctvsByOptions() {
         // Given
+        Long cctvId = 4L;
         String cctvName = "Cctv1";
         String location = "Location1";
         Boolean is360Degree = true;
-        String protocol = "Protocol1";
+        String channel = "Protocol1";
 
         // When
-        List<Cctv> result = cctvService.searchCctvsByOptions(cctvName, location, is360Degree, protocol);
+        List<Cctv> result = cctvService.searchCctvsByOptions(cctvId,cctvName, location, is360Degree, channel);
 
         // Then
         assertNotNull(result);

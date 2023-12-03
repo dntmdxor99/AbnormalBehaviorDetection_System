@@ -39,6 +39,6 @@ public interface CctvRepository{
     int countAllCctvs();
 
     // 다양한 검색 옵션
-    List<Cctv> searchCctvsByOptions(String cctvName, String location, Boolean is360Degree, String channel);
+    List<Cctv> searchCctvsByOptions(Long cctvId, String cctvName, String location, Boolean is360Degree, String channel);
 }
 

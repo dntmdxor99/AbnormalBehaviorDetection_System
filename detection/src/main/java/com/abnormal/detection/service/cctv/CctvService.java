@@ -79,8 +79,8 @@ public class CctvService {
         return cctvRepository.countAllCctvs();
     }
 
-    public List<Cctv> searchCctvsByOptions(String cctvName, String location, Boolean is360Degree, String channel) {
-        return cctvRepository.searchCctvsByOptions(cctvName, location, is360Degree, channel);
+    public List<Cctv> searchCctvsByOptions(Long cctvId,String cctvName, String location, Boolean is360Degree, String channel) {
+        return cctvRepository.searchCctvsByOptions(cctvId, cctvName, location, is360Degree, channel);
     }
 }
 
