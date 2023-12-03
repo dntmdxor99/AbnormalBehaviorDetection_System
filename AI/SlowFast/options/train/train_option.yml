@@ -19,10 +19,12 @@ Mac_valDataPath : './datasets/val'
 Mac_trainMetaInfoFile : './slowfast/data/meta_info/mac_meta_info_train.txt'
 Mac_valMetaInfoFile : './slowfast/data/meta_info/mac_meta_info_val.txt'
 
-Ubuntu_trainDataPath : '/home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/datasets/train'
-Ubuntu_valDataPath : '/home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/datasets/val'
-Ubuntu_trainMetaInfoFile : '/home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/data/meta_info/meta_info_train.txt'
-Ubuntu_valMetaInfoFile : '/home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/data/meta_info/meta_info_val.txt'
+Ubuntu_trainDataPath : './datasets/train'
+Ubuntu_valDataPath : './datasets/val'
+Ubuntu_trainMetaInfoFile : './slowfast/data/meta_info/meta_info_train.txt'
+Ubuntu_valMetaInfoFile : './slowfast/data/meta_info/meta_info_val.txt'
+
+pretrainedPath : '/home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/pretrained/best/epoch_50.pth'
 
 ResNet-50 : {
   middleDim : [0, 0, 64, 128, 256, 512],
@@ -36,16 +38,18 @@ ResNet-101 : {
 }
 
 numGpus : 1
-shuffle : False
-batchSize : 8
-numClasses : 4
+shuffle : True
+batchSize : 1
+numClasses : 6
 numWorker : 4
-iterations : 200000
-storeNumber : 1000
+iterations : 100000
+storeNumber : 10
+lr : 0.01
 
 ## YOLO Option
 inputSize : [640, 640]
 confThres : 0.25  # confidence threshold
 iouThres : 0.45  # NMS IOU threshold
-maxDet : 1000
-yoloPretrained : '/Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/SlowFast/pretrained/yolo_pretrained/yolov5s.pt'
+maxDet : 8
+# yoloPretrained : '/Users/woo/Desktop/woo/project/AbnormalBehaviorDetection_System/AI/SlowFast/pretrained/yolo_pretrained/yolov5s.pt'
+yoloPretrained : '/home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/slowfast/yolov5m.pt'
