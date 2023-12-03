@@ -25,7 +25,7 @@ def parseOptions():
     opt['stageBlocks'] = opt[backbone]['stageBlocks']
 
     if args.gpu is None:
-        opt['numGpus'] = 0
+        opt['numGpus'] = 1
     else:
         opt['numGpus'] = args.gpu
     
@@ -47,6 +47,7 @@ def parseOptions():
     else:
         opt['testDataPath'] = opt[f'{opt["env"]}_testDataPath']
         opt['pretrainedModelPath'] = opt[f'{opt["env"]}_pretrainedModelPath']
+        opt['testMetaInfoFile'] = opt[f'{opt["env"]}_testMetaInfoFile']
 
 
     return opt
