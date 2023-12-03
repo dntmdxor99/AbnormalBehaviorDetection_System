@@ -3,8 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Map } from "react-kakao-maps-sdk";
-import { MapMarker } from "react-kakao-maps-sdk";
+import { Map, MapMarker } from "react-kakao-maps-sdk";
 
 import PageLayout from "../components/PageLayout";
 import InsideMap from "../components/InsideMap";
@@ -40,14 +39,14 @@ const Box = styled.div`
   margin-left: 50px;
 `;
 
-const Types = styled.p`
+const Types = styled.div`
   font-size: 25px;
   font-style: normal;
   font-weight: 700;
   margin-bottom: 40px;
 `;
 
-const Contents = styled.p`
+const Contents = styled.div`
   margin-top: 15px;
   font-size: 20px;
   font-style: normal;
@@ -56,6 +55,7 @@ const Contents = styled.p`
 `;
 
 const RadioButtonGroup = styled.div`
+margin-top: 15px;
   margin-bottom: 20px;
   margin-left: 10px;
   font-size: 15px;
@@ -71,17 +71,20 @@ const RadioButton = styled.div`
 function SearchPage() {
   const windowSize = useWindowSize();
   const userPosition = useUserPosition();
-  const [cctvData, setCctvData] = useState([]);
-  const [positions, setPositions] = useState({
-    cctvId: "",
-    cctvName: "",
-    location: "",
-    latitude: "",
-    longitude: "",
-    is360Degree: "",
-    protocol: "",
-    videoSize: "",
-  });
+
+  // const [cctvData, setCctvData] = useState([]);
+  // [{
+  //   cctvId: "",
+  //   cctvName: "",
+  //   location: "",
+  //   latitude: "",
+  //   longitude: "",
+  //   is360Degree: "",
+  //   channel: "",
+  //   videoSize: "",
+  // }]
+
+  const [positions, setPositions] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -152,11 +155,9 @@ function SearchPage() {
                   height: `${windowSize.height}px`,
                 }}
                 level={3}
-                onClick={(event) => {
-                  console.log(event);
-                }}
               >
-                <InsideMap cctvData={cctvData} />
+                <InsideMap positions={positions} />
+                
               </Map>
             </MapContainer>
           </div>

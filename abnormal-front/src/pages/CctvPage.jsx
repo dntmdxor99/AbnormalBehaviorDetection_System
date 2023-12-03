@@ -18,7 +18,7 @@ const CctvPage = () => {
     latitude: "",
     longitude: "",
     is360Degree: "",
-    protocol: "",
+    chsnnel: "",
     videoSize: "",
   });
   const [deleteId, setDeleteId] = useState("");

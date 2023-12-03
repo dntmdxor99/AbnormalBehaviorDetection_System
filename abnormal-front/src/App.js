@@ -14,7 +14,6 @@ import Button from "@mui/material/Button";
 import Header from "./components/Header";
 import PageLayout from "./components/PageLayout";
 
-
 function App() {
   return (
     <>
@@ -35,11 +34,10 @@ function App() {
                 문의하기
               </Link>
               <div className="menu-bar-buttons">
-                <Link>
-                  <Link to="/login">
-                    <Button variant="outlined">로그인</Button>
-                  </Link>
+                <Link to="/login">
+                  <Button variant="outlined">로그인</Button>
                 </Link>
+
                 <Link to="/signup">
                   <Button variant="contained">가입하기</Button>
                 </Link>

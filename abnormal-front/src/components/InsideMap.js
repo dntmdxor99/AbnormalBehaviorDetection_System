@@ -1,31 +1,21 @@
 import { useEffect } from "react";
-import { useMap } from "react-kakao-maps-sdk";
 import { MapMarker } from "react-kakao-maps-sdk";
 
-const InsideMap = ({ cctvData }) => {
-  const map = useMap();
-
-  useEffect(() => {
-    if (map) {
-      cctvData.forEach(cctv => {
-        new window.kakao.maps.Marker({
-          map: map,
-          position: new window.kakao.maps.LatLng(cctv.location.lat, cctv.location.lng) // 마커의 위치
-        });
-      });
-    }
-  }, [map, cctvData]);
+const InsideMap = ({ positions }) => {
 
   return (
     <>
-        {cctvData.map((cctv, index) => (
-            <MapMarker 
-                key={index}
-                position={{ lat: cctv.latitude, lng: cctv.longitude }}
+        {positions.map((position) => (
+            <MapMarker
+                key={position.cctvId}
+                position={{lat: position.latitude, lng: position.longitude}}
+                onClick={() => {
+                    console.log("click");
+                }}
             />
         ))}
     </>
-);
+)
 };
 
 export default InsideMap;
