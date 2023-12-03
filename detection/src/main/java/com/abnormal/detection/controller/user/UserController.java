@@ -4,16 +4,19 @@ package com.abnormal.detection.controller.user;
 import com.abnormal.detection.domain.user.*;
 import com.abnormal.detection.service.user.UserService;
 import io.micrometer.common.util.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/users")
+@PreAuthorize("isAuthenticated()")
 public class UserController {
     private final UserService userService;
 
@@ -41,6 +44,23 @@ public class UserController {
         log.info(token);
         return ResponseEntity.ok().body(token);
     }
+
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        userService.logout(request);
+        return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
+    }
+
+    /*
+    @DeleteMapping("/me")
+    public ResponseEntity<String> deleteMember(HttpServletRequest request) {
+        memberService.logout(request);
+        memberService.deleteMember();
+        return new ResponseEntity<>("회원 탈퇴 성공", HttpStatus.OK);
+    }
+
+     */
+
 
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshAccessToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {

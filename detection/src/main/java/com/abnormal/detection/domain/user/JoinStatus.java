@@ -2,6 +2,7 @@ package com.abnormal.detection.domain.user;
 
 import org.springframework.http.HttpStatus;
 
+//회원가입,로그인
 public enum JoinStatus {
     SUCCESS(1, "회원가입 성공", HttpStatus.CREATED),
     DUPLICATE(2, "이미 존재하는 아이디 입니다.", HttpStatus.BAD_REQUEST),

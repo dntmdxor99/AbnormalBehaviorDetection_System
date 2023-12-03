@@ -19,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
+//회원가입,로그인
 @RequiredArgsConstructor
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
@@ -42,6 +43,20 @@ public class JwtFilter extends OncePerRequestFilter {
         // Token 꺼내기
         String token = authorization.split(" ")[1];
         log.info(token);
+
+        // Token 검증
+        if (!JwtUtil.isTokenValid(token, secretKey)) {
+            log.error("유효하지 않은 토큰입니다.");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // 블랙리스트에 있는 토큰인지 확인
+        if (JwtUtil.isTokenBlacklisted(token)) {
+            log.error("블랙리스트에 등록된 토큰입니다.");
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // Token Expiration 체크
         if (JwtUtil.isExpired(token, secretKey)) {

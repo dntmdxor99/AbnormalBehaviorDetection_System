@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+//회원가입,로그인
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

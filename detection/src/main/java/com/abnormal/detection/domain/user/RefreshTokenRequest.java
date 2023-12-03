@@ -1,5 +1,6 @@
 package com.abnormal.detection.domain.user;
 
+//RefreshToken
 public class RefreshTokenRequest {
     private String refreshToken;
 

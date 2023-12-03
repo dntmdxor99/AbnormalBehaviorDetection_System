@@ -1,5 +1,7 @@
 package com.abnormal.detection.domain.user;
 
+
+//RefreshToken
 public class AccessTokenResponse {
     private String accessToken;
 

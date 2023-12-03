@@ -120,6 +120,24 @@ public class UserService {
         return LoginStatus.SUCCESS;
     }
 
+    /**
+     * 로그아웃
+     */
+    public void logout(HttpServletRequest request) {
+        // 클라이언트 측에서 토큰을 삭제하거나 무효화하는 로직 추가
+        // 여기서는 클라이언트 측에서 토큰을 삭제하는 방법으로 가정
+
+        // 로그아웃한 토큰을 블랙리스트에 추가
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String token = authorizationHeader.substring(7);
+            JwtUtil.blacklistToken(token);
+            log.info("토큰 블랙리스트에 추가: {}", token);
+        }
+
+        // 다른 로그아웃 관련 로직 추가 가능
+    }
+
 
     private void validateDuplicateMember(User user) {
         // 이미 존재하는 사용자인지 확인

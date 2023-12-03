@@ -2,6 +2,7 @@ package com.abnormal.detection.domain.user;
 
 import org.springframework.http.HttpStatus;
 
+//회원가입,로그인
 public enum LoginStatus {
     SUCCESS(1, "로그인 성공", HttpStatus.CREATED),
     FAIL(2, "아이디 또는 비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
