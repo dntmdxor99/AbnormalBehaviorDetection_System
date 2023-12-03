@@ -35,6 +35,6 @@ class Classification(nn.Module):
             x = self.dropout(x)
 
         x = self.fc(x)
-        x = self.softmax(x)
+        # x = self.softmax(x)
 
         return x
