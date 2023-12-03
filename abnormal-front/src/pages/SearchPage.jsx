@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Map } from "react-kakao-maps-sdk";
 import { MapMarker } from "react-kakao-maps-sdk";
@@ -34,40 +35,30 @@ const Rectangle = styled.div`
   z-index: 2;
 `;
 
-const SelectCCTV = styled.p`
+const Box = styled.div`
   margin-top: 80px;
-  margin-left: 35px;
+  margin-left: 50px;
+`;
+
+const Types = styled.p`
   font-size: 25px;
   font-style: normal;
   font-weight: 700;
+  margin-bottom: 40px;
 `;
 
-const SelectCCtvContents = styled.p`
-  margin-left: 35px;
+const Contents = styled.p`
+  margin-top: 15px;
+  margin-left: 10px;
   font-size: 20px;
   font-style: normal;
   font-weight: 500;
   line-height: 0.5;
 `;
 
-const SearchSettings = styled.p`
-  margin-top: 65px;
-  margin-left: 35px;
-  font-size: 25px;
-  font-style: normal;
-  font-weight: 700;
-`;
-
-const SearchSettingsContents = styled.p`
-  margin-left: 45px;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 0.3;
-`;
-
 const RadioButtonGroup = styled.div`
-  margin-left: 40px;
+  margin-bottom: 20px;
+  margin-left:10px;
   font-size: 15px;
   font-style: normal;
   font-weight: 400;
@@ -92,7 +83,6 @@ function SearchPage() {
     protocol: "",
     videoSize: "",
   });
-
 
   useEffect(() => {
     //console.log("ooooooooooooooooooooooo");
@@ -124,7 +114,7 @@ function SearchPage() {
   useEffect(() => {
     console.log("oooooooooo111111112");
     console.log(positions);
-  }, []);
+  }, [positions]);
 
   // const [markerPosition, setMarkerPosition] = useState(); // 클릭한 위치를 저장할 상태
   // const onMapClick = (event) => {
@@ -138,22 +128,38 @@ function SearchPage() {
           <div className="search-main">
             <MapContainer>
               <Rectangle>
-                <SelectCCTV>선택된 CCTV</SelectCCTV>
-                <SelectCCtvContents>ID</SelectCCtvContents>
-                <SelectCCtvContents>위치</SelectCCtvContents>
-                <SearchSettings>검색설정</SearchSettings>
-                <SearchSettingsContents>검색 기간</SearchSettingsContents>
-                <RadioButtonGroup>
-                  <RadioButton>
-                    <input type="radio" name="searchPeriod" value="real-time" />
-                    실시간
-                  </RadioButton>
-                  <RadioButton>
-                    <input type="radio" name="searchPeriod" value="set-time" />
-                    구간 설정
-                  </RadioButton>
-                </RadioButtonGroup>
-                <SearchSettingsContents>이상행동 선택</SearchSettingsContents>
+                <Box>
+                <Types>
+                  선택된 CCTV
+                  <Contents>ID</Contents>
+                  <Contents>위치</Contents>
+                </Types>
+
+                <Types>
+                  검색설정
+                  <Contents>검색 기간</Contents>
+                  <RadioButtonGroup>
+                    <RadioButton>
+                      <input
+                        type="radio"
+                        name="searchPeriod"
+                        value="real-time"
+                      />
+                      실시간
+                    </RadioButton>
+                    <RadioButton>
+                      <input
+                        type="radio"
+                        name="searchPeriod"
+                        value="set-time"
+                      />
+                      구간 설정
+                    </RadioButton>
+                  </RadioButtonGroup>
+                  <Contents>이상행동 선택</Contents>
+                </Types>
+                </Box>
+                <Link to="/result">Result Page로 이동</Link>
               </Rectangle>
               <Map
                 center={userPosition}
