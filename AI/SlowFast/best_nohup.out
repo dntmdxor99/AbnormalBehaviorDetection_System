@@ -1,0 +1,209 @@
+Fusing layers... 
+YOLOv5m summary: 290 layers, 21172173 parameters, 0 gradients
+epochs : 104, iterations : 100000, len(trainDataset) : 957
+epoch : 0
+[Train] total loss : 3593.7292, avgloss :  3.7552, lr : 0.01, training time : 245.32 sec
+[Val] top1 acc:  49.66%, top3 acc:  98.97%, best top 1 epoch: 0, best top 3 epoch: 0, evaluating time : 74.99 sec
+
+epoch : 1
+[Train] total loss : 1988.6206, avgloss :  2.0780, lr : 0.00999999999777934, training time : 255.38 sec
+[Val] top1 acc:  10.69%, top3 acc:  96.55%, best top 1 epoch: 0, best top 3 epoch: 0, evaluating time : 75.40 sec
+
+epoch : 2
+[Train] total loss : 1753.4385, avgloss :  1.8322, lr : 0.009999999991117357, training time : 252.75 sec
+[Val] top1 acc:  6.55%, top3 acc:  44.83%, best top 1 epoch: 0, best top 3 epoch: 0, evaluating time : 75.03 sec
+
+epoch : 3
+[Train] total loss : 1540.5681, avgloss :  1.6098, lr : 0.009999999980014052, training time : 257.95 sec
+[Val] top1 acc:  39.31%, top3 acc:  52.41%, best top 1 epoch: 0, best top 3 epoch: 0, evaluating time : 75.63 sec
+
+epoch : 4
+[Train] total loss : 1468.6321, avgloss :  1.5346, lr : 0.009999999964469423, training time : 253.52 sec
+[Val] top1 acc:  47.93%, top3 acc:  95.52%, best top 1 epoch: 0, best top 3 epoch: 0, evaluating time : 75.91 sec
+
+epoch : 5
+[Train] total loss : 1225.5001, avgloss :  1.2806, lr : 0.009999999944483473, training time : 253.12 sec
+[Val] top1 acc:  6.55%, top3 acc:  85.52%, best top 1 epoch: 0, best top 3 epoch: 0, evaluating time : 74.92 sec
+
+epoch : 6
+[Train] total loss : 1146.6602, avgloss :  1.1982, lr : 0.009999999920056204, training time : 252.87 sec
+[Val] top1 acc:  64.48%, top3 acc:  90.00%, best top 1 epoch: 6, best top 3 epoch: 0, evaluating time : 76.40 sec
+
+epoch : 7
+[Train] total loss : 1120.8816, avgloss :  1.1712, lr : 0.009999999891187612, training time : 249.26 sec
+[Val] top1 acc:  71.72%, top3 acc:  91.38%, best top 1 epoch: 7, best top 3 epoch: 0, evaluating time : 74.30 sec
+
+epoch : 8
+[Train] total loss : 1025.3726, avgloss :  1.0714, lr : 0.009999999857877698, training time : 245.42 sec
+[Val] top1 acc:  41.03%, top3 acc:  85.52%, best top 1 epoch: 7, best top 3 epoch: 0, evaluating time : 72.96 sec
+
+epoch : 9
+[Train] total loss : 934.4901, avgloss :  0.9765, lr : 0.009999999820126459, training time : 248.54 sec
+[Val] top1 acc:  81.38%, top3 acc:  92.41%, best top 1 epoch: 9, best top 3 epoch: 0, evaluating time : 74.66 sec
+
+epoch : 10
+[Train] total loss : 904.3288, avgloss :  0.9450, lr : 0.0099999997779339, training time : 247.76 sec
+[Val] top1 acc:  84.48%, top3 acc:  89.31%, best top 1 epoch: 10, best top 3 epoch: 0, evaluating time : 75.02 sec
+
+epoch : 11
+[Train] total loss : 825.9467, avgloss :  0.8631, lr : 0.00999999973130002, training time : 246.56 sec
+[Val] top1 acc:  85.52%, top3 acc:  96.90%, best top 1 epoch: 11, best top 3 epoch: 0, evaluating time : 74.14 sec
+
+epoch : 12
+[Train] total loss : 771.0420, avgloss :  0.8057, lr : 0.009999999680224816, training time : 245.59 sec
+[Val] top1 acc:  83.45%, top3 acc:  91.72%, best top 1 epoch: 11, best top 3 epoch: 0, evaluating time : 71.65 sec
+
+epoch : 13
+[Train] total loss : 716.2833, avgloss :  0.7485, lr : 0.009999999624708291, training time : 245.53 sec
+[Val] top1 acc:  84.48%, top3 acc:  92.07%, best top 1 epoch: 11, best top 3 epoch: 0, evaluating time : 71.79 sec
+
+epoch : 14
+[Train] total loss : 1118.8634, avgloss :  1.1691, lr : 0.009999999564750443, training time : 243.84 sec
+[Val] top1 acc:  60.69%, top3 acc:  88.97%, best top 1 epoch: 11, best top 3 epoch: 0, evaluating time : 71.42 sec
+
+epoch : 15
+[Train] total loss : 908.3986, avgloss :  0.9492, lr : 0.009999999500351277, training time : 244.59 sec
+[Val] top1 acc:  69.31%, top3 acc:  90.00%, best top 1 epoch: 11, best top 3 epoch: 0, evaluating time : 71.41 sec
+
+epoch : 16
+[Train] total loss : 772.6011, avgloss :  0.8073, lr : 0.009999999431510788, training time : 244.64 sec
+[Val] top1 acc:  53.45%, top3 acc:  84.48%, best top 1 epoch: 11, best top 3 epoch: 0, evaluating time : 72.01 sec
+
+epoch : 17
+[Train] total loss : 750.2664, avgloss :  0.7840, lr : 0.009999999358228977, training time : 242.25 sec
+[Val] top1 acc:  74.14%, top3 acc:  90.69%, best top 1 epoch: 11, best top 3 epoch: 0, evaluating time : 71.99 sec
+
+epoch : 18
+[Train] total loss : 702.3498, avgloss :  0.7339, lr : 0.009999999280505843, training time : 244.31 sec
+[Val] top1 acc:  79.66%, top3 acc:  90.69%, best top 1 epoch: 11, best top 3 epoch: 0, evaluating time : 71.55 sec
+
+epoch : 19
+[Train] total loss : 613.0532, avgloss :  0.6406, lr : 0.009999999198341391, training time : 243.55 sec
+[Val] top1 acc:  75.17%, top3 acc:  92.07%, best top 1 epoch: 11, best top 3 epoch: 0, evaluating time : 71.75 sec
+
+epoch : 20
+[Train] total loss : 555.0050, avgloss :  0.5799, lr : 0.009999999111735616, training time : 242.56 sec
+[Val] top1 acc:  18.62%, top3 acc:  65.17%, best top 1 epoch: 11, best top 3 epoch: 0, evaluating time : 71.71 sec
+
+epoch : 21
+[Train] total loss : 535.4329, avgloss :  0.5595, lr : 0.00999999902068852, training time : 244.61 sec
+[Val] top1 acc:  60.00%, top3 acc:  80.34%, best top 1 epoch: 11, best top 3 epoch: 0, evaluating time : 71.93 sec
+
+epoch : 22
+[Train] total loss : 521.1484, avgloss :  0.5446, lr : 0.009999998925200104, training time : 243.28 sec
+[Val] top1 acc:  80.00%, top3 acc:  94.14%, best top 1 epoch: 11, best top 3 epoch: 0, evaluating time : 72.04 sec
+
+epoch : 23
+[Train] total loss : 518.4213, avgloss :  0.5417, lr : 0.009999998825270365, training time : 241.76 sec
+[Val] top1 acc:  83.45%, top3 acc:  95.52%, best top 1 epoch: 11, best top 3 epoch: 0, evaluating time : 72.17 sec
+
+epoch : 24
+[Train] total loss : 443.7641, avgloss :  0.4637, lr : 0.009999998720899309, training time : 242.00 sec
+[Val] top1 acc:  73.45%, top3 acc:  95.17%, best top 1 epoch: 11, best top 3 epoch: 0, evaluating time : 71.93 sec
+
+epoch : 25
+[Train] total loss : 442.9438, avgloss :  0.4628, lr : 0.00999999861208693, training time : 243.00 sec
+[Val] top1 acc:  85.17%, top3 acc:  95.52%, best top 1 epoch: 11, best top 3 epoch: 0, evaluating time : 71.53 sec
+
+epoch : 26
+[Train] total loss : 437.9128, avgloss :  0.4576, lr : 0.009999998498833231, training time : 241.35 sec
+[Val] top1 acc:  79.66%, top3 acc:  95.86%, best top 1 epoch: 11, best top 3 epoch: 0, evaluating time : 72.09 sec
+
+epoch : 27
+[Train] total loss : 426.3850, avgloss :  0.4455, lr : 0.00999999838113821, training time : 241.34 sec
+[Val] top1 acc:  86.90%, top3 acc:  96.55%, best top 1 epoch: 27, best top 3 epoch: 0, evaluating time : 72.32 sec
+
+epoch : 28
+[Train] total loss : 396.3482, avgloss :  0.4142, lr : 0.009999998259001872, training time : 241.23 sec
+[Val] top1 acc:  88.28%, top3 acc:  89.66%, best top 1 epoch: 28, best top 3 epoch: 0, evaluating time : 72.87 sec
+
+epoch : 29
+[Train] total loss : 357.8328, avgloss :  0.3739, lr : 0.00999999813242421, training time : 243.44 sec
+[Val] top1 acc:  88.62%, top3 acc:  92.41%, best top 1 epoch: 29, best top 3 epoch: 0, evaluating time : 73.61 sec
+
+epoch : 30
+[Train] total loss : 343.5882, avgloss :  0.3590, lr : 0.00999999800140523, training time : 244.25 sec
+[Val] top1 acc:  71.38%, top3 acc:  92.76%, best top 1 epoch: 29, best top 3 epoch: 0, evaluating time : 72.93 sec
+
+epoch : 31
+[Train] total loss : 291.7934, avgloss :  0.3049, lr : 0.00999999786594493, training time : 242.36 sec
+[Val] top1 acc:  58.28%, top3 acc:  91.38%, best top 1 epoch: 29, best top 3 epoch: 0, evaluating time : 71.80 sec
+
+epoch : 32
+[Train] total loss : 558.0299, avgloss :  0.5831, lr : 0.009999997726043309, training time : 242.88 sec
+[Val] top1 acc:  83.45%, top3 acc:  94.48%, best top 1 epoch: 29, best top 3 epoch: 0, evaluating time : 71.85 sec
+
+epoch : 33
+[Train] total loss : 357.1691, avgloss :  0.3732, lr : 0.009999997581700368, training time : 242.87 sec
+[Val] top1 acc:  70.34%, top3 acc:  94.14%, best top 1 epoch: 29, best top 3 epoch: 0, evaluating time : 71.89 sec
+
+epoch : 34
+[Train] total loss : 236.4857, avgloss :  0.2471, lr : 0.00999999743291611, training time : 244.64 sec
+[Val] top1 acc:  71.38%, top3 acc:  94.83%, best top 1 epoch: 29, best top 3 epoch: 0, evaluating time : 71.91 sec
+
+epoch : 35
+[Train] total loss : 380.1122, avgloss :  0.3972, lr : 0.009999997279690528, training time : 243.97 sec
+[Val] top1 acc:  84.48%, top3 acc:  92.07%, best top 1 epoch: 29, best top 3 epoch: 0, evaluating time : 72.05 sec
+
+epoch : 36
+[Train] total loss : 267.5272, avgloss :  0.2795, lr : 0.009999997122023627, training time : 240.79 sec
+[Val] top1 acc:  84.14%, top3 acc:  93.45%, best top 1 epoch: 29, best top 3 epoch: 0, evaluating time : 71.49 sec
+
+epoch : 37
+[Train] total loss : 298.3679, avgloss :  0.3118, lr : 0.009999996959915412, training time : 240.71 sec
+[Val] top1 acc:  87.24%, top3 acc:  94.14%, best top 1 epoch: 29, best top 3 epoch: 0, evaluating time : 71.05 sec
+
+epoch : 38
+[Train] total loss : 266.3837, avgloss :  0.2784, lr : 0.009999996793365874, training time : 240.23 sec
+[Val] top1 acc:  88.97%, top3 acc:  94.48%, best top 1 epoch: 38, best top 3 epoch: 0, evaluating time : 72.56 sec
+
+epoch : 39
+[Train] total loss : 204.6938, avgloss :  0.2139, lr : 0.009999996622375017, training time : 243.55 sec
+[Val] top1 acc:  82.76%, top3 acc:  92.07%, best top 1 epoch: 38, best top 3 epoch: 0, evaluating time : 71.43 sec
+
+epoch : 40
+[Train] total loss : 338.0738, avgloss :  0.3533, lr : 0.009999996446942844, training time : 242.04 sec
+[Val] top1 acc:  88.28%, top3 acc:  97.24%, best top 1 epoch: 38, best top 3 epoch: 0, evaluating time : 71.65 sec
+
+epoch : 41
+[Train] total loss : 339.0510, avgloss :  0.3543, lr : 0.00999999626706935, training time : 243.78 sec
+[Val] top1 acc:  88.97%, top3 acc:  97.24%, best top 1 epoch: 38, best top 3 epoch: 0, evaluating time : 71.75 sec
+
+epoch : 42
+[Train] total loss : 223.8716, avgloss :  0.2339, lr : 0.00999999608275454, training time : 244.30 sec
+[Val] top1 acc:  88.97%, top3 acc:  96.21%, best top 1 epoch: 38, best top 3 epoch: 0, evaluating time : 71.72 sec
+
+epoch : 43
+[Train] total loss : 269.8691, avgloss :  0.2820, lr : 0.009999995893998411, training time : 243.23 sec
+[Val] top1 acc:  88.28%, top3 acc:  96.90%, best top 1 epoch: 38, best top 3 epoch: 0, evaluating time : 71.22 sec
+
+epoch : 44
+[Train] total loss : 207.6382, avgloss :  0.2170, lr : 0.009999995700800964, training time : 242.28 sec
+[Val] top1 acc:  87.59%, top3 acc:  93.79%, best top 1 epoch: 38, best top 3 epoch: 0, evaluating time : 71.25 sec
+
+epoch : 45
+[Train] total loss : 332.4297, avgloss :  0.3474, lr : 0.0099999955031622, training time : 242.20 sec
+[Val] top1 acc:  83.10%, top3 acc:  98.28%, best top 1 epoch: 38, best top 3 epoch: 0, evaluating time : 71.79 sec
+
+epoch : 46
+[Train] total loss : 224.7074, avgloss :  0.2348, lr : 0.009999995301082119, training time : 244.38 sec
+[Val] top1 acc:  88.62%, top3 acc:  98.28%, best top 1 epoch: 38, best top 3 epoch: 0, evaluating time : 72.85 sec
+
+epoch : 47
+[Train] total loss : 218.1706, avgloss :  0.2280, lr : 0.009999995094560718, training time : 242.98 sec
+[Val] top1 acc:  88.62%, top3 acc:  97.93%, best top 1 epoch: 38, best top 3 epoch: 0, evaluating time : 72.04 sec
+
+epoch : 48
+[Train] total loss : 229.4158, avgloss :  0.2397, lr : 0.009999994883598002, training time : 240.08 sec
+[Val] top1 acc:  88.28%, top3 acc:  93.79%, best top 1 epoch: 38, best top 3 epoch: 0, evaluating time : 71.99 sec
+
+epoch : 49
+[Train] total loss : 206.2902, avgloss :  0.2156, lr : 0.009999994668193967, training time : 249.84 sec
+[Val] top1 acc:  88.62%, top3 acc:  98.62%, best top 1 epoch: 38, best top 3 epoch: 0, evaluating time : 75.17 sec
+
+epoch : 50
+[Train] total loss : 140.3594, avgloss :  0.1467, lr : 0.009999994448348617, training time : 252.21 sec
+[Val] top1 acc:  88.62%, top3 acc:  96.90%, best top 1 epoch: 38, best top 3 epoch: 0, evaluating time : 75.48 sec
+
+epoch : 51
+[Train] total loss : 167.6466, avgloss :  0.1752, lr : 0.009999994224061951, training time : 262.50 sec
