@@ -49,7 +49,6 @@ const Types = styled.p`
 
 const Contents = styled.p`
   margin-top: 15px;
-  margin-left: 10px;
   font-size: 20px;
   font-style: normal;
   font-weight: 500;
@@ -58,7 +57,7 @@ const Contents = styled.p`
 
 const RadioButtonGroup = styled.div`
   margin-bottom: 20px;
-  margin-left:10px;
+  margin-left: 10px;
   font-size: 15px;
   font-style: normal;
   font-weight: 400;
@@ -85,26 +84,17 @@ function SearchPage() {
   });
 
   useEffect(() => {
-    //console.log("ooooooooooooooooooooooo");
     const fetchData = async () => {
       try {
-        //세아두번호출됨 refactoring해야함
         const response = await API.get("/cctvs/allCctv");
-        console.log("ooooooooooooooooooooooo1");
-
-        //console.log(response);
         if (response.status === 200) {
           const data = response.data;
-          console.log("ooooooooooooooooooooooo2");
           console.log(data);
           setPositions(data);
-          // console.log("oooooooooo111111112");
-          // console.log(positions);
         } else {
           console.error("API 호출 실패");
         }
       } catch (error) {
-        console.log("에러부분임-----------------");
         console.error("CCTV 데이터를 받아오는데 실패했습니다.", error);
       }
     };
@@ -112,14 +102,8 @@ function SearchPage() {
   }, []);
 
   useEffect(() => {
-    console.log("oooooooooo111111112");
     console.log(positions);
   }, [positions]);
-
-  // const [markerPosition, setMarkerPosition] = useState(); // 클릭한 위치를 저장할 상태
-  // const onMapClick = (event) => {
-  //   console.log(event); // 이벤트 객체 구조 확인
-  // };
 
   return (
     <PageLayout>
@@ -129,35 +113,35 @@ function SearchPage() {
             <MapContainer>
               <Rectangle>
                 <Box>
-                <Types>
-                  선택된 CCTV
-                  <Contents>ID</Contents>
-                  <Contents>위치</Contents>
-                </Types>
+                  <Types>
+                    선택된 CCTV
+                    <Contents>ID</Contents>
+                    <Contents>위치</Contents>
+                  </Types>
 
-                <Types>
-                  검색설정
-                  <Contents>검색 기간</Contents>
-                  <RadioButtonGroup>
-                    <RadioButton>
-                      <input
-                        type="radio"
-                        name="searchPeriod"
-                        value="real-time"
-                      />
-                      실시간
-                    </RadioButton>
-                    <RadioButton>
-                      <input
-                        type="radio"
-                        name="searchPeriod"
-                        value="set-time"
-                      />
-                      구간 설정
-                    </RadioButton>
-                  </RadioButtonGroup>
-                  <Contents>이상행동 선택</Contents>
-                </Types>
+                  <Types>
+                    검색설정
+                    <Contents>검색 기간</Contents>
+                    <RadioButtonGroup>
+                      <RadioButton>
+                        <input
+                          type="radio"
+                          name="searchPeriod"
+                          value="real-time"
+                        />
+                        실시간
+                      </RadioButton>
+                      <RadioButton>
+                        <input
+                          type="radio"
+                          name="searchPeriod"
+                          value="set-time"
+                        />
+                        구간 설정
+                      </RadioButton>
+                    </RadioButtonGroup>
+                    <Contents>이상행동 선택</Contents>
+                  </Types>
                 </Box>
                 <Link to="/result">Result Page로 이동</Link>
               </Rectangle>
@@ -172,8 +156,6 @@ function SearchPage() {
                   console.log(event);
                 }}
               >
-                {/* {markerPosition && <MapMarker position={markerPosition} />}{" "}
-                markerPosition이 있을 때만 Marker 컴포넌트를 렌더링 */}
                 <InsideMap cctvData={cctvData} />
               </Map>
             </MapContainer>
