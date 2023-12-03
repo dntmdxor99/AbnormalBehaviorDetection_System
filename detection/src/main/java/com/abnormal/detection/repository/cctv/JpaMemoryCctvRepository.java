@@ -33,18 +33,18 @@ public class JpaMemoryCctvRepository implements CctvRepository {
     private Float latitude;// 위도
     private Float longitude;// 경도
     private Boolean is360Degree;//true,f로 초기화
-    private String protocol;
+    private String channel;
     private String videoSize;
  */
     private final JpaCctvRepositoryLegend jpaCctvRepositoryLegend;
-    public Cctv makeCctv(String cctvName, String location, Float latitude, Float longitude, Boolean is360Degree,String protocol, String videoSize){
+    public Cctv makeCctv(String cctvName, String location, Float latitude, Float longitude, Boolean is360Degree,String channel, String videoSize){
         Cctv cctv = new Cctv();
         cctv.setCctvName(cctvName);
         cctv.setLocation(location);//주소값
         cctv.setLatitude(latitude);//위도
         cctv.setLongitude(longitude);//경도
         cctv.setIs360Degree(is360Degree);
-        cctv.setProtocol(protocol);
+        cctv.setChannel(channel);//cctvip
         cctv.setVideoSize(videoSize);
 
         return cctv;
@@ -55,7 +55,7 @@ public class JpaMemoryCctvRepository implements CctvRepository {
         try {
             List<Cctv> cctvs = new ArrayList<>();
             cctvs.add(makeCctv("우경정보길", "대구광역시 북구 대현로15길 17", (float)128.608639, (float)35.8845360, Boolean.TRUE, "35.884216f", "1920x1080"));
-            cctvs.add(makeCctv("끝돈", "대구광역시 북구 대학로23길 5", (float)128.611282, (float)35.8947285,Boolean.TRUE, "35.884216f", "1920x1080"));
+            cctvs.add(makeCctv("끝돈", "대구광역시 북구 대학로23길 5", (float)128.611282, (float)35.8947285,Boolean.TRUE, "127.33.44.5", "1920x1080"));
             for (Cctv cctv : cctvs) {
                 jpaCctvRepositoryLegend.createCctv(cctv);
                 log.info("Cctv inserted: {}", cctv.getCctvName());
@@ -129,7 +129,7 @@ public class JpaMemoryCctvRepository implements CctvRepository {
             existingCctv.setLatitude(updatedCctv.getLatitude());
             existingCctv.setLongitude(updatedCctv.getLongitude());
             existingCctv.setIs360Degree(updatedCctv.getIs360Degree());
-            existingCctv.setProtocol(updatedCctv.getProtocol());
+            existingCctv.setChannel(updatedCctv.getChannel());
             existingCctv.setVideoSize(updatedCctv.getVideoSize());
         }
         return existingCctv;
@@ -151,14 +151,14 @@ public class JpaMemoryCctvRepository implements CctvRepository {
     }
 
     @Override
-    public List<Cctv> filterCctvsByCriteria(String location, Boolean is360Degree, String protocol) {
+    public List<Cctv> filterCctvsByCriteria(String location, Boolean is360Degree, String channel) {
         String query = "SELECT c FROM Cctv c WHERE (:location IS NULL OR c.location = :location) " +
                 "AND (:is360Degree IS NULL OR c.is360Degree = :is360Degree) " +
-                "AND (:protocol IS NULL OR c.protocol = :protocol)";
+                "AND (:channel IS NULL OR c.channel = :channel)";
         return entityManager.createQuery(query, Cctv.class)
                 .setParameter("location", location)
                 .setParameter("is360Degree", is360Degree)
-                .setParameter("protocol", protocol)
+                .setParameter("channel", channel)
                 .getResultList();
     }
 
@@ -197,17 +197,17 @@ public class JpaMemoryCctvRepository implements CctvRepository {
 
  */
     @Override
-    public List<Cctv> searchCctvsByOptions(String cctvName, String location, Boolean is360Degree, String protocol) {
+    public List<Cctv> searchCctvsByOptions(String cctvName, String location, Boolean is360Degree, String channel) {
         String query = "SELECT c FROM Cctv c " +
                 "WHERE (COALESCE(:cctvName, '') = '' OR LOWER(c.cctvName) LIKE LOWER(CONCAT('%', :cctvName, '%'))) " +
                 "AND (COALESCE(:location, '') = '' OR LOWER(c.location) LIKE LOWER(CONCAT('%', :location, '%'))) " +
                 "AND (:is360Degree IS NULL OR c.is360Degree = :is360Degree) " +
-                "AND (COALESCE(:protocol, '') = '' OR LOWER(c.protocol) LIKE LOWER(CONCAT('%', :protocol, '%')))";
+                "AND (COALESCE(:channel, '') = '' OR LOWER(c.channel) LIKE LOWER(CONCAT('%', :channel, '%')))";
         return entityManager.createQuery(query, Cctv.class)
                 .setParameter("cctvName", cctvName)
                 .setParameter("location", location)
                 .setParameter("is360Degree", is360Degree)
-                .setParameter("protocol", protocol)
+                .setParameter("channel", channel)
                 .getResultList();
     }
 

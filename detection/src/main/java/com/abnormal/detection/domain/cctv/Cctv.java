@@ -22,7 +22,7 @@ public class Cctv {
     private Float latitude;// 위도
     private Float longitude;// 경도
     private Boolean is360Degree;//true,f로 초기화
-    private String protocol;
+    private String channel;//protocol->채널
     private String videoSize;
 
     public Cctv() {

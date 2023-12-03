@@ -30,7 +30,7 @@ public interface CctvRepository{
     List<Cctv> getCctvByName(String cctvName);
 
     // 특정 조건에 따른 CCTV 필터링
-    List<Cctv> filterCctvsByCriteria(String location, Boolean is360Degree, String protocol);
+    List<Cctv> filterCctvsByCriteria(String location, Boolean is360Degree, String channel);
 
     // 페이징 및 정렬
     List<Cctv> getCctvsWithPagination(int page, int pageSize, String sortBy);
@@ -39,6 +39,6 @@ public interface CctvRepository{
     int countAllCctvs();
 
     // 다양한 검색 옵션
-    List<Cctv> searchCctvsByOptions(String cctvName, String location, Boolean is360Degree, String protocol);
+    List<Cctv> searchCctvsByOptions(String cctvName, String location, Boolean is360Degree, String channel);
 }
 

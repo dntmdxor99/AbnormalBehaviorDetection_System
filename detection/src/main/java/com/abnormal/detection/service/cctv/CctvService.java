@@ -67,8 +67,8 @@ public class CctvService {
         return cctvRepository.getCctvByName(cctvName);
     }
 
-    public List<Cctv> filterCctvsByCriteria(String location, Boolean is360Degree, String protocol) {
-        return cctvRepository.filterCctvsByCriteria(location, is360Degree, protocol);
+    public List<Cctv> filterCctvsByCriteria(String location, Boolean is360Degree, String channel) {
+        return cctvRepository.filterCctvsByCriteria(location, is360Degree, channel);
     }
 
     public List<Cctv> getCctvsWithPagination(int page, int pageSize, String sortBy) {
@@ -79,8 +79,8 @@ public class CctvService {
         return cctvRepository.countAllCctvs();
     }
 
-    public List<Cctv> searchCctvsByOptions(String cctvName, String location, Boolean is360Degree, String protocol) {
-        return cctvRepository.searchCctvsByOptions(cctvName, location, is360Degree, protocol);
+    public List<Cctv> searchCctvsByOptions(String cctvName, String location, Boolean is360Degree, String channel) {
+        return cctvRepository.searchCctvsByOptions(cctvName, location, is360Degree, channel);
     }
 }
 

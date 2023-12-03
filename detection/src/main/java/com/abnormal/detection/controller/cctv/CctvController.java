@@ -3,6 +3,7 @@ package com.abnormal.detection.controller.cctv;
 import com.abnormal.detection.domain.cctv.Cctv;
 import com.abnormal.detection.service.cctv.CctvService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,16 @@ public class CctvController {
     @PostMapping("/create")
     public Cctv createCctv(@RequestBody Cctv cctv) {
         return cctvService.createCctv(cctv);
+    }
+
+    @DeleteMapping("/delete/{cctvId}")
+    public ResponseEntity<String> deleteCctv(@PathVariable Long cctvId) {
+        try {
+            cctvService.deleteCctv(cctvId);
+            return new ResponseEntity<>("Cctv with ID " + cctvId + " has been deleted successfully.", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error deleting Cctv with ID " + cctvId + ": " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/{cctvId}")
@@ -71,11 +82,13 @@ public class CctvController {
     public Cctv updateCctv(@PathVariable Long cctvId, @RequestBody Cctv updatedCctv) {
         return cctvService.updateCctv(cctvId, updatedCctv);
     }
-
+/*
     @DeleteMapping("/{cctvId}")
     public void deleteCctv(@PathVariable Long cctvId) {
         cctvService.deleteCctv(cctvId);
     }
+
+ */
 /*
     @PostMapping("/search")
     public List<Cctv> searchCctvs(
@@ -99,9 +112,9 @@ public class CctvController {
         String cctvName = searchRequest.get("cctvName");
         String location = searchRequest.get("location");
         Boolean is360Degree = Boolean.valueOf(searchRequest.get("is360Degree"));
-        String protocol = searchRequest.get("Protocol");
+        String channel = searchRequest.get("Channel");
 
-        return cctvService.searchCctvsByOptions(cctvName, location, is360Degree, protocol);
+        return cctvService.searchCctvsByOptions(cctvName, location, is360Degree, channel);
     }
 
 
@@ -109,9 +122,9 @@ public class CctvController {
     public List<Cctv> filterCctvs(
             @RequestParam(required = false) String location,
             @RequestParam(required = false) Boolean is360Degree,
-            @RequestParam(required = false) String protocol
+            @RequestParam(required = false) String channel
     ) {
-        return cctvService.filterCctvsByCriteria(location, is360Degree, protocol);
+        return cctvService.filterCctvsByCriteria(location, is360Degree, channel);
     }
 
     @GetMapping("/pagination")
