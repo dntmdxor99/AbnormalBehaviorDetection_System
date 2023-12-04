@@ -3,9 +3,10 @@ package com.abnormal.detection.repository.video;
 import com.abnormal.detection.domain.photo.Photo;
 import com.abnormal.detection.domain.video.Video;
 import jakarta.persistence.EntityManager;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public class JpaVideoRepository implements VideoRepository{
     private final EntityManager em;
 
