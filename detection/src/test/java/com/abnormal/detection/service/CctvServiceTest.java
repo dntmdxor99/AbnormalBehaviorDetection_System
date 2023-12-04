@@ -45,14 +45,14 @@ class CctvServiceTest {
         cctv1.setCctvName("Cctv1");
         cctv1.setLocation("Location1");
         cctv1.setIs360Degree(true);
-        cctv1.setProtocol("Protocol1");
+        cctv1.setChannel("Protocol1");
         cctvService.createCctv(cctv1);
 
         Cctv cctv2 = new Cctv();
         cctv2.setCctvName("Cctv2");
         cctv2.setLocation("Location2");
         cctv2.setIs360Degree(false);
-        cctv2.setProtocol("Protocol2");
+        cctv2.setChannel("Protocol2");
         cctvService.createCctv(cctv2);
     }
 
@@ -63,7 +63,7 @@ class CctvServiceTest {
         cctv.setCctvName("NewCctv");
         cctv.setLocation("NewLocation");
         cctv.setIs360Degree(true);
-        cctv.setProtocol("NewProtocol");
+        cctv.setChannel("NewProtocol");
 
         // When
         Cctv createdCctv = cctvService.createCctv(cctv);

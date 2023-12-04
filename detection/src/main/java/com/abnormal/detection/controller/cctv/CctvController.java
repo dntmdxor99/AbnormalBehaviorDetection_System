@@ -102,6 +102,7 @@ public class CctvController {
     }
 
  */
+
     @PostMapping("/name")
     public List<Cctv> searchCctvsByName(@RequestBody Map<String, String> requestBody) {
         String cctvName = requestBody.get("cctvName");

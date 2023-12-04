@@ -5,12 +5,14 @@ import com.abnormal.detection.domain.metadata.EntityType;
 import com.abnormal.detection.domain.metadata.MetaData;
 import com.abnormal.detection.domain.metadata.Quality;
 import jakarta.persistence.EntityManager;
+import org.springframework.stereotype.Repository;
 
 
 import java.util.Date;
 import java.util.List;
 
 
+@Repository
 public class JpaMetaDataRepository implements MetaDataRepository{
 
     private final EntityManager em;

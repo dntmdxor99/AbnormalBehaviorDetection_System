@@ -3,9 +3,11 @@ package com.abnormal.detection.repository.photo;
 import com.abnormal.detection.domain.metadata.MetaData;
 import com.abnormal.detection.domain.photo.Photo;
 import jakarta.persistence.EntityManager;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class JpaPhotoRepository implements PhotoRepository{
 
     private final EntityManager em;
