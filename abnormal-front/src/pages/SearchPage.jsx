@@ -12,7 +12,8 @@ import useUserPosition from "../hooks/useUserPosition";
 import useWindowSize from "../hooks/useWindowSize";
 import "../App.css";
 import cctvIdState from "../recoil/cctvIdState.js";
-import { useRecoilState } from "recoil";
+import abnormalBehaviorState from '../recoil/abnormalBehaviorState.js';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 const Frame = styled.div`
   width: 100vw;
@@ -75,15 +76,15 @@ const abnormalBehaviors = ["싸움", "폭행", "주취행동", "기절", "납치
 
 const SelectionButton = styled.div`
   display: inline-block;
-  padding: 10px 10px;
-  font-size: 15px;
+  padding: 15px 15px;
+  font-size: 16px;
   margin: 5px;
   background-color: ${(props) => (props.active ? "#3a3d92" : "#ffffff")};
   color: ${(props) => (props.active ? "#ffffff" : "#3a3d92")};
   transition: background-color 0.3s;
   text-decoration: none;
   border-radius: 5px;
-  border: 2px solid #3a3d92;
+  // border: 2px solid #3a3d92;
 
   &:hover {
     background-color: #3a3d92;
@@ -91,19 +92,26 @@ const SelectionButton = styled.div`
   }
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const NextButton = styled.div`
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 20px;
+  font-weight: 700;
+  background-color: #029D65;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 5px;
+}
+`;
+
 function SearchPage() {
-  const windowSize = useWindowSize();
-  const userPosition = useUserPosition();
-  const [activeStates, setActiveStates] = useState(
-    Array(abnormalBehaviors.length).fill(false)
-  );
-
-  const handleClick = (index) => {
-    const newActiveStates = [...activeStates];
-    newActiveStates[index] = !newActiveStates[index];
-    setActiveStates(newActiveStates);
-  };
-
   // const [cctvData, setCctvData] = useState([]);
   // [{
   //   cctvId: "",
@@ -125,6 +133,31 @@ function SearchPage() {
     "channel" : ""
 }
   */
+
+  const windowSize = useWindowSize();
+  const userPosition = useUserPosition();
+  const selectedCctvIds = useRecoilValue(cctvIdState);
+  const selectedCount = selectedCctvIds.length;
+  const [activeStates, setActiveStates] = useState(
+    Array(abnormalBehaviors.length).fill(false)
+  );
+  const setAbnormalBehavior = useSetRecoilState(abnormalBehaviorState);
+
+const handleClick = (index) => {
+  const newActiveStates = [...activeStates];
+  newActiveStates[index] = !newActiveStates[index];
+  setActiveStates(newActiveStates);
+
+  if (newActiveStates[index]) {
+    // If the behavior is selected, add it to the state
+    setAbnormalBehavior((prev) => [...prev, abnormalBehaviors[index]]);
+  } else {
+    // If the behavior is deselected, remove it from the state
+    setAbnormalBehavior((prev) =>
+      prev.filter((behavior) => behavior !== abnormalBehaviors[index])
+    );
+  }
+};
 
   const [positions, setPositions] = useState([]);
 
@@ -161,11 +194,9 @@ function SearchPage() {
               <Rectangle>
                 <Box>
                   <Types>
-                    선택된 CCTV
-                    <Contents>ID</Contents>
+                    선택된 CCTV | {selectedCount}개<Contents>ID</Contents>
                     <Contents>위치</Contents>
                   </Types>
-
                   <Types>
                     검색설정
                     <Contents>검색 기간</Contents>
@@ -189,7 +220,7 @@ function SearchPage() {
                     </RadioButtonGroup>
                     <Contents>
                       이상행동 선택
-                      <div>
+                      <div style={{ marginTop: "10px" }}>
                         {abnormalBehaviors.map((behavior, index) => (
                           <SelectionButton
                             key={index}
@@ -203,7 +234,11 @@ function SearchPage() {
                     </Contents>
                   </Types>
                 </Box>
-                <Link to="/result">Result Page로 이동</Link>
+                <ButtonContainer>
+                  <Link to="/result">
+                    <NextButton>검색 결과 보기</NextButton>
+                  </Link>
+                </ButtonContainer>
               </Rectangle>
               <Map
                 center={userPosition}

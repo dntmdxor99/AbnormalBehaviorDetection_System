@@ -1,5 +1,5 @@
 import { MapMarker } from "react-kakao-maps-sdk";
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useSetRecoilState, useRecoilValu, useRecoilState } from "recoil";
 import cctvIdState from "../recoil/cctvIdState";
 
@@ -16,17 +16,17 @@ const KakaoMarker = ({ cctvId, lat, lng }) => {
 
   const [isClicked, setIsClicked] = useState(false);
   const [cctvIdValue, setCctvIdValue] = useRecoilState(cctvIdState);
-  
+
   useEffect(() => {
     console.log(cctvIdValue);
   }, [cctvIdValue]);
 
   const handleMarkerClick = () => {
-      setIsClicked(!isClicked);
-      checkCctvIdState(cctvId);
+    setIsClicked(!isClicked);
+    checkCctvIdState(cctvId);
     //   console.log(cctvIdValue);
-    };
-    //   console.log("0000000000");
+  };
+  //   console.log("0000000000");
 
   const checkCctvIdState = (cctvId) => {
     let cctvIdValues = [...cctvIdValue];
