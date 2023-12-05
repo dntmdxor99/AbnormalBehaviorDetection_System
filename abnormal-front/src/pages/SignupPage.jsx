@@ -7,6 +7,7 @@ import { async } from 'q';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import API from "../utils/API.js";
+import { setSelectionRange } from '@testing-library/user-event/dist/utils/index.js';
 
 
 const SignupForm = styled.form`
@@ -30,19 +31,6 @@ const SignupForm = styled.form`
     box-sizing: border-box;
     width: 80%;
   }
-
-
-  button {
-    background-color: #000080;
-    color: #fff;
-    width: 440px;
-    height: 50px;
-    padding: 10px;
-    cursor: pointer;
-    border: none;
-    margin-top: 20px;
-  }
-
 
   .container {
     display: flex;
@@ -112,8 +100,21 @@ const AgreementContainer = styled.div`
   }
 `
 
+const SignUpButton = styled.button`
+  background-color: #000080;
+  color: #fff;
+  width: 440px;
+  height: 50px;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  margin-top: 20px;
+`;
+
+
 const SignUpPage = () => {
   const navigate = useNavigate();
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [inputValue, setInputValue] = useState({
     userNumber: "",
     employeeNumber: "",
@@ -159,7 +160,7 @@ const SignUpPage = () => {
       console.log("서버응답");
       console.log(response);
       
-      navigate('/')
+      navigate('/login')
     }
     catch (error) {
       console.error("서버와의 통신 중 오류 발생", error);
@@ -169,7 +170,7 @@ const SignUpPage = () => {
   return (
     <PageLayout>
         <CenteredContainer>
-            <h1 style={{fontSize: '40px', marginBottom: '25px', marginTop: '55px'}}>가입하기</h1>
+            <h1 style={{fontSize: '40px', marginBottom: '25px', marginTop: '55px', fontWeight: 'bold'}}>가입하기</h1>
             <SignupFormContainer>
                 <SignupForm onSubmit={handleSignUp}>
                   <label>사업자등록번호</label>
@@ -180,6 +181,7 @@ const SignUpPage = () => {
                       name='employeeNumber'
                       value={inputValue.employeeNumber}
                       onChange={(e) => inputChangeHandler(e, 'employeeNumber')}
+                      style={{ marginLeft: '-11px' }}
                     />
                     <button className='authentication-button' type='button'>인증</button>
                   </div>
@@ -233,13 +235,14 @@ const SignUpPage = () => {
                   />
 
                   <label>생년월일</label>
-                  <input 
-                    type='text' 
-                    placeholder='YYYY.MM.DD' 
-                    required 
-                    name='birthDate'
-                    value={inputValue.birthDate}
-                    onChange={(e) => inputChangeHandler(e, 'birthDate')}
+                  <DatePicker
+                    selected={selectedDate}
+                    onChange={(date) => setSelectedDate(date)}
+                    dateFormat='yyyy-MM-dd'
+                    placeholderText='"YYYY-MM-DD'
+                    required
+                    popperPlacement='right'
+                    showPopperArrow={false}
                   />
 
                   <label>이메일</label>
@@ -273,7 +276,7 @@ const SignUpPage = () => {
                     <label htmlFor='agree'>개인정보 수집 동의</label>
                   </AgreementContainer>
                  
-                  <button type='submit'>가입하기</button>
+                  <SignUpButton type='submit'>가입하기</SignUpButton>
                 </SignupForm>
             </SignupFormContainer>
         </CenteredContainer>

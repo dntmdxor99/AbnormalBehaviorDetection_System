@@ -4,6 +4,9 @@ import PageLayout from "../components/PageLayout.js";
 import styled, { useTheme } from "styled-components";
 import API from "../utils/API.js";
 import { useNavigate } from 'react-router-dom';
+import Modal from '../components/Modal.jsx';
+import axios from "axios";
+import { useAuth } from "../context/AuthContext.js";
 
 
 const LoginForm = styled.form`
@@ -14,8 +17,8 @@ const LoginForm = styled.form`
   input {
     margin-bottom: 40px;
     padding: 8px;
-    width: 400px;
-    height: 25px;
+    width: 420px;
+    height: 50px;
   }
 
   button {
@@ -45,11 +48,44 @@ const LoginFormContainer = styled.div`
 `;
 
 const LoginPage = () => {
+  const {login} = useAuth();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     id: '',
     password: '',
   });
+
+  
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+
+  useEffect( () => {
+    //checkLoginStatus();
+  })
+
+  
+  const checkLoginStatus = async () => {
+    const token = localStorage.getItem('login-token');
+
+    if (token) {
+      try {
+        const response = await API.get('/user/info', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        console.log('사용자 정보:', response.data);
+      } catch (error) {
+        console.error('오류발생');
+      }
+    }
+  };
+
 
   const inputChangeHandler = (e, name) => {
     const {value} = e.target;
@@ -59,6 +95,7 @@ const LoginPage = () => {
       [name]: value,
     }));
   };
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -75,12 +112,19 @@ const LoginPage = () => {
       console.log("서버응답", response);
 
       if (response.status === 200) {
-        const {postId} = response.data;
         console.log("로그인 성공!");
+        login({username: data.userId});
+        localStorage.clear()
+        localStorage.setItem('login-token', response.data)
+        
+        checkLoginStatus();
+        
         navigate('/')
       }
       else if (response.status === 400) {
         console.log("아이디와 비밀번호가 일치하지않습니다.");
+        setModalMessage("아이디와 비밀번호가 일치하지 않습니다.");
+        setModalOpen(true);
       }
       else {
         console.log("로그인 실패!");
@@ -92,11 +136,12 @@ const LoginPage = () => {
     }
   }; 
 
+
   return (
     <PageLayout>
       <CenteredContainer>
         <h1
-          style={{ fontSize: "55px", marginBottom: "60px", marginTop: "-60px" }}
+          style={{ fontSize: "55px", marginBottom: "60px", marginTop: "-60px", fontWeight: 'bold'}}
         >
           로그인
         </h1>
@@ -122,6 +167,7 @@ const LoginPage = () => {
           </LoginForm>
         </LoginFormContainer>
       </CenteredContainer>
+      <Modal isOpen={modalOpen} message={modalMessage} onClose={closeModal} />
     </PageLayout>
   );
 };

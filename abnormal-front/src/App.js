@@ -12,12 +12,13 @@ import SearchPage from "./pages/SearchPage";
 import SignupPage from "./pages/SignupPage";
 import Button from "@mui/material/Button";
 import Header from "./components/Header";
-import PageLayout from "./components/PageLayout";
+import { AuthProvider } from "./context/AuthContext";
 
 
 function App() {
   return (
-    <>
+    <AuthProvider>
+      <>
       <BrowserRouter>
         <Header>
           <div className="menu">
@@ -34,7 +35,7 @@ function App() {
               <Link to="/ask" className="menu-bar-item">
                 문의하기
               </Link>
-              <div className="menu-bar-buttons">
+              {/* <div className="menu-bar-buttons">
                 <Link>
                   <Link to="/login">
                     <Button variant="outlined">로그인</Button>
@@ -43,7 +44,7 @@ function App() {
                 <Link to="/signup">
                   <Button variant="contained">가입하기</Button>
                 </Link>
-              </div>
+              </div> */}
             </div>
           </div>
         </Header>
@@ -59,6 +60,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </>
+    </AuthProvider>
   );
 }
 
