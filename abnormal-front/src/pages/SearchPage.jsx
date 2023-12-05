@@ -39,6 +39,7 @@ const Rectangle = styled.div`
 const Box = styled.div`
   margin-top: 80px;
   margin-left: 50px;
+  margin-right: 30px;
 `;
 
 const Types = styled.div`
@@ -70,9 +71,38 @@ const RadioButton = styled.div`
   display: block;
 `;
 
+const abnormalBehaviors = ["싸움", "폭행", "주취행동", "기절", "납치"];
+
+const SelectionButton = styled.div`
+  display: inline-block;
+  padding: 10px 10px;
+  font-size: 15px;
+  margin: 5px;
+  background-color: ${(props) => (props.active ? "#3a3d92" : "#ffffff")};
+  color: ${(props) => (props.active ? "#ffffff" : "#3a3d92")};
+  transition: background-color 0.3s;
+  text-decoration: none;
+  border-radius: 5px;
+  border: 2px solid #3a3d92;
+
+  &:hover {
+    background-color: #3a3d92;
+    color: #ffffff;
+  }
+`;
+
 function SearchPage() {
   const windowSize = useWindowSize();
   const userPosition = useUserPosition();
+  const [activeStates, setActiveStates] = useState(
+    Array(abnormalBehaviors.length).fill(false)
+  );
+
+  const handleClick = (index) => {
+    const newActiveStates = [...activeStates];
+    newActiveStates[index] = !newActiveStates[index];
+    setActiveStates(newActiveStates);
+  };
 
   // const [cctvData, setCctvData] = useState([]);
   // [{
@@ -157,7 +187,20 @@ function SearchPage() {
                         구간 설정
                       </RadioButton>
                     </RadioButtonGroup>
-                    <Contents>이상행동 선택</Contents>
+                    <Contents>
+                      이상행동 선택
+                      <div>
+                        {abnormalBehaviors.map((behavior, index) => (
+                          <SelectionButton
+                            key={index}
+                            active={activeStates[index]}
+                            onClick={() => handleClick(index)}
+                          >
+                            {behavior}
+                          </SelectionButton>
+                        ))}
+                      </div>
+                    </Contents>
                   </Types>
                 </Box>
                 <Link to="/result">Result Page로 이동</Link>
