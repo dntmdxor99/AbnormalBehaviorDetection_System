@@ -19,10 +19,10 @@ const CctvPage = () => {
     latitude: "",
     longitude: "",
     is360Degree: "",
-    protocol: "",
+    chsnnel: "",
     videoSize: "",
   });
-  const [deleteId, setDeleteId] = useState('');
+  const [deleteId, setDeleteId] = useState("");
   const onSubmit = async (event) => {
     event.preventDefault();
 
@@ -53,7 +53,7 @@ const CctvPage = () => {
   };
 
   const onIdChange = (event) => {
-    setDeleteId(event.target.value);   // 삭제를 위한 CCTV 아이디 상태 업데이트
+    setDeleteId(event.target.value); // 삭제를 위한 CCTV 아이디 상태 업데이트
   };
 
   return (
@@ -64,15 +64,10 @@ const CctvPage = () => {
             <h1 className="cctv-main-title">현재 등록된 CCTV</h1>
           </div>
           <form onSubmit={onSubmit}>
-          <h2>CCTV 등록</h2>
+            <h2>CCTV 등록</h2>
             <label>
               ID:
-              <input
-                type="text"
-                name="cctvId"
-                value={''}
-                onChange={onChange}
-              />
+              <input type="text" name="cctvId" value={""} onChange={onChange} />
             </label>
             <label>
               Name:
@@ -120,18 +115,18 @@ const CctvPage = () => {
               />
             </label>
             <button type="submit">등록</button>
-            </form>
-            <form onSubmit={onDelete}>
+          </form>
+          <form onSubmit={onDelete}>
             <h2>CCTV 삭제</h2>
             <label>
-            ID:
-            <input
-              type="text"
-              name="deleteId"
-              value={deleteId}
-              onChange={onIdChange}
-            />
-          </label>
+              ID:
+              <input
+                type="text"
+                name="deleteId"
+                value={deleteId}
+                onChange={onIdChange}
+              />
+            </label>
             <button type="button" onClick={onDelete}>
               삭제
             </button>

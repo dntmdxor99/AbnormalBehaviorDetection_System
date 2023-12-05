@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Map } from "react-kakao-maps-sdk";
-import { MapMarker } from "react-kakao-maps-sdk";
+import { Map, MapMarker } from "react-kakao-maps-sdk";
 
 import PageLayout from "../components/PageLayout";
 import InsideMap from "../components/InsideMap";
@@ -11,6 +11,9 @@ import API from "../utils/API.js";
 import useUserPosition from "../hooks/useUserPosition";
 import useWindowSize from "../hooks/useWindowSize";
 import "../App.css";
+import cctvIdState from "../recoil/cctvIdState.js";
+import abnormalBehaviorState from '../recoil/abnormalBehaviorState.js';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 const Frame = styled.div`
   width: 100vw;
@@ -34,40 +37,31 @@ const Rectangle = styled.div`
   z-index: 2;
 `;
 
-const SelectCCTV = styled.p`
+const Box = styled.div`
   margin-top: 80px;
-  margin-left: 35px;
+  margin-left: 50px;
+  margin-right: 30px;
+`;
+
+const Types = styled.div`
   font-size: 25px;
   font-style: normal;
   font-weight: 700;
+  margin-bottom: 40px;
 `;
 
-const SelectCCtvContents = styled.p`
-  margin-left: 35px;
+const Contents = styled.div`
+  margin-top: 15px;
   font-size: 20px;
   font-style: normal;
   font-weight: 500;
   line-height: 0.5;
 `;
 
-const SearchSettings = styled.p`
-  margin-top: 65px;
-  margin-left: 35px;
-  font-size: 25px;
-  font-style: normal;
-  font-weight: 700;
-`;
-
-const SearchSettingsContents = styled.p`
-  margin-left: 45px;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 0.3;
-`;
-
 const RadioButtonGroup = styled.div`
-  margin-left: 40px;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  margin-left: 10px;
   font-size: 15px;
   font-style: normal;
   font-weight: 400;
@@ -78,43 +72,107 @@ const RadioButton = styled.div`
   display: block;
 `;
 
+const abnormalBehaviors = ["싸움", "폭행", "주취행동", "기절", "납치"];
+
+const SelectionButton = styled.div`
+  display: inline-block;
+  padding: 15px 15px;
+  font-size: 16px;
+  margin: 5px;
+  background-color: ${(props) => (props.active ? "#3a3d92" : "#ffffff")};
+  color: ${(props) => (props.active ? "#ffffff" : "#3a3d92")};
+  transition: background-color 0.3s;
+  text-decoration: none;
+  border-radius: 5px;
+  // border: 2px solid #3a3d92;
+
+  &:hover {
+    background-color: #3a3d92;
+    color: #ffffff;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const NextButton = styled.div`
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 20px;
+  font-weight: 700;
+  background-color: #029D65;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 5px;
+}
+`;
+
 function SearchPage() {
+  // const [cctvData, setCctvData] = useState([]);
+  // [{
+  //   cctvId: "",
+  //   cctvName: "",
+  //   location: "",
+  //   latitude: "",
+  //   longitude: "",
+  //   is360Degree: "",
+  //   channel: "",
+  //   videoSize: "",
+  // }]
+
+  /*
+  {
+    "cctvId": "",
+    "cctvName": "",
+    "location": "대구광역시 북구 대현로15길 17",
+    "is360Degree": true,
+    "channel" : ""
+}
+  */
+
   const windowSize = useWindowSize();
   const userPosition = useUserPosition();
-  const [cctvData, setCctvData] = useState([]);
-  const [positions, setPositions] = useState({
-    cctvId: "",
-    cctvName: "",
-    location: "",
-    latitude: "",
-    longitude: "",
-    is360Degree: "",
-    protocol: "",
-    videoSize: "",
-  });
+  const selectedCctvIds = useRecoilValue(cctvIdState);
+  const selectedCount = selectedCctvIds.length;
+  const [activeStates, setActiveStates] = useState(
+    Array(abnormalBehaviors.length).fill(false)
+  );
+  const setAbnormalBehavior = useSetRecoilState(abnormalBehaviorState);
 
+const handleClick = (index) => {
+  const newActiveStates = [...activeStates];
+  newActiveStates[index] = !newActiveStates[index];
+  setActiveStates(newActiveStates);
+
+  if (newActiveStates[index]) {
+    // If the behavior is selected, add it to the state
+    setAbnormalBehavior((prev) => [...prev, abnormalBehaviors[index]]);
+  } else {
+    // If the behavior is deselected, remove it from the state
+    setAbnormalBehavior((prev) =>
+      prev.filter((behavior) => behavior !== abnormalBehaviors[index])
+    );
+  }
+};
+
+  const [positions, setPositions] = useState([]);
 
   useEffect(() => {
-    //console.log("ooooooooooooooooooooooo");
     const fetchData = async () => {
       try {
-        //세아두번호출됨 refactoring해야함
         const response = await API.get("/cctvs/allCctv");
-        console.log("ooooooooooooooooooooooo1");
-
-        //console.log(response);
         if (response.status === 200) {
           const data = response.data;
-          console.log("ooooooooooooooooooooooo2");
           console.log(data);
           setPositions(data);
-          // console.log("oooooooooo111111112");
-          // console.log(positions);
         } else {
           console.error("API 호출 실패");
         }
       } catch (error) {
-        console.log("에러부분임-----------------");
         console.error("CCTV 데이터를 받아오는데 실패했습니다.", error);
       }
     };
@@ -122,14 +180,10 @@ function SearchPage() {
   }, []);
 
   useEffect(() => {
-    console.log("oooooooooo111111112");
     console.log(positions);
-  }, []);
+  }, [positions]);
 
-  // const [markerPosition, setMarkerPosition] = useState(); // 클릭한 위치를 저장할 상태
-  // const onMapClick = (event) => {
-  //   console.log(event); // 이벤트 객체 구조 확인
-  // };
+  const [positionData, setPositionData] = useRecoilState(cctvIdState);
 
   return (
     <PageLayout>
@@ -138,22 +192,53 @@ function SearchPage() {
           <div className="search-main">
             <MapContainer>
               <Rectangle>
-                <SelectCCTV>선택된 CCTV</SelectCCTV>
-                <SelectCCtvContents>ID</SelectCCtvContents>
-                <SelectCCtvContents>위치</SelectCCtvContents>
-                <SearchSettings>검색설정</SearchSettings>
-                <SearchSettingsContents>검색 기간</SearchSettingsContents>
-                <RadioButtonGroup>
-                  <RadioButton>
-                    <input type="radio" name="searchPeriod" value="real-time" />
-                    실시간
-                  </RadioButton>
-                  <RadioButton>
-                    <input type="radio" name="searchPeriod" value="set-time" />
-                    구간 설정
-                  </RadioButton>
-                </RadioButtonGroup>
-                <SearchSettingsContents>이상행동 선택</SearchSettingsContents>
+                <Box>
+                  <Types>
+                    선택된 CCTV | {selectedCount}개<Contents>ID</Contents>
+                    <Contents>위치</Contents>
+                  </Types>
+                  <Types>
+                    검색설정
+                    <Contents>검색 기간</Contents>
+                    <RadioButtonGroup>
+                      <RadioButton>
+                        <input
+                          type="radio"
+                          name="searchPeriod"
+                          value="real-time"
+                        />
+                        실시간
+                      </RadioButton>
+                      <RadioButton>
+                        <input
+                          type="radio"
+                          name="searchPeriod"
+                          value="set-time"
+                        />
+                        구간 설정
+                      </RadioButton>
+                    </RadioButtonGroup>
+                    <Contents>
+                      이상행동 선택
+                      <div style={{ marginTop: "10px" }}>
+                        {abnormalBehaviors.map((behavior, index) => (
+                          <SelectionButton
+                            key={index}
+                            active={activeStates[index]}
+                            onClick={() => handleClick(index)}
+                          >
+                            {behavior}
+                          </SelectionButton>
+                        ))}
+                      </div>
+                    </Contents>
+                  </Types>
+                </Box>
+                <ButtonContainer>
+                  <Link to="/result">
+                    <NextButton>검색 결과 보기</NextButton>
+                  </Link>
+                </ButtonContainer>
               </Rectangle>
               <Map
                 center={userPosition}
@@ -162,13 +247,8 @@ function SearchPage() {
                   height: `${windowSize.height}px`,
                 }}
                 level={3}
-                onClick={(event) => {
-                  console.log(event);
-                }}
               >
-                {/* {markerPosition && <MapMarker position={markerPosition} />}{" "}
-                markerPosition이 있을 때만 Marker 컴포넌트를 렌더링 */}
-                <InsideMap cctvData={cctvData} />
+                <InsideMap positions={positions} />
               </Map>
             </MapContainer>
           </div>
