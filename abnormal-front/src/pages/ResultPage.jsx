@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import PageLayout from "../components/PageLayout";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import abnormalBehaviorState from "../recoil/abnormalBehaviorState";
 
 const Rectangle = styled.div`
@@ -39,7 +39,7 @@ const Contents = styled.div`
 const SelectionButton = styled.div`
   display: inline-block;
   padding: 15px 15px;
-  font-size: 14px;
+  font-size: 15px;
   margin: 4px;
   background-color: #3a3d92;
   color: #ffffff;
@@ -50,7 +50,20 @@ const SelectionButton = styled.div`
 `;
 
 const ResultPage = () => {
-  const selectedAbnormalBehaviors = useRecoilValue(abnormalBehaviorState);
+  // const selectedAbnormalBehaviors = useRecoilValue(abnormalBehaviorState);
+
+  const [selectedAbnormalBehaviors, setSelectedAbnormalBehaviors] = useRecoilState(abnormalBehaviorState);
+
+  useEffect(() => {
+    const savedBehaviors = localStorage.getItem('abnormalBehaviors');
+    if (savedBehaviors) {
+      setSelectedAbnormalBehaviors(JSON.parse(savedBehaviors));
+    }
+  }, [setSelectedAbnormalBehaviors]);
+
+  useEffect(() => {
+    localStorage.setItem('abnormalBehaviors', JSON.stringify(selectedAbnormalBehaviors));
+  }, [selectedAbnormalBehaviors]);
 
   return (
     <div>
@@ -73,7 +86,6 @@ const ResultPage = () => {
           <Types>CCTV</Types>
         </Box>
       </Rectangle>
-      <h1>hi</h1>
     </div>
   );
 };

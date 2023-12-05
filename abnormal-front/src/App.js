@@ -14,56 +14,56 @@ import Button from "@mui/material/Button";
 import Header from "./components/Header";
 import PageLayout from "./components/PageLayout";
 import { AuthProvider } from "./context/AuthContext";
-
+import { RecoilRoot } from "recoil";
 
 function App() {
   return (
-    <AuthProvider>
-      <>
-      <BrowserRouter>
-        <Header>
-          <div className="menu">
-            <div className="menu-bar">
-              <Link to="/" className="menu-home-item">
-                7팀
-              </Link>
-              <Link to="/abnormal" className="menu-bar-item">
-                이상행동
-              </Link>
-              <Link to="/cctv" className="menu-bar-item">
-                CCTV
-              </Link>
-              <Link to="/ask" className="menu-bar-item">
-                문의하기
-              </Link>
-              <div className="menu-bar-buttons">
-                <Link>
-                  <Link to="/login">
-                    <Button variant="outlined">로그인</Button>
+    <>
+      <RecoilRoot>
+        <AuthProvider>
+          <BrowserRouter>
+            <Header>
+              <div className="menu">
+                <div className="menu-bar">
+                  <Link to="/" className="menu-home-item">
+                    7팀
                   </Link>
-                </Link>
-
-                <Link to="/signup">
-                  <Button variant="contained">가입하기</Button>
-                </Link>
-              </div> 
-            </div>
-          </div>
-        </Header>
-        <Routes>
-          <Route path="/" element={<MainPage />} />{" "}
-          <Route path="/abnormal" element={<AbnormalBehaviorPage />} />
-          <Route path="/cctv" element={<CctvPage />} />
-          <Route path="/ask" element={<AskPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/result" element={<ResultPage />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-        </Routes>
-      </BrowserRouter>
+                  <Link to="/abnormal" className="menu-bar-item">
+                    이상행동
+                  </Link>
+                  <Link to="/cctv" className="menu-bar-item">
+                    CCTV
+                  </Link>
+                  <Link to="/ask" className="menu-bar-item">
+                    문의하기
+                  </Link>
+                  <div className="menu-bar-buttons">
+                    <Link>
+                      <Link to="/login">
+                        <Button variant="outlined">로그인</Button>
+                      </Link>
+                    </Link>
+                    <Link to="/signup">
+                      <Button variant="contained">가입하기</Button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </Header>
+            <Routes>
+              <Route path="/" element={<MainPage />} />{" "}
+              <Route path="/abnormal" element={<AbnormalBehaviorPage />} />
+              <Route path="/cctv" element={<CctvPage />} />
+              <Route path="/ask" element={<AskPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/result" element={<ResultPage />} />
+              <Route path="/search" element={<SearchPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
+      </RecoilRoot>
     </>
-    </AuthProvider>
-    
   );
 }
 
