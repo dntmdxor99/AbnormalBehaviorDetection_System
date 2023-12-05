@@ -10,6 +10,9 @@ import java.util.Date;
 import java.util.List;
 
 public interface MetaDataRepository {
+    MetaData createMetaData(MetaData metaData);
+    List<MetaData> getAllMetaDatas();
+
     MetaData getMetadataById(Long metaDataId);
 
     List<MetaData> getMetadataByCctvId(Long cctvId);

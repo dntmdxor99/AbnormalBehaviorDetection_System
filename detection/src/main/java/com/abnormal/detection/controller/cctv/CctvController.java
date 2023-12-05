@@ -27,6 +27,11 @@ public class CctvController {
         return cctvService.createCctv(cctv);
     }
 
+    @GetMapping("/allCctv")
+    public List<Cctv> getAllCctvs() {
+        return cctvService.getAllCctvs();
+    }
+
     @DeleteMapping("/delete/{cctvId}")
     public ResponseEntity<String> deleteCctv(@PathVariable Long cctvId) {
         try {
@@ -42,10 +47,7 @@ public class CctvController {
         return cctvService.getCctvById(cctvId);
     }
 
-    @GetMapping("/allCctv")
-    public List<Cctv> getAllCctvs() {
-        return cctvService.getAllCctvs();
-    }
+
 
     //위도경도
     /*

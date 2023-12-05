@@ -25,6 +25,10 @@ public class MetaData {
     Long videoId;
     Long photoId;
 
+    public MetaData() {
+
+    }
+
 
     public Long getMetaDataId() {
         return metaDataId;

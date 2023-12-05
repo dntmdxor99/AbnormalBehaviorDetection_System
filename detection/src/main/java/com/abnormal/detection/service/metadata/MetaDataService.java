@@ -1,6 +1,7 @@
 package com.abnormal.detection.service.metadata;
 
 
+import com.abnormal.detection.domain.cctv.Cctv;
 import com.abnormal.detection.domain.metadata.AbnormalType;
 import com.abnormal.detection.domain.metadata.EntityType;
 import com.abnormal.detection.domain.metadata.MetaData;
@@ -8,6 +9,7 @@ import com.abnormal.detection.domain.metadata.Quality;
 import com.abnormal.detection.repository.metadata.MetaDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -21,12 +23,15 @@ public class MetaDataService {
     public MetaDataService(MetaDataRepository metaDataRepository) {
         this.metaDataRepository = metaDataRepository;
     }
-/*
-    public List<MetaData> getAllMetaData() {
-        return metaDataRepository.getAllMetaData();
+
+    @Transactional
+    public MetaData createMetaData(MetaData metaData) {
+        return metaDataRepository.createMetaData(metaData);
     }
 
- */
+    public List<MetaData> getAllMetaDatas() {
+        return metaDataRepository.getAllMetaDatas();
+    }
 
 
 

@@ -6,10 +6,11 @@ import java.util.List;
 
 public interface CctvRepository{
     Cctv createCctv(Cctv cctv);
+    List<Cctv> getAllCctvs();
 
     Cctv getCctvById(Long cctvId);
 
-    List<Cctv> getAllCctvs();
+
     /*
 
     List<Cctv> getCctvsByLocation(Float latitude, Float longitude);

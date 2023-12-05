@@ -74,6 +74,11 @@ public class JpaMemoryCctvRepository implements CctvRepository {
         return cctv;
     }
 
+    @Override
+    public List<Cctv> getAllCctvs() {
+        return entityManager.createQuery("SELECT c FROM Cctv c", Cctv.class).getResultList();
+    }
+
     //위도경도
     /*
     @Override
@@ -119,10 +124,7 @@ public class JpaMemoryCctvRepository implements CctvRepository {
         return entityManager.find(Cctv.class, cctvId);
     }
 
-    @Override
-    public List<Cctv> getAllCctvs() {
-        return entityManager.createQuery("SELECT c FROM Cctv c", Cctv.class).getResultList();
-    }
+
 
     @Override
     public Cctv updateCctv(Long cctvId, Cctv updatedCctv) {

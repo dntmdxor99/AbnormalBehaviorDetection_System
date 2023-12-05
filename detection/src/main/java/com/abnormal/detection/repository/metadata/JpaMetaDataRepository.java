@@ -1,10 +1,14 @@
 package com.abnormal.detection.repository.metadata;
 
+import com.abnormal.detection.domain.cctv.Cctv;
 import com.abnormal.detection.domain.metadata.AbnormalType;
 import com.abnormal.detection.domain.metadata.EntityType;
 import com.abnormal.detection.domain.metadata.MetaData;
 import com.abnormal.detection.domain.metadata.Quality;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 
@@ -13,12 +17,23 @@ import java.util.List;
 
 
 @Repository
+@Slf4j
+@RequiredArgsConstructor
 public class JpaMetaDataRepository implements MetaDataRepository{
 
+    @PersistenceContext
     private final EntityManager em;
 
-    public JpaMetaDataRepository(EntityManager em) {
-        this.em = em;
+
+    @Override
+    public MetaData createMetaData(MetaData metaData) {
+        em.persist(metaData);
+        return metaData;
+    }
+
+    @Override
+    public List<MetaData> getAllMetaDatas() {
+        return em.createQuery("SELECT m FROM MetaData m", MetaData.class).getResultList();
     }
 
     @Override

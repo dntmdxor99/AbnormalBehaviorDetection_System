@@ -1,5 +1,6 @@
 package com.abnormal.detection.controller.metadata;
 
+import com.abnormal.detection.domain.cctv.Cctv;
 import com.abnormal.detection.domain.metadata.AbnormalType;
 import com.abnormal.detection.domain.metadata.EntityType;
 import com.abnormal.detection.domain.metadata.MetaData;
@@ -29,6 +30,16 @@ public class MetaDataController {
     }
 
  */
+    @PostMapping("/create")
+    public MetaData createMetaData(@RequestBody MetaData metaData) {
+        return metaDataService.createMetaData(metaData);
+    }
+
+    @GetMapping("/allMetaData")
+    public List<MetaData> getAllMetaDatas() {
+        return metaDataService.getAllMetaDatas();
+    }
+
 
     @GetMapping("/{metaDataId}")
     public MetaData getMetadataById(@PathVariable Long metaDataId) {

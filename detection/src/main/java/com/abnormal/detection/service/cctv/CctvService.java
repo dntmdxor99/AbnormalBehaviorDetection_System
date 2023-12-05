@@ -28,13 +28,15 @@ public class CctvService {
         return cctvRepository.createCctv(cctv);
     }
 
+    public List<Cctv> getAllCctvs() {
+        return cctvRepository.getAllCctvs();
+    }
+
     public Cctv getCctvById(Long cctvId) {
         return cctvRepository.getCctvById(cctvId);
     }
 
-    public List<Cctv> getAllCctvs() {
-        return cctvRepository.getAllCctvs();
-    }
+
 
     // 위도경도
     /*
