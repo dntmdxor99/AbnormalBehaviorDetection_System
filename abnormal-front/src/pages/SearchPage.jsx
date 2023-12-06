@@ -1,21 +1,21 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
+import DatePicker from "react-datepicker";
+import { ko } from "date-fns/esm/locale";
+import "react-datepicker/dist/react-datepicker.css";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import PageLayout from "../components/PageLayout";
 import InsideMap from "../components/InsideMap";
-import KakaoMarker from "../components/KakaoMarker";
 import API from "../utils/API.js";
 import useUserPosition from "../hooks/useUserPosition";
 import useWindowSize from "../hooks/useWindowSize";
 import "../App.css";
 import cctvIdState from "../recoil/cctvIdState.js";
 import abnormalBehaviorState from "../recoil/abnormalBehaviorState.js";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 const Frame = styled.div`
   width: 100vw;
@@ -74,8 +74,6 @@ const RadioButton = styled.div`
   display: block;
 `;
 
-const abnormalType = ["fight", "assault", "drunken", "swoon", "kidnap"];
-
 const SelectionButton = styled.div`
   display: inline-block;
   padding: 15px 15px;
@@ -102,20 +100,21 @@ const ButtonContainer = styled.div`
 `;
 
 const NextButton = styled.div`
-  display: inline-block;
-  padding: 10px 20px;
-  margin: 5px;
-  font-size: 20px;
-  font-weight: 700;
-  background-color: #029D65;
-  color: #ffffff;
-  text-decoration: none;
-  border-radius: 5px;
-  cursor: pointer;
+display: inline-block;
+padding: 10px 20px;
+margin: 5px;
+font-size: 20px;
+font-weight: 700;
+background-color: #029D65;
+color: #ffffff;
+text-decoration: none;
+border-radius: 5px;
+cursor: pointer;
 }
 `;
 
 function SearchPage() {
+  const abnormalType = ["fight", "assault", "drunken", "swoon", "kidnap"];
   const windowSize = useWindowSize();
   const userPosition = useUserPosition();
   const selectedCctvIds = useRecoilValue(cctvIdState);
@@ -124,26 +123,6 @@ function SearchPage() {
     Array(abnormalType.length).fill(false)
   );
   const setAbnormalBehavior = useSetRecoilState(abnormalBehaviorState);
-
-  const handleClick = (index) => {
-    const newActiveStates = [...activeStates];
-    newActiveStates[index] = !newActiveStates[index];
-    setActiveStates(newActiveStates);
-
-    if (newActiveStates[index]) {
-      setAbnormalBehavior((prev) => [...prev, abnormalType[index]]);
-    } else {
-      setAbnormalBehavior((prev) =>
-        prev.filter((behavior) => behavior !== abnormalType[index])
-      );
-    }
-
-    const selectedBehaviors = newActiveStates
-      .map((active, index) => (active ? abnormalType[index] : null))
-      .filter((behavior) => behavior !== null);
-
-    sendResults(selectedBehaviors);
-  };
 
   const [positions, setPositions] = useState([]);
 
@@ -166,32 +145,31 @@ function SearchPage() {
   }, []);
 
   const cctvIdValue = useRecoilValue(cctvIdState);
-  console.log(cctvIdValue);
 
-  const sendResults = async (abnormalBehaviors, cctvIdValue) => {
-    try {
-      const response = await axios.post("/metadata/search", {
-        foundTime: "",
-        entityFoundTime: "",
-        cctvId: cctvIdValue,
-        abnormalType: abnormalBehaviors,
-      });
-      if (response.status === 200) {
-        console.log("이상행동 정보를 백엔드로 전송하였습니다.");
-      } else {
-        console.error("API 호출 실패");
-      }
-    } catch (error) {
-      console.error("이상행동 정보 전송에 실패하였습니다.", error);
-      console.log(cctvIdValue);
+  const [result, setResult] = useState({
+    foundTime: "",
+    entityFoundTime: "",
+    cctvId: "",
+    abnormalType: "",
+  });
+
+  const handleClick = (index) => {
+    const newActiveStates = [...activeStates];
+    newActiveStates[index] = !newActiveStates[index];
+    setActiveStates(newActiveStates);
+
+    if (newActiveStates[index]) {
+      setAbnormalBehavior((prev) => [...prev, abnormalType[index]]);
+    } else {
+      setAbnormalBehavior((prev) =>
+        prev.filter((behavior) => behavior !== abnormalType[index])
+      );
     }
   };
 
   useEffect(() => {
     console.log(positions);
   }, [positions]);
-
-  const [positionData, setPositionData] = useRecoilState(cctvIdState);
 
   const [isRealTimeSelected, setIsRealTimeSelected] = useState(false);
 
@@ -202,6 +180,67 @@ function SearchPage() {
     } else {
       setIsRealTimeSelected(false);
     }
+  };
+
+  const SelectDate = () => {
+    const [storeDate, setStoreDate] = useState({
+      startDate: "",
+      endDate: "",
+    });
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+
+    const setChangeDate = (dates) => {
+      const [start, end] = dates;
+      setStartDate(start);
+      setEndDate(end);
+      setStoreDate({
+        startDate: start,
+        endDate: end,
+      });
+    };
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await API.get("/metadata/search", {
+            params: {
+              startDate: startDate,
+              endDate: endDate,
+            },
+          });
+          if (response.status === 200) {
+            const data = response.data;
+            console.log(data);
+            // 데이터 처리 로직 작성
+          } else {
+            console.error("API 호출 실패");
+          }
+        } catch (error) {
+          console.error("date 보내기 실패.", error);
+        }
+      };
+
+      if (startDate && endDate) {
+        fetchData();
+      }
+    }, [startDate, endDate]);
+
+    return (
+      <div>
+        <DatePicker
+          selectsRange={true}
+          className="datepicker"
+          locale={ko}
+          dateFormat="yyyy년 MM월 dd일"
+          selected={startDate}
+          startDate={startDate}
+          endDate={endDate}
+          maxDate={new Date()}
+          onChange={setChangeDate}
+        />
+      </div>
+    );
   };
 
   return (
@@ -237,6 +276,7 @@ function SearchPage() {
                           onChange={handleSearchPeriodChange}
                         />
                         구간 설정
+                        {!isRealTimeSelected && <SelectDate />}
                       </RadioButton>
                     </RadioButtonGroup>
                     {!isRealTimeSelected && (
