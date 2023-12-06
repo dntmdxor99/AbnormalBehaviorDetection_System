@@ -85,6 +85,7 @@ const SelectionButton = styled.div`
   text-decoration: none;
   border-radius: 5px;
   // border: 2px solid #3a3d92;
+  cursor: pointer;
 
   &:hover {
     background-color: #3a3d92;
@@ -108,6 +109,7 @@ const NextButton = styled.div`
   color: #ffffff;
   text-decoration: none;
   border-radius: 5px;
+  cursor: pointer;
 }
 `;
 
