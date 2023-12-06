@@ -10,7 +10,6 @@ public interface CctvRepository{
 
     Cctv getCctvById(Long cctvId);
 
-
     /*
 
     List<Cctv> getCctvsByLocation(Float latitude, Float longitude);

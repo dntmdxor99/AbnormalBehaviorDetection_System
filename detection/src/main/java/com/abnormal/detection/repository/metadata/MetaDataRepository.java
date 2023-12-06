@@ -1,5 +1,6 @@
 package com.abnormal.detection.repository.metadata;
 
+import com.abnormal.detection.domain.cctv.Cctv;
 import com.abnormal.detection.domain.metadata.AbnormalType;
 import com.abnormal.detection.domain.metadata.EntityType;
 import com.abnormal.detection.domain.metadata.MetaData;
@@ -36,4 +37,8 @@ public interface MetaDataRepository {
     void deleteMetadata(Long metaDataId);
 
     void updateMetadataInfo(Long metaDataId, MetaData updatedMetadata);
+//f실제로 객체가 언제로 이상행동검출
+    //en 해당 비디오 내에서 몇번째 프레임인지
+    List<MetaData> searchMetaDatasByOptions(Date foundTime, Date entityFoundTime, Long cctvId,  AbnormalType abnormalType);
+
 }

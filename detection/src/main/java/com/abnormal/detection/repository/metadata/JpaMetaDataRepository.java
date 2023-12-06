@@ -189,4 +189,19 @@ public class JpaMetaDataRepository implements MetaDataRepository{
             em.merge(toUpdate);
         }
     }
+    @Override
+    public List<MetaData> searchMetaDatasByOptions(Date foundTime, Date entityFoundTime, Long cctvId, AbnormalType abnormalType) {
+        String query = "SELECT m FROM MetaData m " +
+                "WHERE (:cctvId IS NULL OR m.cctvId = :cctvId) " +
+                "AND (:abnormalType IS NULL OR m.abnormalType = :abnormalType) " +
+                "AND (COALESCE(:foundTime, '') = '' OR m.foundTime = :foundTime) " +
+                "AND (COALESCE(:entityFoundTime, '') = '' OR m.entityFoundTime = :entityFoundTime)";
+
+        return em.createQuery(query, MetaData.class)
+                .setParameter("cctvId", cctvId)
+                .setParameter("abnormalType", abnormalType)
+                .setParameter("foundTime", foundTime)
+                .setParameter("entityFoundTime", entityFoundTime)
+                .getResultList();
+    }
 }
