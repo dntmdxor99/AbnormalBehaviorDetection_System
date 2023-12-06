@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +13,7 @@ import useUserPosition from "../hooks/useUserPosition";
 import useWindowSize from "../hooks/useWindowSize";
 import "../App.css";
 import cctvIdState from "../recoil/cctvIdState.js";
-import abnormalBehaviorState from '../recoil/abnormalBehaviorState.js';
+import abnormalBehaviorState from "../recoil/abnormalBehaviorState.js";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 const Frame = styled.div`
@@ -72,7 +73,7 @@ const RadioButton = styled.div`
   display: block;
 `;
 
-const abnormalBehaviors = ["싸움", "폭행", "주취행동", "기절", "납치"];
+const abnormalBehaviors = ["fight", "assault", "drunken", "swoon", "kidnap"];
 
 const SelectionButton = styled.div`
   display: inline-block;
@@ -136,6 +137,20 @@ function SearchPage() {
 }
   */
 
+  /*
+@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long metaDataId;
+    Date foundTime;
+    Date entityFoundTime;
+    Long cctvId;
+    EntityType type;
+    AbnormalType abnormalType;
+    Quality quality;
+    Long videoId;
+    Long photoId;
+*/
+
   const windowSize = useWindowSize();
   const userPosition = useUserPosition();
   const selectedCctvIds = useRecoilValue(cctvIdState);
@@ -145,21 +160,25 @@ function SearchPage() {
   );
   const setAbnormalBehavior = useSetRecoilState(abnormalBehaviorState);
 
-const handleClick = (index) => {
-  const newActiveStates = [...activeStates];
-  newActiveStates[index] = !newActiveStates[index];
-  setActiveStates(newActiveStates);
+  const handleClick = (index) => {
+    const newActiveStates = [...activeStates];
+    newActiveStates[index] = !newActiveStates[index];
+    setActiveStates(newActiveStates);
 
-  if (newActiveStates[index]) {
-    // If the behavior is selected, add it to the state
-    setAbnormalBehavior((prev) => [...prev, abnormalBehaviors[index]]);
-  } else {
-    // If the behavior is deselected, remove it from the state
-    setAbnormalBehavior((prev) =>
-      prev.filter((behavior) => behavior !== abnormalBehaviors[index])
-    );
-  }
-};
+    if (newActiveStates[index]) {
+      setAbnormalBehavior((prev) => [...prev, abnormalBehaviors[index]]);
+    } else {
+      setAbnormalBehavior((prev) =>
+        prev.filter((behavior) => behavior !== abnormalBehaviors[index])
+      );
+    }
+
+    const selectedBehaviors = newActiveStates
+      .map((active, index) => (active ? abnormalBehaviors[index] : null))
+      .filter((behavior) => behavior !== null);
+
+    sendAbnormalBehaviors(selectedBehaviors);
+  };
 
   const [positions, setPositions] = useState([]);
 
@@ -181,11 +200,38 @@ const handleClick = (index) => {
     fetchData();
   }, []);
 
+  const sendAbnormalBehaviors = async (abnormalBehaviors) => {
+    try {
+      //엔드포인트 수정해야함
+      const response = await axios.post("/api/abnormalBehaviors", {
+        behaviors: abnormalBehaviors,
+      });
+      if (response.status === 200) {
+        console.log("이상행동 정보를 백엔드로 전송하였습니다.");
+      } else {
+        console.error("API 호출 실패");
+      }
+    } catch (error) {
+      console.error("이상행동 정보 전송에 실패하였습니다.", error);
+    }
+  };
+
   useEffect(() => {
     console.log(positions);
   }, [positions]);
 
   const [positionData, setPositionData] = useRecoilState(cctvIdState);
+
+  const [isRealTimeSelected, setIsRealTimeSelected] = useState(false);
+
+  const handleSearchPeriodChange = (event) => {
+    const { value } = event.target;
+    if (value === "real-time") {
+      setIsRealTimeSelected(true);
+    } else {
+      setIsRealTimeSelected(false);
+    }
+  };
 
   return (
     <PageLayout>
@@ -208,6 +254,7 @@ const handleClick = (index) => {
                           type="radio"
                           name="searchPeriod"
                           value="real-time"
+                          onChange={handleSearchPeriodChange}
                         />
                         실시간
                       </RadioButton>
@@ -216,24 +263,31 @@ const handleClick = (index) => {
                           type="radio"
                           name="searchPeriod"
                           value="set-time"
+                          onChange={handleSearchPeriodChange}
                         />
                         구간 설정
                       </RadioButton>
                     </RadioButtonGroup>
-                    <Contents>
-                      이상행동 선택
-                      <div style={{ marginTop: "10px" }}>
-                        {abnormalBehaviors.map((behavior, index) => (
-                          <SelectionButton
-                            key={index}
-                            active={activeStates[index]}
-                            onClick={() => handleClick(index)}
-                          >
-                            {behavior}
-                          </SelectionButton>
-                        ))}
-                      </div>
-                    </Contents>
+                    {!isRealTimeSelected && (
+                      <Contents>
+                        이상행동 선택
+                        <div style={{ marginTop: "10px" }}>
+                          {abnormalBehaviors.map((behavior, index) => (
+                            <SelectionButton
+                              key={index}
+                              active={activeStates[index]}
+                              onClick={() => handleClick(index)}
+                            >
+                              {index === 0 && "싸움"}
+                              {index === 1 && "폭행"}
+                              {index === 2 && "주취행동"}
+                              {index === 3 && "기절"}
+                              {index === 4 && "납치"}
+                            </SelectionButton>
+                          ))}
+                        </div>
+                      </Contents>
+                    )}
                   </Types>
                 </Box>
                 <ButtonContainer>
