@@ -182,7 +182,42 @@ public List<MetaData> getMetadataByDateRange(Date startDate, Date endDate) {
                 .getResultList();
     }
 
-    //version 3
+    //version 3 searchLegendByOptions
+    @Override
+    public List<MetaData> searchLegendByOptions(Date startDate, Date endDate, Long cctvId, AbnormalType abnormalType) {
+        // 시작일과 종료일을 생성할 때 null 체크
+        Calendar startCalendar1 = startDate != null ? Calendar.getInstance() : null;
+        if (startCalendar1 != null) {
+            startCalendar1.setTime(startDate);
+            startCalendar1.set(Calendar.HOUR_OF_DAY, 0);
+            startCalendar1.set(Calendar.MINUTE, 0);
+            startCalendar1.set(Calendar.SECOND, 0);
+            startCalendar1.set(Calendar.MILLISECOND, 0);
+        }
+
+        Calendar endCalendar2 = endDate != null ? Calendar.getInstance() : null;
+        if (endCalendar2 != null) {
+            endCalendar2.setTime(endDate);
+            endCalendar2.set(Calendar.HOUR_OF_DAY, 23);
+            endCalendar2.set(Calendar.MINUTE, 59);
+            endCalendar2.set(Calendar.SECOND, 59);
+            endCalendar2.set(Calendar.MILLISECOND, 999);
+        }
+
+        String query = "SELECT m FROM MetaData m " +
+                "WHERE (:cctvId IS NULL OR m.cctvId = :cctvId) " +
+                "AND (:abnormalType IS NULL OR m.abnormalType = :abnormalType) " +
+                // 추가: 시작일과 종료일이 모두 null이 아닌 경우에만 해당 조건을 추가
+                "AND (:startDate IS NULL AND :endDate IS NULL OR m.foundTime BETWEEN :startDate AND :endDate)";
+
+        return em.createQuery(query, MetaData.class)
+                .setParameter("cctvId", cctvId)
+                .setParameter("abnormalType", abnormalType)
+                .setParameter("startDate", startCalendar1 != null ? startCalendar1.getTime() : null)
+                .setParameter("endDate", endCalendar2 != null ? endCalendar2.getTime() : null)
+                .getResultList();
+    }
+
 
     @Override
     public List<MetaData> getAllMetaDatas() {

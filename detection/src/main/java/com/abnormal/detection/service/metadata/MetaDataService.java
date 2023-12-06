@@ -43,9 +43,7 @@ public class MetaDataService {
         return metaDataRepository.getMetadataByCctvId(cctvId);
     }
 //
-    public List<MetaData> getMetadataByDateRange(Date startDate, Date endDate) {
-        return metaDataRepository.getMetadataByDateRange(startDate, endDate);
-    }
+
 //
     public List<MetaData> getMetadataByEntityType(EntityType type) {
         return metaDataRepository.getMetadataByEntityType(type);
@@ -83,7 +81,15 @@ public class MetaDataService {
         metaDataRepository.updateMetadataInfo(metaDataId, updatedMetadata);
     }
 
+    public List<MetaData> getMetadataByDateRange(Date startDate, Date endDate) {
+        return metaDataRepository.getMetadataByDateRange(startDate, endDate);
+    }
+
     public List<MetaData> searchMetaDatasByOptions(Date foundTime, Date entityFoundTime, Long cctvId, AbnormalType abnormalType) {
         return metaDataRepository.searchMetaDatasByOptions(foundTime, entityFoundTime, cctvId, abnormalType);
+    }
+
+    public List<MetaData> searchLegendByOptions(Date startDate, Date endDate, Long cctvId, AbnormalType abnormalType) {
+        return metaDataRepository.searchLegendByOptions(startDate, endDate, cctvId, abnormalType);
     }
 }

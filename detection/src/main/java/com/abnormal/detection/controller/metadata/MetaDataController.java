@@ -103,6 +103,9 @@ public class MetaDataController {
     }
 //*******searchMetaDatas*******
 
+
+
+//*******date-range*******
     @GetMapping("/date-range")
     public List<MetaData> getMetadataByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
         // 서비스 레이어에서 String을 Date로 변환
@@ -123,7 +126,64 @@ public class MetaDataController {
             return null;
         }
     }
+//*******date-range*******
 
+
+
+
+    //*******searchMetaDatas*******
+    @PostMapping("/Legend")
+    public List<MetaData> searchLegend(@RequestBody List<Map<String, String>> searchRequests) {
+        List<MetaData> result = new ArrayList<>();
+
+        for (Map<String, String> searchRequest : searchRequests) {
+            String startDateStr = searchRequest.get("startDate");
+            Date startDate = null;
+            if (startDateStr != null && !startDateStr.isEmpty()) {
+                startDate = dateParseDate(startDateStr);
+            }
+
+            String endDateStr = searchRequest.get("endDate"); // 수정: "endDate"로 변경
+            Date endDate = null;
+            if (endDateStr != null && !endDateStr.isEmpty()) {
+                endDate = dateParseDate(endDateStr);
+            }
+
+            String cctvIdStr = searchRequest.get("cctvId");
+            Long cctvId = (cctvIdStr != null && !cctvIdStr.isEmpty()) ? Long.valueOf(cctvIdStr) : null;
+
+            String abnormalTypeStr = searchRequest.get("abnormalType");
+            AbnormalType abnormalType = null;
+            if (abnormalTypeStr != null && !abnormalTypeStr.isEmpty()) {
+                abnormalType = convertToAbnormalType(abnormalTypeStr);
+            }
+
+            List<MetaData> metaDataList = metaDataService.searchLegendByOptions(startDate, endDate, cctvId, abnormalType);
+            result.addAll(metaDataList);
+        }
+
+        return result;
+    }
+/*
+    // parsing String to Date(format)
+    private Date parseDate2(String dateString2) {
+        try {
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            return dateFormat2.parse(dateString2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // AbnormalType
+    private AbnormalType convertToAbnormalType2(String abnormalTypeStr2) {
+
+        return AbnormalType.valueOf(abnormalTypeStr2);
+    }
+
+ */
+//*******searchMetaDatas*******
 
 
     @GetMapping("/{metaDataId}")
