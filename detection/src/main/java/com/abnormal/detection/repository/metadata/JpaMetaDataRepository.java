@@ -5,6 +5,8 @@ import com.abnormal.detection.domain.metadata.AbnormalType;
 import com.abnormal.detection.domain.metadata.EntityType;
 import com.abnormal.detection.domain.metadata.MetaData;
 import com.abnormal.detection.domain.metadata.Quality;
+import com.abnormal.detection.repository.cctv.JpaCctvRepositoryLegend;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +14,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.abnormal.detection.domain.metadata.AbnormalType.fight;
+import static com.abnormal.detection.domain.metadata.EntityType.PERSON;
+import static com.abnormal.detection.domain.metadata.Quality.HIGH;
 
 
 @Repository
@@ -23,6 +35,51 @@ public class JpaMetaDataRepository implements MetaDataRepository{
 
     @PersistenceContext
     private final EntityManager em;
+
+
+//디비 더미 insert
+    private final JpaMetaDataRepositoryLegend jpaMetaDataRepositoryLegend;
+
+    public MetaData makeMetaData(String foundTime, String entityFoundTime, Long cctvId, EntityType type, AbnormalType abnormalType, Quality quality, Long videoId, Long photoId) {
+        MetaData metaData = new MetaData();
+        metaData.setFoundTime(parseDate(foundTime));
+        metaData.setEntityFoundTime(parseDate(entityFoundTime));
+        metaData.setCctvId(cctvId);
+        metaData.setType(type);
+        metaData.setAbnormalType(abnormalType);
+        metaData.setQuality(quality);
+        metaData.setVideoId(videoId);
+        metaData.setPhotoId(photoId);
+
+        return metaData;
+    }
+
+    @PostConstruct
+    public void init() {
+        try {
+            List<MetaData> metaDatas = new ArrayList<>();
+            metaDatas.add(makeMetaData("2020-08-06T12:04:00", "2020-08-06T12:05:00", 1L, PERSON, fight, HIGH, 1L, 1L));
+
+            for (MetaData metaData : metaDatas) {
+                jpaMetaDataRepositoryLegend.createMetaData(metaData);
+                log.info("MetaData inserted: {}", metaData.getAbnormalType());
+            }
+        } catch (Exception e) {
+            log.error("Error during initialization", e);
+        }
+    }
+
+    private Date parseDate(String dateString) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            LocalDateTime localDateTime = LocalDateTime.parse(dateString, formatter);
+
+            return Timestamp.valueOf(localDateTime);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date format: " + dateString, e);
+        }
+    }
+//
 
 
     @Override

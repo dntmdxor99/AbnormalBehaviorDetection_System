@@ -28,8 +28,21 @@ public class MetaData {
     public MetaData() {
 
     }
+    /*
+    public void setCctvId(String cctvId) {
+        this.cctvId = Long.parseLong(cctvId);
+    }
 
+    public void setVideoId(String videoId) {
+        this.videoId = Long.parseLong(videoId);
+    }
 
+    public void setPhotoId(String photoId) {
+        this.photoId = Long.parseLong(photoId);
+    }
+
+     */
+/*
     public Long getMetaDataId() {
         return metaDataId;
     }
@@ -101,4 +114,6 @@ public class MetaData {
     public void setPhotoId(Long photoId) {
         this.photoId = photoId;
     }
+
+ */
 }
