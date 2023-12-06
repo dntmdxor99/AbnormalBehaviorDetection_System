@@ -8,6 +8,7 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 
 import PageLayout from "../components/PageLayout";
 import InsideMap from "../components/InsideMap";
+import KakaoMarker from "../components/KakaoMarker";
 import API from "../utils/API.js";
 import useUserPosition from "../hooks/useUserPosition";
 import useWindowSize from "../hooks/useWindowSize";
@@ -73,7 +74,7 @@ const RadioButton = styled.div`
   display: block;
 `;
 
-const abnormalBehaviors = ["fight", "assault", "drunken", "swoon", "kidnap"];
+const abnormalType = ["fight", "assault", "drunken", "swoon", "kidnap"];
 
 const SelectionButton = styled.div`
   display: inline-block;
@@ -115,48 +116,12 @@ const NextButton = styled.div`
 `;
 
 function SearchPage() {
-  // const [cctvData, setCctvData] = useState([]);
-  // [{
-  //   cctvId: "",
-  //   cctvName: "",
-  //   location: "",
-  //   latitude: "",
-  //   longitude: "",
-  //   is360Degree: "",
-  //   channel: "",
-  //   videoSize: "",
-  // }]
-
-  /*
-  {
-    "cctvId": "",
-    "cctvName": "",
-    "location": "대구광역시 북구 대현로15길 17",
-    "is360Degree": true,
-    "channel" : ""
-}
-  */
-
-  /*
-@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long metaDataId;
-    Date foundTime;
-    Date entityFoundTime;
-    Long cctvId;
-    EntityType type;
-    AbnormalType abnormalType;
-    Quality quality;
-    Long videoId;
-    Long photoId;
-*/
-
   const windowSize = useWindowSize();
   const userPosition = useUserPosition();
   const selectedCctvIds = useRecoilValue(cctvIdState);
   const selectedCount = selectedCctvIds.length;
   const [activeStates, setActiveStates] = useState(
-    Array(abnormalBehaviors.length).fill(false)
+    Array(abnormalType.length).fill(false)
   );
   const setAbnormalBehavior = useSetRecoilState(abnormalBehaviorState);
 
@@ -166,18 +131,18 @@ function SearchPage() {
     setActiveStates(newActiveStates);
 
     if (newActiveStates[index]) {
-      setAbnormalBehavior((prev) => [...prev, abnormalBehaviors[index]]);
+      setAbnormalBehavior((prev) => [...prev, abnormalType[index]]);
     } else {
       setAbnormalBehavior((prev) =>
-        prev.filter((behavior) => behavior !== abnormalBehaviors[index])
+        prev.filter((behavior) => behavior !== abnormalType[index])
       );
     }
 
     const selectedBehaviors = newActiveStates
-      .map((active, index) => (active ? abnormalBehaviors[index] : null))
+      .map((active, index) => (active ? abnormalType[index] : null))
       .filter((behavior) => behavior !== null);
 
-    sendAbnormalBehaviors(selectedBehaviors);
+    sendResults(selectedBehaviors);
   };
 
   const [positions, setPositions] = useState([]);
@@ -200,11 +165,16 @@ function SearchPage() {
     fetchData();
   }, []);
 
-  const sendAbnormalBehaviors = async (abnormalBehaviors) => {
+  const cctvIdValue = useRecoilValue(cctvIdState);
+  console.log(cctvIdValue);
+
+  const sendResults = async (abnormalBehaviors, cctvIdValue) => {
     try {
-      //엔드포인트 수정해야함
-      const response = await axios.post("/api/abnormalBehaviors", {
-        behaviors: abnormalBehaviors,
+      const response = await axios.post("/metadata/search", {
+        foundTime: "",
+        entityFoundTime: "",
+        cctvId: cctvIdValue,
+        abnormalType: abnormalBehaviors,
       });
       if (response.status === 200) {
         console.log("이상행동 정보를 백엔드로 전송하였습니다.");
@@ -213,6 +183,7 @@ function SearchPage() {
       }
     } catch (error) {
       console.error("이상행동 정보 전송에 실패하였습니다.", error);
+      console.log(cctvIdValue);
     }
   };
 
@@ -272,7 +243,7 @@ function SearchPage() {
                       <Contents>
                         이상행동 선택
                         <div style={{ marginTop: "10px" }}>
-                          {abnormalBehaviors.map((behavior, index) => (
+                          {abnormalType.map((behavior, index) => (
                             <SelectionButton
                               key={index}
                               active={activeStates[index]}
