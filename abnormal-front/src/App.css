@@ -87,13 +87,16 @@
 
 .cctv {
   display: flex;
+  flex-direction: column;
 }
 
 .cctv-main {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-left: 6vw;
   height: 100vh;
-  padding-left: 5vw;
-  margin-top: 50px;
 }
 
 .cctv-main-title {
