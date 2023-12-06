@@ -1,8 +1,8 @@
 import {atom} from "recoil";
 
-const positionState = atom({
-    key:'positionState',
+const cctvIdState = atom({
+    key:'cctvIdState',
     default: [],
 })
 
-export default positionState;
+export default cctvIdState;

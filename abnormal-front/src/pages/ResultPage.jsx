@@ -59,7 +59,7 @@ const ResultPage = () => {
     if (savedBehaviors) {
       setSelectedAbnormalBehaviors(JSON.parse(savedBehaviors));
     }
-  }, [setSelectedAbnormalBehaviors]);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('abnormalBehaviors', JSON.stringify(selectedAbnormalBehaviors));
