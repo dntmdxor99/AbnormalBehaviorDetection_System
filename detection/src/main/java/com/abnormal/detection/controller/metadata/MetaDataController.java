@@ -7,8 +7,16 @@ import com.abnormal.detection.domain.metadata.MetaData;
 import com.abnormal.detection.domain.metadata.Quality;
 import com.abnormal.detection.service.metadata.MetaDataService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +48,83 @@ public class MetaDataController {
         return metaDataService.getAllMetaDatas();
     }
 
+//*******searchMetaDatas*******
+    @PostMapping("/search")
+    public List<MetaData> searchMetaDatas(@RequestBody List<Map<String, String>> searchRequests) {
+        List<MetaData> result = new ArrayList<>();
+
+        for (Map<String, String> searchRequest : searchRequests) {
+            //1
+            String foundTimeStr = searchRequest.get("foundTime");
+            Date foundTime = null;
+            if (foundTimeStr != null && !foundTimeStr.isEmpty()) {
+
+                foundTime = parseDate(foundTimeStr);
+            }
+            //2
+            String entityFoundTimeStr = searchRequest.get("entityFoundTime");
+            Date entityFoundTime = null;
+            if (entityFoundTimeStr != null && !entityFoundTimeStr.isEmpty()) {
+
+                entityFoundTime = parseDate(entityFoundTimeStr);
+            }
+            //3
+            String cctvIdStr = searchRequest.get("cctvId");
+            Long cctvId = (cctvIdStr != null && !cctvIdStr.isEmpty()) ? Long.valueOf(cctvIdStr) : null;
+            //4
+            String abnormalTypeStr = searchRequest.get("abnormalType");
+            AbnormalType abnormalType = null;
+            if (abnormalTypeStr != null && !abnormalTypeStr.isEmpty()) {
+                abnormalType = convertToAbnormalType(abnormalTypeStr);
+            }
+
+            List<MetaData> metaDataList = metaDataService.searchMetaDatasByOptions(foundTime, entityFoundTime, cctvId, abnormalType);
+            result.addAll(metaDataList);
+        }
+
+        return result;
+    }
+
+    // parsing String to Date(format)
+    private Date parseDate(String dateString) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            return dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // AbnormalType
+    private AbnormalType convertToAbnormalType(String abnormalTypeStr) {
+
+        return AbnormalType.valueOf(abnormalTypeStr);
+    }
+//*******searchMetaDatas*******
+
+    @GetMapping("/date-range")
+    public List<MetaData> getMetadataByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
+        // 서비스 레이어에서 String을 Date로 변환
+        Date startDateParsed = dateParseDate(startDate);
+        Date endDateParsed = dateParseDate(endDate);
+
+        return metaDataService.getMetadataByDateRange(startDateParsed, endDateParsed);
+    }
+
+    private Date dateParseDate(String dateString) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            LocalDateTime localDateTime = LocalDateTime.parse(dateString, formatter);
+            return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        } catch (DateTimeParseException e) {
+            // Handle parsing exception
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 
     @GetMapping("/{metaDataId}")
     public MetaData getMetadataById(@PathVariable Long metaDataId) {
@@ -51,10 +136,6 @@ public class MetaDataController {
         return metaDataService.getMetadataByCctvId(cctvId);
     }
 
-    @GetMapping("/date-range")
-    public List<MetaData> getMetadataByDateRange(@RequestParam Date startDate, @RequestParam Date endDate) {
-        return metaDataService.getMetadataByDateRange(startDate, endDate);
-    }
 
     @GetMapping("/entity-type/{type}")
     public List<MetaData> getMetadataByEntityType(@PathVariable String type) {

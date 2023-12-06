@@ -17,9 +17,11 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -87,6 +89,100 @@ public class JpaMetaDataRepository implements MetaDataRepository{
         em.persist(metaData);
         return metaData;
     }
+    ////f실제로 객체가 언제로 이상행동검출
+    ////en 해당 비디오 내에서 몇번째 프레임인지
+    /*
+    @Override
+    public List<MetaData> getMetadataByDateRange(Date startDate, Date endDate) {
+        return em.createQuery("SELECT m FROM MetaData m WHERE m.foundTime >= :startDate and m.foundTime <= :endDate", MetaData.class)
+                .setParameter("startDate", startDate).setParameter("endDate", endDate).getResultList();
+    }
+
+     */
+
+
+/*
+    @Override
+    public List<MetaData> getMetadataByDateRange(Date startDate, Date endDate) {
+        // 시작일은 2020-08-06T03:03:00의 2020-08-06T00:00:00으로 설정
+        Calendar startCalendar = Calendar.getInstance();
+        startCalendar.setTime(startDate);
+        startCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        startCalendar.set(Calendar.MINUTE, 0);
+        startCalendar.set(Calendar.SECOND, 0);
+        startCalendar.set(Calendar.MILLISECOND, 0);
+
+        // 종료일은 2020-08-06T04:07:00의 2020-08-07T00:00:00으로 설정
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.setTime(endDate);
+        endCalendar.set(Calendar.HOUR_OF_DAY, 23);
+        endCalendar.set(Calendar.MINUTE, 59);
+        endCalendar.set(Calendar.SECOND, 59);
+        endCalendar.set(Calendar.MILLISECOND, 999);
+
+        return em.createQuery("SELECT m FROM MetaData m WHERE m.foundTime >= :startDate AND m.foundTime <= :endDate", MetaData.class)
+                .setParameter("startDate", startCalendar.getTime())
+                .setParameter("endDate", endCalendar.getTime())
+                .getResultList();
+    }
+
+ */
+
+    //요약: 세부검색기능으로 프론트에서 Date형식인 startDate,endDate를 사용자에게 받으면 그에 날짜 해당되는 모든 메타데이터를 반환해줌 여기서 foundtime,entityFoundTime세트로 화면에 띄우고 리스트 클릭시에 메타데이터 리스트로 담아서 search 요청
+    //1.화면상에 사용자에게 date 날짜 입력받음 ->백에게 /metadata/date-range 요청 후 foundtime,entityFoundTime세트 받음
+    //2.화면상에 foundtime,entityFoundTime보여주고 사용자가 클릭시에
+    // /metadata/search 요청("foundTime": "", <-사용자 클릭시 여기포함
+    //        "entityFoundTime": "", <- 사용자 클릭시 여기포함
+    //        "cctvId": ,
+    //        "abnormalType": "")에 포함시켜서 옵션 검색
+    //참고로 옵션검색은 한개라도 일치하면 검색됨
+public List<MetaData> getMetadataByDateRange(Date startDate, Date endDate) {
+    // 시작일은 2020-08-06T03:03:00의 2020-08-06T00:00:00으로 설정
+    Calendar startCalendar = Calendar.getInstance();
+    startCalendar.setTime(startDate);
+    startCalendar.set(Calendar.HOUR_OF_DAY, 0);
+    startCalendar.set(Calendar.MINUTE, 0);
+    startCalendar.set(Calendar.SECOND, 0);
+    startCalendar.set(Calendar.MILLISECOND, 0);
+
+    // 종료일은 2020-08-06T04:07:00의 2020-08-07T00:00:00으로 설정
+    Calendar endCalendar = Calendar.getInstance();
+    endCalendar.setTime(endDate);
+    endCalendar.set(Calendar.HOUR_OF_DAY, 23);
+    endCalendar.set(Calendar.MINUTE, 59);
+    endCalendar.set(Calendar.SECOND, 59);
+    endCalendar.set(Calendar.MILLISECOND, 999);
+
+    return em.createQuery("SELECT m FROM MetaData m WHERE m.foundTime BETWEEN :startDate AND :endDate", MetaData.class)
+            .setParameter("startDate", startCalendar.getTime())
+            .setParameter("endDate", endCalendar.getTime())
+            .getResultList();
+}
+
+
+
+
+
+
+
+    //한개라도 일치하는 값 모두 반환
+    @Override
+    public List<MetaData> searchMetaDatasByOptions(Date foundTime, Date entityFoundTime, Long cctvId, AbnormalType abnormalType) {
+        String query = "SELECT m FROM MetaData m " +
+                "WHERE (:cctvId IS NULL OR m.cctvId = :cctvId) " +
+                "AND (:abnormalType IS NULL OR m.abnormalType = :abnormalType) " +
+                "AND (COALESCE(:foundTime, '') = '' OR m.foundTime = :foundTime) " +
+                "AND (COALESCE(:entityFoundTime, '') = '' OR m.entityFoundTime = :entityFoundTime)";
+
+        return em.createQuery(query, MetaData.class)
+                .setParameter("cctvId", cctvId)
+                .setParameter("abnormalType", abnormalType)
+                .setParameter("foundTime", foundTime)
+                .setParameter("entityFoundTime", entityFoundTime)
+                .getResultList();
+    }
+
+    //version 3
 
     @Override
     public List<MetaData> getAllMetaDatas() {
@@ -104,11 +200,7 @@ public class JpaMetaDataRepository implements MetaDataRepository{
                 .setParameter("cctvId", cctvId).getResultList();
     }
 
-    @Override
-    public List<MetaData> getMetadataByDateRange(Date startDate, Date endDate) {
-        return em.createQuery("SELECT m FROM MetaData m WHERE m.cctvId >= :startDate and m.cctvId <= :endDate", MetaData.class)
-                .setParameter("startDate", startDate).setParameter("endDate", endDate).getResultList();
-    }
+
 
     @Override
     public List<MetaData> getMetadataByEntityType(EntityType type) {
@@ -189,19 +281,6 @@ public class JpaMetaDataRepository implements MetaDataRepository{
             em.merge(toUpdate);
         }
     }
-    @Override
-    public List<MetaData> searchMetaDatasByOptions(Date foundTime, Date entityFoundTime, Long cctvId, AbnormalType abnormalType) {
-        String query = "SELECT m FROM MetaData m " +
-                "WHERE (:cctvId IS NULL OR m.cctvId = :cctvId) " +
-                "AND (:abnormalType IS NULL OR m.abnormalType = :abnormalType) " +
-                "AND (COALESCE(:foundTime, '') = '' OR m.foundTime = :foundTime) " +
-                "AND (COALESCE(:entityFoundTime, '') = '' OR m.entityFoundTime = :entityFoundTime)";
 
-        return em.createQuery(query, MetaData.class)
-                .setParameter("cctvId", cctvId)
-                .setParameter("abnormalType", abnormalType)
-                .setParameter("foundTime", foundTime)
-                .setParameter("entityFoundTime", entityFoundTime)
-                .getResultList();
-    }
+
 }

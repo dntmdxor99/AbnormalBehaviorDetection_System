@@ -37,8 +37,12 @@ public interface MetaDataRepository {
     void deleteMetadata(Long metaDataId);
 
     void updateMetadataInfo(Long metaDataId, MetaData updatedMetadata);
-//f실제로 객체가 언제로 이상행동검출
+    //f실제로 객체가 언제로 이상행동검출
     //en 해당 비디오 내에서 몇번째 프레임인지
     List<MetaData> searchMetaDatasByOptions(Date foundTime, Date entityFoundTime, Long cctvId,  AbnormalType abnormalType);
+/*
+    List<MetaData> searchLegendByOptions(Date firstDate, Date endDate, Long cctvId,  AbnormalType abnormalType);
+
+ */
 
 }
