@@ -203,6 +203,7 @@ dist
 **/*.backup.*
 **/*.back.*
 
+.DS_Store
 
 *.sublime*
 

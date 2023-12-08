@@ -1,6 +1,6 @@
 import { MapMarker } from "react-kakao-maps-sdk";
 import { useState, useEffect } from "react";
-import { useSetRecoilState, useRecoilValu, useRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import cctvIdState from "../recoil/cctvIdState";
 
 const KakaoMarker = ({ cctvId, lat, lng }) => {

@@ -1,9 +1,12 @@
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
+import DatePicker from "react-datepicker";
+import { ko } from "date-fns/esm/locale";
+import "react-datepicker/dist/react-datepicker.css";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import PageLayout from "../components/PageLayout";
 import InsideMap from "../components/InsideMap";
@@ -12,8 +15,7 @@ import useUserPosition from "../hooks/useUserPosition";
 import useWindowSize from "../hooks/useWindowSize";
 import "../App.css";
 import cctvIdState from "../recoil/cctvIdState.js";
-import abnormalBehaviorState from '../recoil/abnormalBehaviorState.js';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import abnormalBehaviorState from "../recoil/abnormalBehaviorState.js";
 
 const Frame = styled.div`
   width: 100vw;
@@ -72,8 +74,6 @@ const RadioButton = styled.div`
   display: block;
 `;
 
-const abnormalBehaviors = ["싸움", "폭행", "주취행동", "기절", "납치"];
-
 const SelectionButton = styled.div`
   display: inline-block;
   padding: 15px 15px;
@@ -100,66 +100,29 @@ const ButtonContainer = styled.div`
 `;
 
 const NextButton = styled.div`
-  display: inline-block;
-  padding: 10px 20px;
-  margin: 5px;
-  font-size: 20px;
-  font-weight: 700;
-  background-color: #029D65;
-  color: #ffffff;
-  text-decoration: none;
-  border-radius: 5px;
-  cursor: pointer;
+display: inline-block;
+padding: 10px 20px;
+margin: 5px;
+font-size: 20px;
+font-weight: 700;
+background-color: #029D65;
+color: #ffffff;
+text-decoration: none;
+border-radius: 5px;
+cursor: pointer;
 }
 `;
 
 function SearchPage() {
-  // const [cctvData, setCctvData] = useState([]);
-  // [{
-  //   cctvId: "",
-  //   cctvName: "",
-  //   location: "",
-  //   latitude: "",
-  //   longitude: "",
-  //   is360Degree: "",
-  //   channel: "",
-  //   videoSize: "",
-  // }]
-
-  /*
-  {
-    "cctvId": "",
-    "cctvName": "",
-    "location": "대구광역시 북구 대현로15길 17",
-    "is360Degree": true,
-    "channel" : ""
-}
-  */
-
+  const abnormalType = ["fight", "assault", "drunken", "swoon", "kidnap"];
   const windowSize = useWindowSize();
   const userPosition = useUserPosition();
   const selectedCctvIds = useRecoilValue(cctvIdState);
   const selectedCount = selectedCctvIds.length;
   const [activeStates, setActiveStates] = useState(
-    Array(abnormalBehaviors.length).fill(false)
+    Array(abnormalType.length).fill(false)
   );
   const setAbnormalBehavior = useSetRecoilState(abnormalBehaviorState);
-
-const handleClick = (index) => {
-  const newActiveStates = [...activeStates];
-  newActiveStates[index] = !newActiveStates[index];
-  setActiveStates(newActiveStates);
-
-  if (newActiveStates[index]) {
-    // If the behavior is selected, add it to the state
-    setAbnormalBehavior((prev) => [...prev, abnormalBehaviors[index]]);
-  } else {
-    // If the behavior is deselected, remove it from the state
-    setAbnormalBehavior((prev) =>
-      prev.filter((behavior) => behavior !== abnormalBehaviors[index])
-    );
-  }
-};
 
   const [positions, setPositions] = useState([]);
 
@@ -181,11 +144,104 @@ const handleClick = (index) => {
     fetchData();
   }, []);
 
+  const cctvIdValue = useRecoilValue(cctvIdState);
+
+  const [result, setResult] = useState({
+    foundTime: "",
+    entityFoundTime: "",
+    cctvId: "",
+    abnormalType: "",
+  });
+
+  const handleClick = (index) => {
+    const newActiveStates = [...activeStates];
+    newActiveStates[index] = !newActiveStates[index];
+    setActiveStates(newActiveStates);
+
+    if (newActiveStates[index]) {
+      setAbnormalBehavior((prev) => [...prev, abnormalType[index]]);
+    } else {
+      setAbnormalBehavior((prev) =>
+        prev.filter((behavior) => behavior !== abnormalType[index])
+      );
+    }
+  };
+
   useEffect(() => {
     console.log(positions);
   }, [positions]);
 
-  const [positionData, setPositionData] = useRecoilState(cctvIdState);
+  const [isRealTimeSelected, setIsRealTimeSelected] = useState(false);
+
+  const handleSearchPeriodChange = (event) => {
+    const { value } = event.target;
+    if (value === "real-time") {
+      setIsRealTimeSelected(true);
+    } else {
+      setIsRealTimeSelected(false);
+    }
+  };
+
+  const SelectDate = () => {
+    const [storeDate, setStoreDate] = useState({
+      startDate: "",
+      endDate: "",
+    });
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+
+    const setChangeDate = (dates) => {
+      const [start, end] = dates;
+      setStartDate(start);
+      setEndDate(end);
+      setStoreDate({
+        startDate: start,
+        endDate: end,
+      });
+    };
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await API.get("/metadata/search", {
+            params: {
+              startDate: startDate,
+              endDate: endDate,
+            },
+          });
+          if (response.status === 200) {
+            const data = response.data;
+            console.log(data);
+            // 데이터 처리 로직 작성
+          } else {
+            console.error("API 호출 실패");
+          }
+        } catch (error) {
+          console.error("date 보내기 실패.", error);
+        }
+      };
+
+      if (startDate && endDate) {
+        fetchData();
+      }
+    }, [startDate, endDate]);
+
+    return (
+      <div>
+        <DatePicker
+          selectsRange={true}
+          className="datepicker"
+          locale={ko}
+          dateFormat="yyyy년 MM월 dd일"
+          selected={startDate}
+          startDate={startDate}
+          endDate={endDate}
+          maxDate={new Date()}
+          onChange={setChangeDate}
+        />
+      </div>
+    );
+  };
 
   return (
     <PageLayout>
@@ -208,6 +264,7 @@ const handleClick = (index) => {
                           type="radio"
                           name="searchPeriod"
                           value="real-time"
+                          onChange={handleSearchPeriodChange}
                         />
                         실시간
                       </RadioButton>
@@ -216,24 +273,32 @@ const handleClick = (index) => {
                           type="radio"
                           name="searchPeriod"
                           value="set-time"
+                          onChange={handleSearchPeriodChange}
                         />
                         구간 설정
+                        {!isRealTimeSelected && <SelectDate />}
                       </RadioButton>
                     </RadioButtonGroup>
-                    <Contents>
-                      이상행동 선택
-                      <div style={{ marginTop: "10px" }}>
-                        {abnormalBehaviors.map((behavior, index) => (
-                          <SelectionButton
-                            key={index}
-                            active={activeStates[index]}
-                            onClick={() => handleClick(index)}
-                          >
-                            {behavior}
-                          </SelectionButton>
-                        ))}
-                      </div>
-                    </Contents>
+                    {!isRealTimeSelected && (
+                      <Contents>
+                        이상행동 선택
+                        <div style={{ marginTop: "10px" }}>
+                          {abnormalType.map((behavior, index) => (
+                            <SelectionButton
+                              key={index}
+                              active={activeStates[index]}
+                              onClick={() => handleClick(index)}
+                            >
+                              {index === 0 && "싸움"}
+                              {index === 1 && "폭행"}
+                              {index === 2 && "주취행동"}
+                              {index === 3 && "기절"}
+                              {index === 4 && "납치"}
+                            </SelectionButton>
+                          ))}
+                        </div>
+                      </Contents>
+                    )}
                   </Types>
                 </Box>
                 <ButtonContainer>
