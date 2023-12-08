@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -144,8 +143,10 @@ function SearchPage() {
     fetchData();
   }, []);
 
-  const cctvIdValue = useRecoilValue(cctvIdState);
-
+  const cctvId = useRecoilValue(cctvIdState);
+  // console.log("여기야여기11111")
+  // console.log(cctvIdValue);
+  // console.log("여기야여기22222")
   const [result, setResult] = useState({
     foundTime: "",
     entityFoundTime: "",
@@ -182,14 +183,19 @@ function SearchPage() {
     }
   };
 
+  const time="T00:00:00";
+
   const SelectDate = () => {
     const [storeDate, setStoreDate] = useState({
       startDate: "",
       endDate: "",
     });
+    const moment = require('moment');
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
-
+    const formattedStartDate = moment(startDate).format('YYYY-MM-DDTHH:mm:ss');
+    const formattedEndDate = moment(endDate).format('YYYY-MM-DDTHH:mm:ss');
+    
     const setChangeDate = (dates) => {
       const [start, end] = dates;
       setStartDate(start);
@@ -203,10 +209,12 @@ function SearchPage() {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await API.get("/metadata/search", {
+          const response = await API.post("/metadata/Legend", {
             params: {
-              startDate: startDate,
-              endDate: endDate,
+              startDate: formattedStartDate,
+              endDate: formattedEndDate,
+              cctvId: 1,
+              abnormalType: "",
             },
           });
           if (response.status === 200) {
@@ -218,9 +226,12 @@ function SearchPage() {
           }
         } catch (error) {
           console.error("date 보내기 실패.", error);
+          console.log(formattedStartDate);
+          console.log(formattedEndDate);
+          console.log(abnormalType[0]);
+
         }
       };
-
       if (startDate && endDate) {
         fetchData();
       }
