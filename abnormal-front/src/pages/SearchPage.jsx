@@ -143,16 +143,14 @@ function SearchPage() {
     fetchData();
   }, []);
 
-  const cctvId = useRecoilValue(cctvIdState);
-  // console.log("여기야여기11111")
-  // console.log(cctvIdValue);
-  // console.log("여기야여기22222")
-  const [result, setResult] = useState({
-    foundTime: "",
-    entityFoundTime: "",
-    cctvId: "",
-    abnormalType: "",
-  });
+  /* * * * * * * * * * * * * * * * * *
+   *     {
+   *     foundTime: "",
+   *     entityFoundTime: "",
+   *     cctvId: "1",
+   *     abnormalType: "",
+   *     }
+   * * * * * * * * * * * * * * * * * * */
 
   const handleClick = (index) => {
     const newActiveStates = [...activeStates];
@@ -172,6 +170,8 @@ function SearchPage() {
     console.log(positions);
   }, [positions]);
 
+  //이거 position 안뜸 ㅜㅜ
+
   const [isRealTimeSelected, setIsRealTimeSelected] = useState(false);
 
   const handleSearchPeriodChange = (event) => {
@@ -183,19 +183,14 @@ function SearchPage() {
     }
   };
 
-  const time="T00:00:00";
+  const [storeDate, setStoreDate] = useState({
+    startDate: null,
+    endDate: null,
+  });
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   const SelectDate = () => {
-    const [storeDate, setStoreDate] = useState({
-      startDate: "",
-      endDate: "",
-    });
-    const moment = require('moment');
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
-    const formattedStartDate = moment(startDate).format('YYYY-MM-DDTHH:mm:ss');
-    const formattedEndDate = moment(endDate).format('YYYY-MM-DDTHH:mm:ss');
-    
     const setChangeDate = (dates) => {
       const [start, end] = dates;
       setStartDate(start);
@@ -205,37 +200,6 @@ function SearchPage() {
         endDate: end,
       });
     };
-
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await API.post("/metadata/Legend", {
-            params: {
-              startDate: formattedStartDate,
-              endDate: formattedEndDate,
-              cctvId: 1,
-              abnormalType: "",
-            },
-          });
-          if (response.status === 200) {
-            const data = response.data;
-            console.log(data);
-            // 데이터 처리 로직 작성
-          } else {
-            console.error("API 호출 실패");
-          }
-        } catch (error) {
-          console.error("date 보내기 실패.", error);
-          console.log(formattedStartDate);
-          console.log(formattedEndDate);
-          console.log(abnormalType[0]);
-
-        }
-      };
-      if (startDate && endDate) {
-        fetchData();
-      }
-    }, [startDate, endDate]);
 
     return (
       <div>
@@ -253,6 +217,85 @@ function SearchPage() {
       </div>
     );
   };
+
+  const cctvId = useRecoilValue(cctvIdState);
+  const [result, setResult] = useState([]);
+  const [formattedStartDate, setFormattedStartDate] = useState(null);
+  const [formattedEndDate, setFormattedEndDate] = useState(null);
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      const moment = require("moment");
+      const formattedStart = moment(startDate).format("YYYY-MM-DDTHH:mm:ss");
+      const formattedEnd = moment(endDate).format("YYYY-MM-DDTHH:mm:ss");
+      setFormattedStartDate(formattedStart);
+      setFormattedEndDate(formattedEnd);
+    } else {
+      setFormattedStartDate(null);
+      setFormattedEndDate(null);
+    }
+  }, [startDate, endDate]);
+
+  useEffect(() => {
+    setResult([
+      {
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
+        cctvId: "1",
+        abnormalType: "",
+      },
+    ]);
+  }, [formattedStartDate, formattedEndDate]);
+
+  /* * * * * * * * * * * * * * * * * *
+   *     {
+   *       metaDataId: "",
+   *       foundTime: "",
+   *       entityFoundTime: "",
+   *       cctvId: "",
+   *       type: "",
+   *       abnormalType: "",
+   *       quality: "",
+   *       videoId: "",
+   *       photoId: "",
+   *     }
+   * * * * * * * * * * * * * * * * * * */
+
+  const [getResult, setGetResult] = useState([{
+    metaDataId: '',
+    foundTime: '',
+    entityFoundTime: '',
+    cctvId: '',
+    type: '',
+    abnormalType: '',
+    quality: '',
+    videoId: '',
+    photoId: '',
+  }]);
+
+  useEffect(() => {
+    console.log("getResult updated:", getResult);
+  }, [getResult]);
+
+  const handleNextButtonClick = async () => {
+    try {
+      const response = await API.post("/metadata/Legend", result);
+      if (response.status === 200) {
+        const data = response.data;
+        console.log("데이터 전송 성공", data);
+        console.log("111111111");
+        setGetResult(data);
+        console.log(getResult);
+      } else {
+        console.error("API 호출 실패");
+      }
+    } catch (error) {
+      console.error("데이터 전송 실패", error);
+    }
+  };
+
+  //console.log(getResult[0]);
+  //console.log(getResult);
 
   return (
     <PageLayout>
@@ -314,7 +357,9 @@ function SearchPage() {
                 </Box>
                 <ButtonContainer>
                   <Link to="/result">
-                    <NextButton>검색 결과 보기</NextButton>
+                    <NextButton onClick={handleNextButtonClick}>
+                      검색 결과 보기
+                    </NextButton>
                   </Link>
                 </ButtonContainer>
               </Rectangle>
