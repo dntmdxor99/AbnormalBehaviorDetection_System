@@ -115,6 +115,8 @@ const SignUpButton = styled.button`
 const SignUpPage = () => {
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const onClickHandler = () => alert("회원가입 성공하였습니다.");
+  
   const [inputValue, setInputValue] = useState({
     userNumber: "",
     employeeNumber: "",
@@ -156,11 +158,10 @@ const SignUpPage = () => {
     try {
       console.log("서버응답*******************8");
       const response = await API.post('/users/signup', data);
-      console.log(data);
-      console.log("서버응답");
-      console.log(response);
       
-      navigate('/login')
+      onClickHandler();
+      
+      navigate('/')
     }
     catch (error) {
       console.error("서버와의 통신 중 오류 발생", error);

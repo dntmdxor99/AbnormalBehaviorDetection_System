@@ -1,4 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
+import axios from 'axios';
+import API from '../utils/API';
+
 
 const AuthContext = createContext();
 
@@ -9,9 +12,21 @@ export const AuthProvider = ({ children }) => {
     setUser({userData: userData.username});
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('login-token');
+  const logout =  async () => {
+    const token = localStorage.getItem('login-token');
+    console.log(token);
+    try {
+      await API.get('/users/logout', {
+        headers: {
+          Authorization:`Bearer ${token}`
+        }
+      });
+
+      setUser(null);
+      localStorage.removeItem('login-token');
+    } catch (error) {
+      console.error('로그아웃 중 에러 발생', error);
+    }
   };
 
   return (

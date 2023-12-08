@@ -1,7 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import React from "react";
-import { Route, Routes, BrowserRouter, Link } from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import AbnormalBehaviorPage from "./pages/AbnormalBehaviorPage";
 import CctvPage from "./pages/CctvPage";
@@ -16,16 +16,17 @@ import PageLayout from "./components/PageLayout";
 import { AuthProvider } from "./context/AuthContext";
 import { RecoilRoot } from "recoil";
 
+
+
 function App() {
   return (
     <>
       <RecoilRoot>
         <AuthProvider>
           <BrowserRouter>
-            <Header>
-            </Header>
+            <Header />
             <Routes>
-              <Route path="/" element={<MainPage />} />{" "}
+              <Route path="/" element={<MainPage />} />
               <Route path="/abnormal" element={<AbnormalBehaviorPage />} />
               <Route path="/cctv" element={<CctvPage />} />
               <Route path="/ask" element={<AskPage />} />
@@ -40,5 +41,6 @@ function App() {
     </>
   );
 }
+
 
 export default App;

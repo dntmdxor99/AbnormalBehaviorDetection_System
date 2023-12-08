@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Button from '@mui/material/Button';
 import styled, {createGlobalStyle} from 'styled-components';
+import { useNavigate } from 'react-router-dom/dist';
 
 
 const loginButtonStyle = {
@@ -61,11 +62,11 @@ const MenuBarButtons = styled.div`
   align-items: center;
 
   span {
-    margin-right: 10px;
+    margin-right: 50px;
   }
 
   button {
-    margin-left: 10px;
+    margin-left: 20px;
   }
 
   a {
@@ -74,46 +75,62 @@ const MenuBarButtons = styled.div`
 `;
 
 
-const StyledLink = styled(Link)`
-  color: black;
-  text-decoration: none;
-  font-weight: bold
-`;
+const fontStlye = {
+  color: 'black',
+  textDecoration: 'none',
+  fontWeight: 'bold'
+};
 
 
 const Header = () => {
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const onClickHandler = () => alert("로그인 후 사용가능합니다.");
+
+  const handleHeaderClick = (path) => {
+    if (!user) {
+      onClickHandler();
+      navigate('/login');
+    }
+    else {
+      navigate(path);
+    }
+
+  }
+
 
   return (
     <HeaderContainer>
       <MenuBar>
           <MenuItem>
-            <StyledLink to="/" className="menu-home-item">
+            <Link to="/"  style={fontStlye} className="menu-home-item">
               7팀
-            </StyledLink>
+            </Link>
           </MenuItem>
           <MenuItem>
-            <StyledLink to="/abnormal" className="menu-bar-item">
+            <div style={fontStlye} className="menu-bar-item" onClick={() => handleHeaderClick('/abnormal')}>
               이상행동
-            </StyledLink>
+            </div>
           </MenuItem>
           <MenuItem>
-            <StyledLink to="/cctv" className="menu-bar-item">
+            <div style={fontStlye} className="menu-bar-item" onClick={() => handleHeaderClick('/cctv')}>
               CCTV
-            </StyledLink>
+            </div>
           </MenuItem>
           <MenuItem>
-            <StyledLink to="/ask" className="menu-bar-item">
+            <div style={fontStlye} className="menu-bar-item" onClick={() => handleHeaderClick('/ask')}>
               문의하기
-            </StyledLink>
+            </div>
           </MenuItem>
       </MenuBar>
-
+      
       <MenuBarButtons>
         {user ? (
           <>
             <span>{user.username}</span>
-            <Button onClick={logout}>로그아웃</Button>
+            <Link to="/" style={logoutButtonStyle} onClick={logout}>
+              로그아웃
+            </Link>
           </>
         ) : (
           <>

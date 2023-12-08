@@ -49,18 +49,13 @@ const LoginFormContainer = styled.div`
 
 const LoginPage = () => {
   const {login} = useAuth();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
   const navigate = useNavigate();
+  //const onClickHandler = (message) => (` ${message}`);
+
   const [inputValue, setInputValue] = useState({
     id: '',
     password: '',
   });
-
-  
-  const closeModal = () => {
-    setModalOpen(false);
-  };
 
 
   useEffect( () => {
@@ -99,7 +94,6 @@ const LoginPage = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("로그인 버튼 클릭됨");
 
     const data = {
       userId: inputValue.id,
@@ -109,30 +103,21 @@ const LoginPage = () => {
     try {
       const response = await API.post('/users/login', data);
 
-      console.log("서버응답", response);
-
       if (response.status === 200) {
-        console.log("로그인 성공!");
         login({username: data.userId});
         localStorage.clear()
         localStorage.setItem('login-token', response.data)
         
         checkLoginStatus();
         
-        navigate('/')
-      }
-      else if (response.status === 400) {
-        console.log("아이디와 비밀번호가 일치하지않습니다.");
-        setModalMessage("아이디와 비밀번호가 일치하지 않습니다.");
-        setModalOpen(true);
-      }
-      else {
-        console.log("로그인 실패!");
-        navigate('/login')
+        alert('로그인 성공!');
+        navigate('/');
       }
     }
     catch (error) {
-      console.error("서버와의 통신 중 오류 발생", error);
+      alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+
+      navigate('/login');
     }
   }; 
 
@@ -167,7 +152,6 @@ const LoginPage = () => {
           </LoginForm>
         </LoginFormContainer>
       </CenteredContainer>
-      <Modal isOpen={modalOpen} message={modalMessage} onClose={closeModal} />
     </PageLayout>
   );
 };
