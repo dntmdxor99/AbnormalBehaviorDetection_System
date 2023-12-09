@@ -1,11 +1,9 @@
-import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import styled from "styled-components";
-import PageLayout from "../components/PageLayout";
 import { useRecoilValue, useRecoilState } from "recoil";
 import abnormalBehaviorState from "../recoil/abnormalBehaviorState";
+import resultState from "../recoil/resultState";
+import MediaCard from "../components/Card";
 
 const Rectangle = styled.div`
   width: 400px;
@@ -50,20 +48,23 @@ const SelectionButton = styled.div`
 `;
 
 const ResultPage = () => {
-  // const selectedAbnormalBehaviors = useRecoilValue(abnormalBehaviorState);
+  const [selectedAbnormalBehaviors, setSelectedAbnormalBehaviors] =
+    useRecoilState(abnormalBehaviorState);
+  const recoilResultState = useRecoilValue(resultState);
 
-  const [selectedAbnormalBehaviors, setSelectedAbnormalBehaviors] = useRecoilState(abnormalBehaviorState);
+  console.log(recoilResultState);
 
-  // useEffect(() => {
-  //   const savedBehaviors = localStorage.getItem('abnormalBehaviors');
-  //   if (savedBehaviors) {
-  //     setSelectedAbnormalBehaviors(JSON.parse(savedBehaviors));
-  //   }
-  // }, [setSelectedAbnormalBehaviors]);
-
-  // useEffect(() => {
-  //   localStorage.setItem('abnormalBehaviors', JSON.stringify(selectedAbnormalBehaviors));
-  // }, [selectedAbnormalBehaviors]);
+  // {
+  //     "metaDataId": 1,
+  //     "foundTime": "2020-08-06T03:04:00.000+00:00",
+  //     "entityFoundTime": "2020-08-06T03:05:00.000+00:00",
+  //     "cctvId": 1,
+  //     "type": "PERSON",
+  //     "abnormalType": "fight",
+  //     "quality": "HIGH",
+  //     "videoId": 1,
+  //     "photoId": 1
+  // }
 
   return (
     <div>
@@ -74,16 +75,45 @@ const ResultPage = () => {
             <Contents>위치</Contents>
             <Contents>구간</Contents>
           </Types>
-          <Types>이상 행동 유형
-          <Contents>
-            <div>
-              {selectedAbnormalBehaviors.map((behavior, index) => (
-                <SelectionButton key={index}>{behavior}</SelectionButton>
-              ))}
-            </div>
-          </Contents>
+          <Types>
+            이상 행동 유형
+            <Contents>
+              <div>
+                {selectedAbnormalBehaviors.map((behavior, index) => (
+                  <SelectionButton key={index}>{behavior}</SelectionButton>
+                ))}
+              </div>
+            </Contents>
           </Types>
           <Types>CCTV</Types>
+          {recoilResultState.map(
+            ({
+              metaDataId,
+              foundTime,
+              entityFoundTime,
+              cctvId,
+              type,
+              abnormalType,
+              quality,
+              videoId,
+              photoId,
+            }) => {
+              return (
+                <MediaCard
+                  key={metaDataId}
+                  metaDataId={metaDataId}
+                  foundTime={foundTime}
+                  entityFoundTime={entityFoundTime}
+                  cctvId={cctvId}
+                  type={type}
+                  abnormalType={abnormalType}
+                  quality={quality}
+                  videoId={videoId}
+                  photoId={photoId}
+                />
+              );
+            }
+          )}
         </Box>
       </Rectangle>
     </div>

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Map } from "react-kakao-maps-sdk";
 import "react-datepicker/dist/react-datepicker.css";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import PageLayout from "../components/PageLayout";
 import InsideMap from "../components/InsideMap";
@@ -14,6 +14,7 @@ import "../App.css";
 import cctvIdState from "../recoil/cctvIdState.js";
 import abnormalBehaviorState from "../recoil/abnormalBehaviorState.js";
 import SelectDate from "../components/SelectDate.jsx";
+import resultState from "../recoil/resultState";
 
 const Frame = styled.div`
   width: 100vw;
@@ -99,17 +100,16 @@ const ButtonContainer = styled.div`
 `;
 
 const NextButton = styled.div`
-display: inline-block;
-padding: 10px 20px;
-margin: 5px;
-font-size: 20px;
-font-weight: 700;
-background-color: #029D65;
-color: #ffffff;
-text-decoration: none;
-border-radius: 5px;
-cursor: pointer;
-}
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 20px;
+  font-weight: 700;
+  background-color: #029d65;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
 `;
 
 function SearchPage() {
@@ -143,34 +143,11 @@ function SearchPage() {
     fetchData();
   }, []);
 
-  /* * * * * * * * * * * * * * * * * *
-   *     {
-   *     foundTime: "",
-   *     entityFoundTime: "",
-   *     cctvId: "1",
-   *     abnormalType: "",
-   *     }
-   * * * * * * * * * * * * * * * * * * */
-
   const handleClick = (index) => {
     const newActiveStates = [...activeStates];
     newActiveStates[index] = !newActiveStates[index];
     setActiveStates(newActiveStates);
-
-    // if (newActiveStates[index]) {
-    //   // setAbnormalBehavior((prev) => [...prev, abnormalType[index]]);
-    // } else {
-    //   // setAbnormalBehavior((prev) =>
-    //   //   prev.filter((behavior) => behavior !== abnormalType[index])
-    //   // );
-    // }
   };
-
-  // useEffect(() => {
-  //   console.log(positions);
-  // }, [positions]);
-
-  // //이거 position 안뜸 ㅜㅜ
 
   const [isRealTimeSelected, setIsRealTimeSelected] = useState(true);
 
@@ -182,11 +159,6 @@ function SearchPage() {
       setIsRealTimeSelected(false);
     }
   };
-
-  // const [storeDate, setStoreDate] = useState({
-  //   startDate: null,
-  //   endDate: null,
-  // });
 
   const cctvId = useRecoilValue(cctvIdState);
 
@@ -203,56 +175,66 @@ function SearchPage() {
    *       photoId: "",
    *     }
    * * * * * * * * * * * * * * * * * * */
+  const [sendResult, setSendResult] = useState([]);
 
-  const [getResult, setGetResult] = useState([
-    {
-      metaDataId: "",
-      foundTime: "",
-      entityFoundTime: "",
-      cctvId: "",
-      type: "",
-      abnormalType: "",
-      quality: "",
-      videoId: "",
-      photoId: "",
-    },
-  ]);
-
-  useEffect(() => {
-    console.log("getResult updated:", getResult);
-  }, [getResult]);
+  // const [getResult, setGetResult] = useState([{
+  //     metaDataId: "",
+  //     foundTime: "",
+  //     entityFoundTime: "",
+  //     cctvId: "",
+  //     type: "",
+  //     abnormalType: "",
+  //     quality: "",
+  //     videoId: "",
+  //     photoId: "",
+  // },]);
 
   useEffect(() => {
-    const createResult = () => {
-      const result = [];
-      for (let i = 0; i < cctvId.length; i += 1) {
-        for (let j = 0; j < activeStates.length; j += 1) {
+    console.log("sendResult updated:", sendResult);
+  }, [sendResult]);
+
+  // useEffect(() => {
+  //     console.log("getResult updated:", getResult);
+  // }, [getResult]);
+
+  const createResult = () => {
+    const result = [];
+    for (let i = 0; i < cctvId.length; i += 1) {
+      for (let j = 0; j < activeStates.length; j += 1) {
+        if (activeStates[j] === true) {
           result.push({
             startDate: selectedDateRange[0],
             endDate: selectedDateRange[1],
             cctvId: cctvId[i],
-            abnormalType: activeStates[j],
+            abnormalType: abnormalType[j],
           });
         }
       }
-      return result;
-    };
+    }
+    return result;
+  };
 
-    // const res = createResult();
-  });
+  useEffect(() => {
+    console.log(cctvId, activeStates.length, selectedDateRange);
+    const res = createResult();
+    setSendResult(res);
 
-  const [sendResult, setSendResult] = useState([]);
+    console.log(res);
+  }, [cctvId, activeStates, selectedDateRange]);
 
   const nav = useNavigate();
 
-  const getFirstData = async () => {
+  const setRecoilResultState = useSetRecoilState(resultState);
+
+  const handleNextButtonClick = async () => {
     try {
       const response = await API.post("/metadata/Legend", sendResult);
+      // console.log(response);
       if (response.status === 200) {
-        const data = response.data;
-        console.log("데이터 수신 성공", data);
+        console.log("데이터 수신 성공", response);
         console.log("111111111");
-        return data;
+        setRecoilResultState(response.data);
+        nav("/result");
       } else {
         console.error("API 호출 실패");
       }
@@ -261,20 +243,9 @@ function SearchPage() {
     }
   };
 
-  const getSecondData = async () => {};
-
-  const handleNextButtonClick = async () => {
-    getFirstData();
-  };
-
   const handleDate = (dateResult) => {
-    const { startDate, endDate } = dateResult;
-    setSelectedDateRange([startDate, endDate]);
+    setSelectedDateRange(dateResult);
   };
-
-  //getResult 값 확인이 안됨 ㅜㅜ
-  //console.log(getResult[0]);
-  //console.log(getResult);
 
   return (
     <PageLayout>
@@ -337,11 +308,11 @@ function SearchPage() {
                   </Types>
                 </Box>
                 <ButtonContainer>
-                  <Link to="/result">
-                    <NextButton onClick={handleNextButtonClick}>
-                      검색 결과 보기
-                    </NextButton>
-                  </Link>
+                  {/*<Link to="/result">*/}
+                  <NextButton onClick={handleNextButtonClick}>
+                    검색 결과 보기
+                  </NextButton>
+                  {/*</Link>*/}
                 </ButtonContainer>
               </Rectangle>
               <Map
