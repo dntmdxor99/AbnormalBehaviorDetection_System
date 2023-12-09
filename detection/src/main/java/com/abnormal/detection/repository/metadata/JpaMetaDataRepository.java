@@ -25,9 +25,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.abnormal.detection.domain.metadata.AbnormalType.fight;
+import static com.abnormal.detection.domain.metadata.AbnormalType.*;
 import static com.abnormal.detection.domain.metadata.EntityType.PERSON;
-import static com.abnormal.detection.domain.metadata.Quality.HIGH;
+import static com.abnormal.detection.domain.metadata.Quality.*;
 
 
 @Repository
@@ -61,6 +61,16 @@ public class JpaMetaDataRepository implements MetaDataRepository{
         try {
             List<MetaData> metaDatas = new ArrayList<>();
             metaDatas.add(makeMetaData("2020-08-06T12:04:00", "2020-08-06T12:05:00", 1L, PERSON, fight, HIGH, 1L, 1L));
+            metaDatas.add(makeMetaData("2021-08-07T12:04:00", "2020-08-06T12:05:00", 1L, PERSON, assault, MIDDLE, 1L, 2L));
+            metaDatas.add(makeMetaData("2022-08-08T12:04:00", "2020-08-06T12:05:00", 1L, PERSON, drunken, LOW, 1L, 3L));
+
+            metaDatas.add(makeMetaData("2020-08-06T12:04:00", "2020-08-06T12:05:00", 2L, PERSON, swoon, HIGH, 2L, 4L));
+            metaDatas.add(makeMetaData("2021-08-07T12:04:00", "2020-08-06T12:05:00", 2L, PERSON, kidnap, MIDDLE, 2L, 5L));
+            metaDatas.add(makeMetaData("2022-08-08T12:04:00", "2020-08-06T12:05:00", 2L, PERSON, fight, LOW, 2L, 6L));
+
+            metaDatas.add(makeMetaData("2020-08-06T12:04:00", "2020-08-06T12:05:00", 3L, PERSON, fight, HIGH, 3L, 7L));
+            metaDatas.add(makeMetaData("2021-08-07T12:04:00", "2020-08-06T12:05:00", 3L, PERSON, fight, MIDDLE, 3L, 8L));
+            metaDatas.add(makeMetaData("2022-08-08T12:04:00", "2020-08-06T12:05:00", 3L, PERSON, fight, LOW, 3L, 9L));
 
             for (MetaData metaData : metaDatas) {
                 jpaMetaDataRepositoryLegend.createMetaData(metaData);
