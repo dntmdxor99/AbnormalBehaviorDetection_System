@@ -8,7 +8,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import API from "../utils/API.js";
 import { setSelectionRange } from '@testing-library/user-event/dist/utils/index.js';
-
+import Swal from "sweetalert2";
 
 const SignupForm = styled.form`
   display: flex;
@@ -115,7 +115,6 @@ const SignUpButton = styled.button`
 const SignUpPage = () => {
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const onClickHandler = () => alert("회원가입 성공하였습니다.");
   
   const [inputValue, setInputValue] = useState({
     userNumber: "",
@@ -159,9 +158,16 @@ const SignUpPage = () => {
       console.log("서버응답*******************8");
       const response = await API.post('/users/signup', data);
       
-      onClickHandler();
-      
-      navigate('/')
+      Swal.fire({
+        title: '회원가입 성공!',
+        icon: 'success',
+        confirmButtonColor: '#000080',
+        confirmButtonText: '확인',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/');
+        }
+      });
     }
     catch (error) {
       console.error("서버와의 통신 중 오류 발생", error);

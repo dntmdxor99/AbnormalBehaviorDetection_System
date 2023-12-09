@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Modal from '../components/Modal.jsx';
 import axios from "axios";
 import { useAuth } from "../context/AuthContext.js";
+import Swal from "sweetalert2";
 
 
 const LoginForm = styled.form`
@@ -47,10 +48,10 @@ const LoginFormContainer = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
+
 const LoginPage = () => {
   const {login} = useAuth();
   const navigate = useNavigate();
-  //const onClickHandler = (message) => (` ${message}`);
 
   const [inputValue, setInputValue] = useState({
     id: '',
@@ -110,14 +111,29 @@ const LoginPage = () => {
         
         checkLoginStatus();
         
-        alert('로그인 성공!');
-        navigate('/');
+        Swal.fire({
+          title: '로그인 성공!',
+          icon: 'success',
+          confirmButtonColor: '#000080',
+          confirmButtonText: '확인',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/');
+          }
+        });
       }
     }
     catch (error) {
-      alert('아이디 또는 비밀번호가 일치하지 않습니다.');
-
-      navigate('/login');
+      Swal.fire({
+        title: '아이디 또는 비밀번호가 일치하지 않습니다.',
+        icon: 'warning',
+        confirmButtonColor: '#000080',
+        confirmButtonText: '확인',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/login');
+        }
+      });
     }
   }; 
 
