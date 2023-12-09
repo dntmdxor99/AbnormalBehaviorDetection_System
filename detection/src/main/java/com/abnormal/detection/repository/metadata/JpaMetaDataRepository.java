@@ -213,12 +213,28 @@ public List<MetaData> getMetadataByDateRange(Date startDate, Date endDate) {
             endCalendar2.set(Calendar.SECOND, 59);
             endCalendar2.set(Calendar.MILLISECOND, 999);
         }
-
+/*
+//원본
         String query = "SELECT m FROM MetaData m " +
                 "WHERE (:cctvId IS NULL OR m.cctvId = :cctvId) " +
                 "AND (:abnormalType IS NULL OR m.abnormalType = :abnormalType) " +
                 // 추가: 시작일과 종료일이 모두 null이 아닌 경우에만 해당 조건을 추가
                 "AND (:startDate IS NULL AND :endDate IS NULL OR m.foundTime BETWEEN :startDate AND :endDate)";
+
+//version 1
+        String query = "SELECT DISTINCT m FROM MetaData m " +
+                "WHERE (:cctvId IS NULL OR m.cctvId = :cctvId) " +
+                "AND (:abnormalType IS NULL OR m.abnormalType = :abnormalType) " +
+                // 추가: 시작일과 종료일이 모두 null이 아닌 경우에만 해당 조건을 추가
+                "AND (:startDate IS NULL AND :endDate IS NULL OR m.foundTime BETWEEN :startDate AND :endDate)";
+
+
+ */
+        String query = "SELECT m FROM MetaData m " +
+                "WHERE (:cctvId IS NULL OR m.cctvId = :cctvId) " +
+                "AND (:abnormalType IS NULL OR m.abnormalType = :abnormalType) " +
+                "AND (:startDate IS NULL AND :endDate IS NULL OR m.foundTime BETWEEN :startDate AND :endDate) " +
+                "GROUP BY m.metaDataId"; // 고유 식별자로 그룹화
 
         return em.createQuery(query, MetaData.class)
                 .setParameter("cctvId", cctvId)
