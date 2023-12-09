@@ -42,7 +42,7 @@ public class JwtUtil {
         log.info("*********************************************");
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setIssuedAt(new Date(System.currentTimeMillis()))//3600000
                 .setExpiration(new Date(System.currentTimeMillis() + expireMs))
                 .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
                 .compact();

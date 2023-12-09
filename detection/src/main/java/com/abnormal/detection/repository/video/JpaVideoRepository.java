@@ -1,5 +1,6 @@
 package com.abnormal.detection.repository.video;
 
+import com.abnormal.detection.domain.metadata.MetaData;
 import com.abnormal.detection.domain.photo.Photo;
 import com.abnormal.detection.domain.video.Video;
 import jakarta.persistence.EntityManager;
@@ -12,6 +13,12 @@ public class JpaVideoRepository implements VideoRepository{
 
     public JpaVideoRepository(EntityManager em) {
         this.em = em;
+    }
+
+    @Override
+    public Video createVideo(Video video) {
+        em.persist(video);
+        return video;
     }
 
     @Override

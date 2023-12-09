@@ -1,9 +1,11 @@
 package com.abnormal.detection.service.video;
 
+import com.abnormal.detection.domain.metadata.MetaData;
 import com.abnormal.detection.domain.video.Video;
 import com.abnormal.detection.repository.video.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +17,11 @@ public class VideoService {
     @Autowired
     public VideoService(VideoRepository videoRepository) {
         this.videoRepository = videoRepository;
+    }
+
+    @Transactional
+    public Video createVideo(Video video) {
+        return videoRepository.createVideo(video);
     }
 
     public Video getVideoById(Long videoId) {

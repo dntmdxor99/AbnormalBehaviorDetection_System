@@ -1,5 +1,6 @@
 package com.abnormal.detection.controller.video;
 
+import com.abnormal.detection.domain.metadata.MetaData;
 import com.abnormal.detection.domain.video.Video;
 import com.abnormal.detection.service.video.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,11 @@ public class VideoController {
     @Autowired
     public VideoController(VideoService videoService) {
         this.videoService = videoService;
+    }
+
+    @PostMapping("/create")
+    public Video createVideo(@RequestBody Video video) {
+        return videoService.createVideo(video);
     }
 
     @GetMapping("/{videoId}")
