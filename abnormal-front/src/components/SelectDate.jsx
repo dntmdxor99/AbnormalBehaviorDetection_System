@@ -2,19 +2,18 @@ import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 import { useState, useEffect } from "react";
 
+const moment = require("moment");
 const SelectDate = ({ handleDate }) => {
-  const moment = require("moment");
-
   const [dateRange, setDateRange] = useState([null, null]);
 
   useEffect(() => {
     if (dateRange[0] !== null && dateRange[1] !== null) {
-      handleDate({
-        startDate: moment(dateRange[0]).format("YYYY-MM-DDTHH:mm:ss"),
-        endDate: moment(dateRange[1]).format("YYYY-MM-DDTHH:mm:ss"),
-      });
+      handleDate([
+        moment(dateRange[0]).format("YYYY-MM-DDTHH:mm:ss"),
+        moment(dateRange[1]).format("YYYY-MM-DDTHH:mm:ss"),
+      ]);
     }
-  }, [moment, dateRange, handleDate]);
+  }, [moment, dateRange]);
 
   //   useEffect(() => {
   //     const [startDate, endDate] = dateRange;
