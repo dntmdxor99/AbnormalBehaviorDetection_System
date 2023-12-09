@@ -84,7 +84,7 @@ const fontStlye = {
 
 const Header = () => {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, logout, loading } = useAuth();
   const onClickHandler = () => alert("로그인 후 사용가능합니다.");
 
   const handleHeaderClick = (path) => {
@@ -124,15 +124,19 @@ const Header = () => {
           </MenuItem>
       </MenuBar>
       
-      <MenuBarButtons>
-        {user ? (
+      {user !== null && !loading && (
+        <MenuBarButtons>
           <>
             <span>{user.username}</span>
             <Link to="/" style={logoutButtonStyle} onClick={logout}>
               로그아웃
             </Link>
           </>
-        ) : (
+        </MenuBarButtons>
+      )}
+
+      {user === null && !loading && (
+        <MenuBarButtons>
           <>
             <Link to="/login" style={loginButtonStyle}>
               로그인
@@ -141,8 +145,8 @@ const Header = () => {
               가입하기
             </Link>
           </>
-        )}
-      </MenuBarButtons>
+        </MenuBarButtons>
+      )}
     </HeaderContainer>
   );
 };
