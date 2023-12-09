@@ -1,5 +1,6 @@
 package com.abnormal.detection.controller.photo;
 
+import com.abnormal.detection.domain.metadata.MetaData;
 import com.abnormal.detection.domain.photo.Photo;
 import com.abnormal.detection.service.photo.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,11 @@ public class PhotoController {
     @Autowired
     public PhotoController(PhotoService photoService) {
         this.photoService = photoService;
+    }
+
+    @PostMapping("/create")
+    public Photo createPhoto(@RequestBody Photo photo) {
+        return photoService.createPhoto(photo);
     }
 
     @GetMapping("/{photoId}")

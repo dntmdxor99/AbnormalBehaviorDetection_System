@@ -1,6 +1,7 @@
 package com.abnormal.detection.service.photo;
 
 import com.abnormal.detection.domain.photo.Photo;
+import com.abnormal.detection.domain.user.User;
 import com.abnormal.detection.repository.photo.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,10 @@ public class PhotoService {
     @Autowired
     public PhotoService(PhotoRepository photoRepository) {
         this.photoRepository = photoRepository;
+    }
+
+    public Photo createPhoto(Photo photo) {
+        return photoRepository.createPhoto(photo);
     }
 
     public Photo getPhotoById(Long photoId) {

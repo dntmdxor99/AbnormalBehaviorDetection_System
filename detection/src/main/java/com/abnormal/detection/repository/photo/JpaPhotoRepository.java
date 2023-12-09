@@ -2,8 +2,10 @@ package com.abnormal.detection.repository.photo;
 
 import com.abnormal.detection.domain.metadata.MetaData;
 import com.abnormal.detection.domain.photo.Photo;
+import com.abnormal.detection.domain.user.User;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,6 +16,15 @@ public class JpaPhotoRepository implements PhotoRepository{
 
     public JpaPhotoRepository(EntityManager em) {
         this.em = em;
+    }
+
+    @Override
+    @Transactional
+    public Photo createPhoto(Photo photo) {
+        // 고유 ID 생성 및 설정
+        photo.setPhotoId(null); // ID는 자동 생성
+        em.persist(photo);
+        return photo;
     }
 
     @Override

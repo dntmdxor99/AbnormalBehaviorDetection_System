@@ -32,8 +32,6 @@ public class UserController {
         return new ResponseEntity<>(result.getMessage(), result.getStatus());
     }
 
-
-
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         log.info("-------------------" + loginRequest.getUserPassword() + "-------------------");

@@ -51,6 +51,4 @@ public interface MetaDataRepository {
     //시작날짜 끝날짜로 foundTime을 서치할수있고 +cctvId or abnormaltype으로도 옵션 검색을 수행가능
     List<MetaData> searchLegendByOptions(Date firstDate, Date endDate, Long cctvId,  AbnormalType abnormalType);
 
-
-
 }
