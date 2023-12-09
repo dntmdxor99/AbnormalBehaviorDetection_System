@@ -54,16 +54,16 @@ const ResultPage = () => {
 
   const [selectedAbnormalBehaviors, setSelectedAbnormalBehaviors] = useRecoilState(abnormalBehaviorState);
 
-  useEffect(() => {
-    const savedBehaviors = localStorage.getItem('abnormalBehaviors');
-    if (savedBehaviors) {
-      setSelectedAbnormalBehaviors(JSON.parse(savedBehaviors));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const savedBehaviors = localStorage.getItem('abnormalBehaviors');
+  //   if (savedBehaviors) {
+  //     setSelectedAbnormalBehaviors(JSON.parse(savedBehaviors));
+  //   }
+  // }, [setSelectedAbnormalBehaviors]);
 
-  useEffect(() => {
-    localStorage.setItem('abnormalBehaviors', JSON.stringify(selectedAbnormalBehaviors));
-  }, [selectedAbnormalBehaviors]);
+  // useEffect(() => {
+  //   localStorage.setItem('abnormalBehaviors', JSON.stringify(selectedAbnormalBehaviors));
+  // }, [selectedAbnormalBehaviors]);
 
   return (
     <div>

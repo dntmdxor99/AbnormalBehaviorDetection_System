@@ -1,11 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Map, MapMarker } from "react-kakao-maps-sdk";
-import DatePicker from "react-datepicker";
-import { ko } from "date-fns/esm/locale";
+import { Map } from "react-kakao-maps-sdk";
 import "react-datepicker/dist/react-datepicker.css";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 import PageLayout from "../components/PageLayout";
 import InsideMap from "../components/InsideMap";
@@ -15,6 +13,7 @@ import useWindowSize from "../hooks/useWindowSize";
 import "../App.css";
 import cctvIdState from "../recoil/cctvIdState.js";
 import abnormalBehaviorState from "../recoil/abnormalBehaviorState.js";
+import SelectDate from "../components/SelectDate.jsx";
 
 const Frame = styled.div`
   width: 100vw;
@@ -78,8 +77,9 @@ const SelectionButton = styled.div`
   padding: 15px 15px;
   font-size: 16px;
   margin: 5px;
-  background-color: ${(props) => (props.active ? "#3a3d92" : "#ffffff")};
-  color: ${(props) => (props.active ? "#ffffff" : "#3a3d92")};
+  background-color: ${(props) =>
+    props.active === "true" ? "#3a3d92" : "#ffffff"};
+  color: ${(props) => (props.active === "true" ? "#ffffff" : "#3a3d92")};
   transition: background-color 0.3s;
   text-decoration: none;
   border-radius: 5px;
@@ -121,9 +121,9 @@ function SearchPage() {
   const [activeStates, setActiveStates] = useState(
     Array(abnormalType.length).fill(false)
   );
-  const setAbnormalBehavior = useSetRecoilState(abnormalBehaviorState);
 
   const [positions, setPositions] = useState([]);
+  const [selectedDateRange, setSelectedDateRange] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -157,22 +157,22 @@ function SearchPage() {
     newActiveStates[index] = !newActiveStates[index];
     setActiveStates(newActiveStates);
 
-    if (newActiveStates[index]) {
-      setAbnormalBehavior((prev) => [...prev, abnormalType[index]]);
-    } else {
-      setAbnormalBehavior((prev) =>
-        prev.filter((behavior) => behavior !== abnormalType[index])
-      );
-    }
+    // if (newActiveStates[index]) {
+    //   // setAbnormalBehavior((prev) => [...prev, abnormalType[index]]);
+    // } else {
+    //   // setAbnormalBehavior((prev) =>
+    //   //   prev.filter((behavior) => behavior !== abnormalType[index])
+    //   // );
+    // }
   };
 
-  useEffect(() => {
-    console.log(positions);
-  }, [positions]);
+  // useEffect(() => {
+  //   console.log(positions);
+  // }, [positions]);
 
-  //이거 position 안뜸 ㅜㅜ
+  // //이거 position 안뜸 ㅜㅜ
 
-  const [isRealTimeSelected, setIsRealTimeSelected] = useState(false);
+  const [isRealTimeSelected, setIsRealTimeSelected] = useState(true);
 
   const handleSearchPeriodChange = (event) => {
     const { value } = event.target;
@@ -183,69 +183,12 @@ function SearchPage() {
     }
   };
 
-  const [storeDate, setStoreDate] = useState({
-    startDate: null,
-    endDate: null,
-  });
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-
-  const SelectDate = () => {
-    const setChangeDate = (dates) => {
-      const [start, end] = dates;
-      setStartDate(start);
-      setEndDate(end);
-      setStoreDate({
-        startDate: start,
-        endDate: end,
-      });
-    };
-
-    return (
-      <div>
-        <DatePicker
-          selectsRange={true}
-          className="datepicker"
-          locale={ko}
-          dateFormat="yyyy년 MM월 dd일"
-          selected={startDate}
-          startDate={startDate}
-          endDate={endDate}
-          maxDate={new Date()}
-          onChange={setChangeDate}
-        />
-      </div>
-    );
-  };
+  // const [storeDate, setStoreDate] = useState({
+  //   startDate: null,
+  //   endDate: null,
+  // });
 
   const cctvId = useRecoilValue(cctvIdState);
-  const [result, setResult] = useState([]);
-  const [formattedStartDate, setFormattedStartDate] = useState(null);
-  const [formattedEndDate, setFormattedEndDate] = useState(null);
-
-  useEffect(() => {
-    if (startDate && endDate) {
-      const moment = require("moment");
-      const formattedStart = moment(startDate).format("YYYY-MM-DDTHH:mm:ss");
-      const formattedEnd = moment(endDate).format("YYYY-MM-DDTHH:mm:ss");
-      setFormattedStartDate(formattedStart);
-      setFormattedEndDate(formattedEnd);
-    } else {
-      setFormattedStartDate(null);
-      setFormattedEndDate(null);
-    }
-  }, [startDate, endDate]);
-
-  useEffect(() => {
-    setResult([
-      {
-        startDate: formattedStartDate,
-        endDate: formattedEndDate,
-        cctvId: "1",
-        abnormalType: "",
-      },
-    ]);
-  }, [formattedStartDate, formattedEndDate]);
 
   /* * * * * * * * * * * * * * * * * *
    *     {
@@ -261,31 +204,55 @@ function SearchPage() {
    *     }
    * * * * * * * * * * * * * * * * * * */
 
-  const [getResult, setGetResult] = useState([{
-    metaDataId: '',
-    foundTime: '',
-    entityFoundTime: '',
-    cctvId: '',
-    type: '',
-    abnormalType: '',
-    quality: '',
-    videoId: '',
-    photoId: '',
-  }]);
+  const [getResult, setGetResult] = useState([
+    {
+      metaDataId: "",
+      foundTime: "",
+      entityFoundTime: "",
+      cctvId: "",
+      type: "",
+      abnormalType: "",
+      quality: "",
+      videoId: "",
+      photoId: "",
+    },
+  ]);
 
   useEffect(() => {
     console.log("getResult updated:", getResult);
   }, [getResult]);
 
-  const handleNextButtonClick = async () => {
+  useEffect(() => {
+    const createResult = () => {
+      const result = [];
+      for (let i = 0; i < cctvId.length; i += 1) {
+        for (let j = 0; j < activeStates.length; j += 1) {
+          result.push({
+            startDate: selectedDateRange[0],
+            endDate: selectedDateRange[1],
+            cctvId: cctvId[i],
+            abnormalType: activeStates[j],
+          });
+        }
+      }
+      return result;
+    };
+
+    // const res = createResult();
+  });
+
+  const [sendResult, setSendResult] = useState([]);
+
+  const nav = useNavigate();
+
+  const getFirstData = async () => {
     try {
-      const response = await API.post("/metadata/Legend", result);
+      const response = await API.post("/metadata/Legend", sendResult);
       if (response.status === 200) {
         const data = response.data;
-        console.log("데이터 전송 성공", data);
+        console.log("데이터 수신 성공", data);
         console.log("111111111");
-        setGetResult(data);
-        console.log(getResult);
+        return data;
       } else {
         console.error("API 호출 실패");
       }
@@ -294,6 +261,18 @@ function SearchPage() {
     }
   };
 
+  const getSecondData = async () => {};
+
+  const handleNextButtonClick = async () => {
+    getFirstData();
+  };
+
+  const handleDate = (dateResult) => {
+    const { startDate, endDate } = dateResult;
+    setSelectedDateRange([startDate, endDate]);
+  };
+
+  //getResult 값 확인이 안됨 ㅜㅜ
   //console.log(getResult[0]);
   //console.log(getResult);
 
@@ -330,7 +309,9 @@ function SearchPage() {
                           onChange={handleSearchPeriodChange}
                         />
                         구간 설정
-                        {!isRealTimeSelected && <SelectDate />}
+                        {!isRealTimeSelected && (
+                          <SelectDate handleDate={handleDate} />
+                        )}
                       </RadioButton>
                     </RadioButtonGroup>
                     {!isRealTimeSelected && (
@@ -340,7 +321,7 @@ function SearchPage() {
                           {abnormalType.map((behavior, index) => (
                             <SelectionButton
                               key={index}
-                              active={activeStates[index]}
+                              active={activeStates[index].toString()}
                               onClick={() => handleClick(index)}
                             >
                               {index === 0 && "싸움"}
