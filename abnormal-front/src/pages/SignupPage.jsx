@@ -17,7 +17,7 @@ const SignupForm = styled.form`
  
 
   label {
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     margin-top: 20px;
     text-align: left;
     width: 100%;
@@ -25,18 +25,19 @@ const SignupForm = styled.form`
     font-weight: bold;
   }
 
+  
 
   input {
     padding: 8px;
     box-sizing: border-box;
-    width: 80%;
+    width: 70%;
   }
 
   .container {
     display: flex;
     align-items: center;
     width: 100%;
-    margin-bottom: -20px;
+    margin-bottom: -10px;
     margin-top: -15px;
   }
 
@@ -48,10 +49,13 @@ const SignupForm = styled.form`
     cursor: pointer;
     border: none;
     font-weight: bold;
-    width: 50px;
-    height: 30px;
+    font-size: 14px;
+    width: 65px;
+    height: 32px;
     border-radius: 5px;
     margin-bottom: 20px;
+    margin-top: 15px;
+    margin-left: 35px;
   }
 
 
@@ -62,10 +66,13 @@ const SignupForm = styled.form`
     cursor: pointer;
     border: none;
     font-weight: bold;
-    width: 80px;
+    font-size: 14px;
+    width: 160px;
     height: 30px;
     border-radius: 5px;
     margin-bottom: 20px;
+    margin-top: 15px;
+    margin-left: 35px;
   }
 `;
 
@@ -86,7 +93,7 @@ const SignupFormContainer = styled.div`
   0 0 10px rgba(0, 0, 0, 0.1);
   box-sizing: border-box; 
   margin: 20px 0;
-  width: 520px;
+  width: 540px;
 `;
 
 const AgreementContainer = styled.div`
@@ -95,8 +102,8 @@ const AgreementContainer = styled.div`
 
   label {
     white-space: nowrap;
-    margin-top: -0.1px;
-    
+    margin-top: 6px;
+    margin-left: 5px;
   }
 `
 
@@ -188,7 +195,7 @@ const SignUpPage = () => {
                       name='employeeNumber'
                       value={inputValue.employeeNumber}
                       onChange={(e) => inputChangeHandler(e, 'employeeNumber')}
-                      style={{ marginLeft: '-11px' }}
+                      style={{width: 322, marginBottom: '15px', marginTop: '15px', marginLeft: '-11.3px' }}
                     />
                     <button className='authentication-button' type='button'>인증</button>
                   </div>
@@ -200,6 +207,7 @@ const SignUpPage = () => {
                     name='department'
                     value={inputValue.department}
                     onChange={(e) => inputChangeHandler(e, 'department')}
+                    style={{marginBottom: '8px'}}
                   />
                     
                   <label> 아이디</label>
@@ -210,6 +218,7 @@ const SignUpPage = () => {
                       name='userId'
                       value={inputValue.userId}
                       onChange={(e) => inputChangeHandler(e, 'userId')}
+                      style={{width: 600, marginBottom: '18px', marginTop: '15px', marginLeft: '-11.3px' }}
                     />
                     <button className='doublecheck-button' type='button'>중복확인</button>
                   </div>
@@ -218,9 +227,7 @@ const SignUpPage = () => {
                   <input 
                     type="password" 
                     required 
-                    // name='password'
-                    // value={inputValue.password}
-                    // onChange={(e) => inputChangeHandler(e, 'password')}
+                    style={{marginBottom: '8px'}}
                   />
                         
                   <label>비밀번호 확인</label>
@@ -230,6 +237,7 @@ const SignUpPage = () => {
                     name='password'
                     value={inputValue.password}
                     onChange={(e) => inputChangeHandler(e, 'password')}
+                    style={{marginBottom: '8px'}}
                   />
                         
                   <label>이름</label>
@@ -260,6 +268,7 @@ const SignUpPage = () => {
                       name='userEmail'
                       value={inputValue.email}
                       onChange={(e) => inputChangeHandler(e, 'userEmail')}
+                      style={{width: 600, marginBottom: '18px', marginTop: '15px', marginLeft: '-11.3px' }}
                     />
                     <button className='doublecheck-button' type='button'>중복확인</button>
                   </div>
@@ -272,6 +281,7 @@ const SignUpPage = () => {
                       name='userPhoneNumber'
                       value={inputValue.phoneNumber}
                       onChange={(e) => inputChangeHandler(e, 'userPhoneNumber')}
+                      style={{width: 322, marginBottom: '15px', marginTop: '15px', marginLeft: '-11.3px' }}
                     />
                     <button className='authentication-button' type='button'>인증</button>
                   </div>
@@ -279,7 +289,7 @@ const SignUpPage = () => {
                   <div style={{marginBottom: '30px'}}></div>
                   
                   <AgreementContainer>
-                    <input type='checkbox' id='agree' />
+                    <input type='checkbox' id='agree'/>
                     <label htmlFor='agree'>개인정보 수집 동의</label>
                   </AgreementContainer>
                  

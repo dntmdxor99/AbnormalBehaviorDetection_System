@@ -8,6 +8,7 @@ import homeImage from "../assets/img/home-image.png";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { useAuth } from "../context/AuthContext";
+import Swal from "sweetalert2";
 
 
 const Frame = styled.div`
@@ -18,9 +19,10 @@ const Frame = styled.div`
 const SearchButtonStyle = {
   color: '#fff',
   backgroundColor: '#000080',
-  padding: '5px 10px',
-  borderRadius: '5px',
+  padding: '17px 50px',
+  borderRadius: '30px',
   fontWeight: 'bold',
+  fontSize: '20px',
   textDecoration: 'none',
 }
 
@@ -39,30 +41,47 @@ const HomeMain = styled.div`
 
 const HomeTitle = styled.h1`
   font-weight: bold;
+  font-size: 52px;
+  margin-left: 220px;
+  maring-bottom: 100px;
 `;
 
 const HomeToSearch = styled.div`
+  margin-bottom: 20px;
   margin-top: 20px;
+  margin-left: 220px;
 `;
 
 const HomeImage = styled.div`
   flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
 `;
 
 const ImageProto = styled.img`
-  max-width: 50%;
+  max-width: 70%;
+  max-height: 50%;
   height: auto;
+  margin-right: 120px;
 `;
 
 const MainPage = () => {
   const navigate = useNavigate();
   const {user} = useAuth();
-  const onClickHandler = () => alert("로그인 후 사용가능합니다.");
 
   const handleSearchClick = () => {
     if (!user) {
-      onClickHandler();
-      navigate('/login');
+      Swal.fire({
+        title: '로그인 후 이용할 수 있습니다.',
+        icon: 'info',
+        confirmButtonColor: '#000080',
+        confirmButtonText: '확인',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/login');
+        }
+      });
     }
     else {
       navigate('/search');
@@ -81,6 +100,13 @@ const MainPage = () => {
             </HomeTitle>
             <HomeToSearch>
               <Button onClick={handleSearchClick} style={SearchButtonStyle}>
+                <div style={{display: 'flex', alignItems: 'center'}}>
+                  <img
+                    src={require('../assets/img/Vector.png')}
+                    alt="Search Icon"
+                    style={{ marginRight: '10px' }}
+                  />
+                </div>
                 검색하기
               </Button>
             </HomeToSearch>

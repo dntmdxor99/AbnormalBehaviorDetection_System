@@ -1,9 +1,12 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Button from '@mui/material/Button';
 import styled, {createGlobalStyle} from 'styled-components';
 import { useNavigate } from 'react-router-dom/dist';
+import Swal from "sweetalert2";
+import groupImage from '../assets/img/Group 1.png'
 
 
 const loginButtonStyle = {
@@ -45,9 +48,10 @@ const HeaderContainer = styled.div`
 
 const MenuBar = styled.div`
   display: flex;
+  align-items: center;
   flex-shrink: 0;
+  margin-left: 15px;
 `;
-
 
 const MenuItem = styled.h4`
   margin-left: 50px;
@@ -56,6 +60,13 @@ const MenuItem = styled.h4`
   flex-shrink: 0;
 `;
 
+
+const Logo = styled.img`
+  width: 10px;
+  height: 20px;
+  margin-right: -15px;
+  margin-bottom: 5px;
+`
 
 const MenuBarButtons = styled.div`
   display: flex;
@@ -82,15 +93,30 @@ const fontStlye = {
 };
 
 
+const blueFontStyle = {
+  color: '#000080',
+  textDecoration: 'none',
+  fontWeight: '900',
+};
+
+
 const Header = () => {
   const navigate = useNavigate();
   const { user, logout, loading } = useAuth();
-  const onClickHandler = () => alert("로그인 후 사용가능합니다.");
+
 
   const handleHeaderClick = (path) => {
     if (!user) {
-      onClickHandler();
-      navigate('/login');
+      Swal.fire({
+        title: '로그인 후 이용할 수 있습니다.',
+        icon: 'info',
+        confirmButtonColor: '#000080',
+        confirmButtonText: '확인',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/login');
+        }
+      });
     }
     else {
       navigate(path);
@@ -103,7 +129,8 @@ const Header = () => {
     <HeaderContainer>
       <MenuBar>
           <MenuItem>
-            <Link to="/"  style={fontStlye} className="menu-home-item">
+            <Logo src={groupImage} alt='Group Logo' />
+            <Link to="/"  style={blueFontStyle} className="menu-home-item">
               7팀
             </Link>
           </MenuItem>
