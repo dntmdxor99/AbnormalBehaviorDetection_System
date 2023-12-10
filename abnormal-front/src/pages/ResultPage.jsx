@@ -1,7 +1,6 @@
-import React from "react";
+import { React } from "react";
 import styled from "styled-components";
-import { useRecoilValue, useRecoilState } from "recoil";
-import abnormalBehaviorState from "../recoil/abnormalBehaviorState";
+import { useRecoilValue } from "recoil";
 import resultState from "../recoil/resultState";
 import MediaCard from "../components/Card";
 
@@ -28,7 +27,7 @@ const Types = styled.div`
 
 const Contents = styled.div`
   margin-top: 15px;
-  font-size: 20px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 500;
   line-height: 0.5;
@@ -48,23 +47,22 @@ const SelectionButton = styled.div`
 `;
 
 const ResultPage = () => {
-  const [selectedAbnormalBehaviors, setSelectedAbnormalBehaviors] =
-    useRecoilState(abnormalBehaviorState);
   const recoilResultState = useRecoilValue(resultState);
 
   console.log(recoilResultState);
 
-  // {
-  //     "metaDataId": 1,
-  //     "foundTime": "2020-08-06T03:04:00.000+00:00",
-  //     "entityFoundTime": "2020-08-06T03:05:00.000+00:00",
-  //     "cctvId": 1,
-  //     "type": "PERSON",
-  //     "abnormalType": "fight",
-  //     "quality": "HIGH",
-  //     "videoId": 1,
-  //     "photoId": 1
-  // }
+  const abnormalTypes = recoilResultState.map((item) => item.abnormalType);
+  const abnormalTypeKorean = {
+    fight: "싸움",
+    assault: "폭행",
+    drunken: "주취행동",
+    swoon: "기절",
+    kidnap: "납치",
+  };
+
+  const { entityFoundTime, foundTime } = recoilResultState[0];
+  const startDate = new Date(foundTime).toISOString().split("T")[0];
+  const endDate = new Date(entityFoundTime).toISOString().split("T")[0];
 
   return (
     <div>
@@ -72,15 +70,18 @@ const ResultPage = () => {
         <Box>
           <Types>
             검색 세부 정보
-            <Contents>위치</Contents>
-            <Contents>구간</Contents>
+            <Contents>
+              날짜 : {startDate}부터 {endDate}까지
+            </Contents>
           </Types>
           <Types>
-            이상 행동 유형
+            발견된 이상 행동
             <Contents>
               <div>
-                {selectedAbnormalBehaviors.map((behavior, index) => (
-                  <SelectionButton key={index}>{behavior}</SelectionButton>
+                {abnormalTypes.map((type, index) => (
+                  <SelectionButton key={index}>
+                    {abnormalTypeKorean[type]}
+                  </SelectionButton>
                 ))}
               </div>
             </Contents>

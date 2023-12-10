@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Map } from "react-kakao-maps-sdk";
 import "react-datepicker/dist/react-datepicker.css";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import PageLayout from "../components/PageLayout";
 import InsideMap from "../components/InsideMap";
@@ -12,7 +12,6 @@ import useUserPosition from "../hooks/useUserPosition";
 import useWindowSize from "../hooks/useWindowSize";
 import "../App.css";
 import cctvIdState from "../recoil/cctvIdState.js";
-import abnormalBehaviorState from "../recoil/abnormalBehaviorState.js";
 import SelectDate from "../components/SelectDate.jsx";
 import resultState from "../recoil/resultState";
 
@@ -114,6 +113,13 @@ const NextButton = styled.div`
 
 function SearchPage() {
   const abnormalType = ["fight", "assault", "drunken", "swoon", "kidnap"];
+  const abnormalTypeKorean = {
+    "fight": "싸움",
+    "assault": "폭행",
+    "drunken": "주취행동",
+    "swoon": "기절",
+    "kidnap": "납치"
+  };
   const windowSize = useWindowSize();
   const userPosition = useUserPosition();
   const selectedCctvIds = useRecoilValue(cctvIdState);
@@ -153,7 +159,7 @@ function SearchPage() {
 
   useEffect(() => {
     if (cctvId.length > 0) {
-      const location = locationData[cctvId[cctvId.length-1]-1];
+      const location = locationData[cctvId[cctvId.length - 1] - 1];
       setSelectocation(location);
     } else {
       setSelectocation([]);
@@ -246,9 +252,10 @@ function SearchPage() {
       const response = await API.post("/metadata/Legend", sendResult);
       // console.log(response);
       if (response.status === 200) {
-        console.log("데이터 수신 성공", response);
-        console.log("111111111");
-        setRecoilResultState(response.data);
+        const data = response.data;
+        console.log("데이터 수신 성공", data);
+        console.log(data);
+        setRecoilResultState(data);
         nav("/result");
       } else {
         console.error("API 호출 실패");
@@ -309,19 +316,15 @@ function SearchPage() {
                       <Contents>
                         이상행동 선택
                         <div style={{ marginTop: "10px" }}>
-                          {abnormalType.map((behavior, index) => (
-                            <SelectionButton
-                              key={index}
-                              active={activeStates[index].toString()}
-                              onClick={() => handleClick(index)}
-                            >
-                              {index === 0 && "싸움"}
-                              {index === 1 && "폭행"}
-                              {index === 2 && "주취행동"}
-                              {index === 3 && "기절"}
-                              {index === 4 && "납치"}
-                            </SelectionButton>
-                          ))}
+    {abnormalType.map((behavior, index) => (
+      <SelectionButton
+        key={index}
+        active={activeStates[index].toString()}
+        onClick={() => handleClick(index)}
+      >
+        {abnormalTypeKorean[behavior]}
+      </SelectionButton>
+    ))}
                         </div>
                       </Contents>
                     )}
