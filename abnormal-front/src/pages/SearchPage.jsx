@@ -153,7 +153,7 @@ function SearchPage() {
 
   useEffect(() => {
     if (cctvId.length > 0) {
-      const location = locationData[cctvId[cctvId.length - 1]];
+      const location = locationData[cctvId[cctvId.length-1]-1];
       setSelectocation(location);
     } else {
       setSelectocation([]);
