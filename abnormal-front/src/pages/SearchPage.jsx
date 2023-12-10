@@ -256,7 +256,13 @@ function SearchPage() {
               <Rectangle>
                 <Box>
                   <Types>
-                    선택된 CCTV | {selectedCount}개<Contents>ID</Contents>
+                    선택된 CCTV | {selectedCount}개
+                    <Contents>
+                      ID : {" "}
+                      {cctvId.length > 0
+                        ? cctvId[cctvId.length - 1]
+                        : ""}
+                    </Contents>
                     <Contents>위치</Contents>
                   </Types>
                   <Types>

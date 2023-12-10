@@ -2,6 +2,9 @@ import { MapMarker } from "react-kakao-maps-sdk";
 import { useState, useEffect } from "react";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import cctvIdState from "../recoil/cctvIdState";
+import markerGreen from "../assets/img/markerGreen.png"
+import markerRed from "../assets/img/markerRed.png"
+
 
 const KakaoMarker = ({ cctvId, lat, lng }) => {
   /*
@@ -46,13 +49,13 @@ const KakaoMarker = ({ cctvId, lat, lng }) => {
       image={
         isClicked
           ? {
-              src: "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
-              size: new window.kakao.maps.Size(24, 35),
+              src: markerGreen,
+              size: new window.kakao.maps.Size(35, 35),
               alt: "마커 이미지",
             }
           : {
-              src: "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png",
-              size: new window.kakao.maps.Size(24, 35),
+              src: markerRed,
+              size: new window.kakao.maps.Size(35, 35),
               alt: "마커 이미지",
             }
       }
