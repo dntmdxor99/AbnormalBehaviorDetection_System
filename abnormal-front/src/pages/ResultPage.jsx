@@ -60,9 +60,11 @@ const ResultPage = () => {
     kidnap: "납치",
   };
 
-  const { entityFoundTime, foundTime } = recoilResultState[0];
-  const startDate = new Date(foundTime).toISOString().split("T")[0];
-  const endDate = new Date(entityFoundTime).toISOString().split("T")[0];
+  const uniqueAbnormalTypes = [...new Set(abnormalTypes)];
+  console.log(uniqueAbnormalTypes);
+
+  // const { entityFoundTime, foundTime } = recoilResultState[0];
+  // const findDate = new Date(foundTime).toISOString().split("T")[0];
 
   return (
     <div>
@@ -71,14 +73,14 @@ const ResultPage = () => {
           <Types>
             검색 세부 정보
             <Contents>
-              날짜 : {startDate}부터 {endDate}까지
+              발견 날짜 :
             </Contents>
           </Types>
           <Types>
             발견된 이상 행동
             <Contents>
               <div>
-                {abnormalTypes.map((type, index) => (
+                {uniqueAbnormalTypes.map((type, index) => (
                   <SelectionButton key={index}>
                     {abnormalTypeKorean[type]}
                   </SelectionButton>

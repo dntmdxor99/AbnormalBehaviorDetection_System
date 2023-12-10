@@ -114,11 +114,11 @@ const NextButton = styled.div`
 function SearchPage() {
   const abnormalType = ["fight", "assault", "drunken", "swoon", "kidnap"];
   const abnormalTypeKorean = {
-    "fight": "싸움",
-    "assault": "폭행",
-    "drunken": "주취행동",
-    "swoon": "기절",
-    "kidnap": "납치"
+    fight: "싸움",
+    assault: "폭행",
+    drunken: "주취행동",
+    swoon: "기절",
+    kidnap: "납치",
   };
   const windowSize = useWindowSize();
   const userPosition = useUserPosition();
@@ -133,6 +133,11 @@ function SearchPage() {
   const cctvId = useRecoilValue(cctvIdState);
   const [locationData, setLocationData] = useState([]);
   const [selectedLocation, setSelectocation] = useState();
+  const [isRealTimeSelected, setIsRealTimeSelected] = useState(true);
+  const nav = useNavigate();
+
+  const setRecoilResultState = useSetRecoilState(resultState);
+  const [sendResult, setSendResult] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -172,8 +177,6 @@ function SearchPage() {
     setActiveStates(newActiveStates);
   };
 
-  const [isRealTimeSelected, setIsRealTimeSelected] = useState(true);
-
   const handleSearchPeriodChange = (event) => {
     const { value } = event.target;
     if (value === "real-time") {
@@ -183,40 +186,9 @@ function SearchPage() {
     }
   };
 
-  /* * * * * * * * * * * * * * * * * *
-   *     {
-   *       metaDataId: "",
-   *       foundTime: "",
-   *       entityFoundTime: "",
-   *       cctvId: "",
-   *       type: "",
-   *       abnormalType: "",
-   *       quality: "",
-   *       videoId: "",
-   *       photoId: "",
-   *     }
-   * * * * * * * * * * * * * * * * * * */
-  const [sendResult, setSendResult] = useState([]);
-
-  // const [getResult, setGetResult] = useState([{
-  //     metaDataId: "",
-  //     foundTime: "",
-  //     entityFoundTime: "",
-  //     cctvId: "",
-  //     type: "",
-  //     abnormalType: "",
-  //     quality: "",
-  //     videoId: "",
-  //     photoId: "",
-  // },]);
-
   useEffect(() => {
     console.log("sendResult updated:", sendResult);
   }, [sendResult]);
-
-  // useEffect(() => {
-  //     console.log("getResult updated:", getResult);
-  // }, [getResult]);
 
   const createResult = () => {
     const result = [];
@@ -235,22 +207,30 @@ function SearchPage() {
     return result;
   };
 
+  const blank = [{
+    startDate: "",
+    endDate: "",
+    cctvId: "",
+    abnormalType: "",
+  }]
+
   useEffect(() => {
     console.log(cctvId, activeStates.length, selectedDateRange);
     const res = createResult();
-    setSendResult(res);
-
+    console.log("21345678654323456");
     console.log(res);
+    if (res.length === 0) {
+      console.log(blank);
+      setSendResult(blank);
+    } else {
+      console.log(res);
+      setSendResult(res);
+    }
   }, [cctvId, activeStates, selectedDateRange]);
-
-  const nav = useNavigate();
-
-  const setRecoilResultState = useSetRecoilState(resultState);
 
   const handleNextButtonClick = async () => {
     try {
       const response = await API.post("/metadata/Legend", sendResult);
-      // console.log(response);
       if (response.status === 200) {
         const data = response.data;
         console.log("데이터 수신 성공", data);
@@ -316,15 +296,15 @@ function SearchPage() {
                       <Contents>
                         이상행동 선택
                         <div style={{ marginTop: "10px" }}>
-    {abnormalType.map((behavior, index) => (
-      <SelectionButton
-        key={index}
-        active={activeStates[index].toString()}
-        onClick={() => handleClick(index)}
-      >
-        {abnormalTypeKorean[behavior]}
-      </SelectionButton>
-    ))}
+                          {abnormalType.map((behavior, index) => (
+                            <SelectionButton
+                              key={index}
+                              active={activeStates[index].toString()}
+                              onClick={() => handleClick(index)}
+                            >
+                              {abnormalTypeKorean[behavior]}
+                            </SelectionButton>
+                          ))}
                         </div>
                       </Contents>
                     )}
