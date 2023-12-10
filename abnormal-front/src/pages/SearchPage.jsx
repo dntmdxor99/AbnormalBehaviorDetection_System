@@ -124,6 +124,9 @@ function SearchPage() {
 
   const [positions, setPositions] = useState([]);
   const [selectedDateRange, setSelectedDateRange] = useState([]);
+  const cctvId = useRecoilValue(cctvIdState);
+  const [locationData, setLocationData] = useState([]);
+  const [selectedLocation, setSelectocation] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -132,6 +135,11 @@ function SearchPage() {
         if (response.status === 200) {
           const data = response.data;
           console.log(data);
+          let locations = [];
+          for (let i = 0; i < data.length; i += 1) {
+            locations.push(data[i].location);
+          }
+          setLocationData(locations);
           setPositions(data);
         } else {
           console.error("API 호출 실패");
@@ -142,6 +150,15 @@ function SearchPage() {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (cctvId.length > 0) {
+      const location = locationData[cctvId[cctvId.length - 1]];
+      setSelectocation(location);
+    } else {
+      setSelectocation([]);
+    }
+  }, [locationData, cctvId]);
 
   const handleClick = (index) => {
     const newActiveStates = [...activeStates];
@@ -159,8 +176,6 @@ function SearchPage() {
       setIsRealTimeSelected(false);
     }
   };
-
-  const cctvId = useRecoilValue(cctvIdState);
 
   /* * * * * * * * * * * * * * * * * *
    *     {
@@ -258,12 +273,11 @@ function SearchPage() {
                   <Types>
                     선택된 CCTV | {selectedCount}개
                     <Contents>
-                      ID : {" "}
-                      {cctvId.length > 0
-                        ? cctvId[cctvId.length - 1]
-                        : ""}
+                      ID : {cctvId.length > 0 ? cctvId[cctvId.length - 1] : ""}
                     </Contents>
-                    <Contents>위치</Contents>
+                    <Contents style={{ fontSize: "16px" }}>
+                      위치 : {selectedLocation}
+                    </Contents>
                   </Types>
                   <Types>
                     검색설정

@@ -20,9 +20,9 @@ const KakaoMarker = ({ cctvId, lat, lng }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [cctvIdValue, setCctvIdValue] = useRecoilState(cctvIdState);
 
-  useEffect(() => {
-    console.log(cctvIdValue);
-  }, [cctvIdValue]);
+  // useEffect(() => {
+  //   console.log(cctvIdValue);
+  // }, [cctvIdValue]);
 
   const handleMarkerClick = () => {
     setIsClicked(!isClicked);
