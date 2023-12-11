@@ -4,6 +4,10 @@ import { useRecoilValue } from "recoil";
 import resultState from "../recoil/resultState";
 import MediaCard from "../components/Card";
 
+const Container = styled.div`
+  display: flex;
+`;
+
 const Rectangle = styled.div`
   width: 400px;
   height: 100%;
@@ -11,6 +15,17 @@ const Rectangle = styled.div`
   position: absolute;
   left: 0;
 `;
+
+const Grid = styled.div`
+margin-top: 50px;
+margin-left: 50px;
+height: 100%;
+position: absolute;
+left: 400px;
+display: flex;  // Flexbox를 적용합니다.
+flex-wrap: wrap;  // 요소들이 넘치면 다음 줄로 이동합니다.
+justify-content: space-between;
+`
 
 const Box = styled.div`
   margin-top: 80px;
@@ -59,21 +74,32 @@ const ResultPage = () => {
     swoon: "기절",
     kidnap: "납치",
   };
-
   const uniqueAbnormalTypes = [...new Set(abnormalTypes)];
   console.log(uniqueAbnormalTypes);
 
-  // const { entityFoundTime, foundTime } = recoilResultState[0];
-  // const findDate = new Date(foundTime).toISOString().split("T")[0];
+  const foundTimes = recoilResultState.map((item) => item.foundTime);
+  const uniqueFoundTimes = [...new Set(foundTimes)];
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  const startDate = new Date(uniqueFoundTimes[0]).toLocaleDateString(
+    "ko-KR",
+    options
+  );
+  const endDate = new Date(
+    uniqueFoundTimes[uniqueFoundTimes.length - 1]
+  ).toLocaleDateString("ko-KR", options);
+
+  const cctvIds = recoilResultState.map((item) => item.cctvId);
+  const uniquecctvIds = [...new Set(cctvIds)];
 
   return (
     <div>
+       <Container>
       <Rectangle>
         <Box>
           <Types>
-            검색 세부 정보
+            발견된 날짜
             <Contents>
-              발견 날짜 :
+              {startDate} 부터 {endDate} 까지
             </Contents>
           </Types>
           <Types>
@@ -88,8 +114,14 @@ const ResultPage = () => {
               </div>
             </Contents>
           </Types>
-          <Types>CCTV</Types>
-          {recoilResultState.map(
+          <Types>
+            CCTV
+            <Contents>CCTV ID : {uniquecctvIds}</Contents>
+          </Types>
+        </Box>
+      </Rectangle>
+      <Grid>
+      {recoilResultState.map(
             ({
               metaDataId,
               foundTime,
@@ -117,8 +149,8 @@ const ResultPage = () => {
               );
             }
           )}
-        </Box>
-      </Rectangle>
+          </Grid>
+      </Container>
     </div>
   );
 };
