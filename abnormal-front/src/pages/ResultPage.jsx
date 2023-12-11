@@ -1,4 +1,4 @@
-import { React } from "react";
+import React from 'react'
 import styled from "styled-components";
 import { useRecoilValue } from "recoil";
 import resultState from "../recoil/resultState";
@@ -22,10 +22,14 @@ margin-left: 50px;
 height: 100%;
 position: absolute;
 left: 400px;
-display: flex;  // Flexbox를 적용합니다.
-flex-wrap: wrap;  // 요소들이 넘치면 다음 줄로 이동합니다.
+display: flex;
+flex-wrap: wrap;
 justify-content: space-between;
 `
+const GridWrapper = styled.div`
+  margin-top: 50px;
+  margin-bottom: 50px;
+`;
 
 const Box = styled.div`
   margin-top: 80px;
@@ -63,8 +67,8 @@ const SelectionButton = styled.div`
 
 const ResultPage = () => {
   const recoilResultState = useRecoilValue(resultState);
-
   console.log(recoilResultState);
+  const sortedResultState = [...recoilResultState].sort((a, b) => a.videoId - b.videoId);
 
   const abnormalTypes = recoilResultState.map((item) => item.abnormalType);
   const abnormalTypeKorean = {
@@ -115,13 +119,13 @@ const ResultPage = () => {
             </Contents>
           </Types>
           <Types>
-            CCTV
-            <Contents>CCTV ID : {uniquecctvIds}</Contents>
+            CCTV | {uniquecctvIds.length}개
+            <Contents>CCTV ID : {uniquecctvIds.join(', ')}</Contents>
           </Types>
         </Box>
       </Rectangle>
       <Grid>
-      {recoilResultState.map(
+      {sortedResultState.map(
             ({
               metaDataId,
               foundTime,
@@ -150,6 +154,7 @@ const ResultPage = () => {
             }
           )}
           </Grid>
+
       </Container>
     </div>
   );
