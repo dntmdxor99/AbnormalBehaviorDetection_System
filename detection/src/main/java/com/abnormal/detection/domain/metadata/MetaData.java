@@ -24,6 +24,7 @@ public class MetaData {
     Quality quality;
     Long videoId;
     Long photoId;
+    String base64Image;
 
     public MetaData() {
 

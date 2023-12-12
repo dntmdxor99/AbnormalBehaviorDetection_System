@@ -38,11 +38,10 @@ public class JpaMetaDataRepository implements MetaDataRepository{
     @PersistenceContext
     private final EntityManager em;
 
-
 //디비 더미 insert
     private final JpaMetaDataRepositoryLegend jpaMetaDataRepositoryLegend;
 
-    public MetaData makeMetaData(String foundTime, String entityFoundTime, Long cctvId, EntityType type, AbnormalType abnormalType, Quality quality, Long videoId, Long photoId) {
+    public MetaData makeMetaData(String foundTime, String entityFoundTime, Long cctvId, EntityType type, AbnormalType abnormalType, Quality quality, Long videoId, Long photoId, String base64Image) {
         MetaData metaData = new MetaData();
         metaData.setFoundTime(parseDate(foundTime));
         metaData.setEntityFoundTime(parseDate(entityFoundTime));
@@ -52,6 +51,7 @@ public class JpaMetaDataRepository implements MetaDataRepository{
         metaData.setQuality(quality);
         metaData.setVideoId(videoId);
         metaData.setPhotoId(photoId);
+        metaData.setBase64Image(base64Image);
 
         return metaData;
     }
@@ -60,17 +60,17 @@ public class JpaMetaDataRepository implements MetaDataRepository{
     public void init() {
         try {
             List<MetaData> metaDatas = new ArrayList<>();
-            metaDatas.add(makeMetaData("2020-08-06T12:04:00", "2020-08-06T12:05:00", 1L, PERSON, fight, HIGH, 1L, 1L));
-            metaDatas.add(makeMetaData("2021-08-07T12:04:00", "2020-08-06T12:05:00", 1L, PERSON, assault, MIDDLE, 1L, 2L));
-            metaDatas.add(makeMetaData("2022-08-08T12:04:00", "2020-08-06T12:05:00", 1L, PERSON, drunken, LOW, 1L, 3L));
+            metaDatas.add(makeMetaData("2020-08-06T12:04:00", "2020-08-06T12:05:00", 1L, PERSON, fight, HIGH, 1L, 1L,"asdfghjkl"));
+            metaDatas.add(makeMetaData("2021-08-07T12:04:00", "2020-08-06T12:05:00", 1L, PERSON, assault, MIDDLE, 1L, 2L,"asdfghjkl"));
+            metaDatas.add(makeMetaData("2022-08-08T12:04:00", "2020-08-06T12:05:00", 1L, PERSON, drunken, LOW, 1L, 3L,"asdfghjkl"));
 
-            metaDatas.add(makeMetaData("2020-08-06T12:04:00", "2020-08-06T12:05:00", 2L, PERSON, swoon, HIGH, 2L, 4L));
-            metaDatas.add(makeMetaData("2021-08-07T12:04:00", "2020-08-06T12:05:00", 2L, PERSON, kidnap, MIDDLE, 2L, 5L));
-            metaDatas.add(makeMetaData("2022-08-08T12:04:00", "2020-08-06T12:05:00", 2L, PERSON, fight, LOW, 2L, 6L));
+            metaDatas.add(makeMetaData("2020-08-06T12:04:00", "2020-08-06T12:05:00", 2L, PERSON, swoon, HIGH, 2L, 4L,"asdfghjkl"));
+            metaDatas.add(makeMetaData("2021-08-07T12:04:00", "2020-08-06T12:05:00", 2L, PERSON, kidnap, MIDDLE, 2L, 5L,"asdfghjkl"));
+            metaDatas.add(makeMetaData("2022-08-08T12:04:00", "2020-08-06T12:05:00", 2L, PERSON, fight, LOW, 2L, 6L,"asdfghjkl"));
 
-            metaDatas.add(makeMetaData("2020-08-06T12:04:00", "2020-08-06T12:05:00", 3L, PERSON, fight, HIGH, 3L, 7L));
-            metaDatas.add(makeMetaData("2021-08-07T12:04:00", "2020-08-06T12:05:00", 3L, PERSON, fight, MIDDLE, 3L, 8L));
-            metaDatas.add(makeMetaData("2022-08-08T12:04:00", "2020-08-06T12:05:00", 3L, PERSON, fight, LOW, 3L, 9L));
+            metaDatas.add(makeMetaData("2020-08-06T12:04:00", "2020-08-06T12:05:00", 3L, PERSON, fight, HIGH, 3L, 7L,"asdfghjkl"));
+            metaDatas.add(makeMetaData("2021-08-07T12:04:00", "2020-08-06T12:05:00", 3L, PERSON, fight, MIDDLE, 3L, 8L,"asdfghjkl"));
+            metaDatas.add(makeMetaData("2022-08-08T12:04:00", "2020-08-06T12:05:00", 3L, PERSON, fight, LOW, 3L, 9L,"asdfghjkl"));
 
             for (MetaData metaData : metaDatas) {
                 jpaMetaDataRepositoryLegend.createMetaData(metaData);
@@ -109,7 +109,6 @@ public class JpaMetaDataRepository implements MetaDataRepository{
     }
 
      */
-
 
 /*
     @Override
@@ -168,10 +167,6 @@ public List<MetaData> getMetadataByDateRange(Date startDate, Date endDate) {
             .setParameter("endDate", endCalendar.getTime())
             .getResultList();
 }
-
-
-
-
 
 
 
@@ -342,6 +337,5 @@ public List<MetaData> getMetadataByDateRange(Date startDate, Date endDate) {
             em.merge(toUpdate);
         }
     }
-
 
 }

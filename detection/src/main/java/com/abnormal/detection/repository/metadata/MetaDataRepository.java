@@ -18,8 +18,6 @@ public interface MetaDataRepository {
 
     List<MetaData> getMetadataByCctvId(Long cctvId);
 
-
-
     List<MetaData> getMetadataByEntityType(EntityType type);
 
     List<MetaData> getMetadataByAbnormalType(AbnormalType abnormalType);
