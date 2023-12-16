@@ -15,17 +15,6 @@ const SelectDate = ({ handleDate }) => {
     }
   }, [moment, dateRange]);
 
-  //   useEffect(() => {
-  //     const [startDate, endDate] = dateRange;
-  //     if (startDate && endDate) {
-  //       setFormattedStartDate(moment(startDate).format("YYYY-MM-DDTHH:mm:ss"));
-  //       setFormattedEndDate();
-  //     } else {
-  //       setFormattedStartDate(null);
-  //       setFormattedEndDate(null);
-  //     }
-  //   }, [moment, dateRange]);
-
   return (
     <div>
       <DatePicker

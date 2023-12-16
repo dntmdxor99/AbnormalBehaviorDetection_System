@@ -69,6 +69,7 @@ const ResultPage = () => {
   const recoilResultState = useRecoilValue(resultState);
   console.log(recoilResultState);
   const sortedResultState = [...recoilResultState].sort((a, b) => a.videoId - b.videoId);
+  console.log("sortedResult --> ",sortedResultState);
 
   const abnormalTypes = recoilResultState.map((item) => item.abnormalType);
   const abnormalTypeKorean = {
@@ -79,7 +80,6 @@ const ResultPage = () => {
     kidnap: "납치",
   };
   const uniqueAbnormalTypes = [...new Set(abnormalTypes)];
-  console.log(uniqueAbnormalTypes);
 
   const foundTimes = recoilResultState.map((item) => item.foundTime);
   const uniqueFoundTimes = [...new Set(foundTimes)];
@@ -136,6 +136,7 @@ const ResultPage = () => {
               quality,
               videoId,
               photoId,
+              base64Image,
             }) => {
               return (
                 <MediaCard
@@ -149,6 +150,7 @@ const ResultPage = () => {
                   quality={quality}
                   videoId={videoId}
                   photoId={photoId}
+                  base64Image={base64Image}
                 />
               );
             }

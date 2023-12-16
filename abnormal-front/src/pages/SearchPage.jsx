@@ -207,12 +207,14 @@ function SearchPage() {
     return result;
   };
 
-  const blank = [{
-    startDate: "",
-    endDate: "",
-    cctvId: "",
-    abnormalType: "",
-  }]
+  const blank = [
+    {
+      startDate: "",
+      endDate: "",
+      cctvId: "",
+      abnormalType: "",
+    },
+  ];
 
   useEffect(() => {
     console.log(cctvId, activeStates.length, selectedDateRange);

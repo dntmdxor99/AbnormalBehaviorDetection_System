@@ -33,9 +33,36 @@ const qualityKorean = {
   LOW: "하",
 };
 
+// function base64ToBlobUrl(base64Data, contentType) {
+//   // Base64 데이터를 바이너리 형식으로 변환
+//   const byteCharacters = atob(base64Data);
+//   const byteArrays = [];
+
+//   for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+//     const slice = byteCharacters.slice(offset, offset + 512);
+
+//     const byteNumbers = new Array(slice.length);
+//     for (let i = 0; i < slice.length; i++) {
+//       byteNumbers[i] = slice.charCodeAt(i);
+//     }
+
+//     const byteArray = new Uint8Array(byteNumbers);
+//     byteArrays.push(byteArray);
+//   }
+
+//   // Blob 객체를 생성
+//   const blob = new Blob(byteArrays, {type: contentType});
+
+//   // Blob URL을 생성
+//   const blobUrl = URL.createObjectURL(blob);
+
+//   return blobUrl;
+// }
+
 export default function MediaCard({
   metaDataId,
   foundTime,
+  base64Image,
   entityFoundTime,
   cctvId,
   type,
@@ -52,13 +79,21 @@ export default function MediaCard({
     weekday: "long",
   });
 
+
+
   return (
     <Card sx={{ width: 250, height: 300, marginRight: 2, marginBottom: 2 }}>
-      <CardMedia sx={{ height: 100 }} />
+      <img
+        src={`data:image/png;base64,${base64Image}`}
+        width="100px"
+        height="100px"
+      />
+      {/* <CardMedia
+        sx={{ height: 100 }}
+        image={`data:image/png;base64,${base64Image}`
+        }
+      /> */}
       <CardContent>
-        {/* <Typography gutterBottom variant="p" component="div">
-          {metaDataId}
-        </Typography> */}
         <Circle>{qualityKorean[quality]}</Circle>
         <br />
         <Typography variant="body2" color="text.secondary">

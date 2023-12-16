@@ -8,7 +8,8 @@
 //         "abnormalType": "fight",
 //         "quality": "HIGH",
 //         "videoId": 1,
-//         "photoId": 1
+//         "photoId": 1,
+//         "base64Image": 1000000000,
 //     }
 // ]
 
