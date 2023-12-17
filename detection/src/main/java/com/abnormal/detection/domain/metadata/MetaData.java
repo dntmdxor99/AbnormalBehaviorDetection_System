@@ -1,9 +1,6 @@
 package com.abnormal.detection.domain.metadata;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +21,7 @@ public class MetaData {
     Quality quality;
     Long videoId;
     Long photoId;
+    @Column(length = 1000000000)
     String base64Image;
 
     public MetaData() {

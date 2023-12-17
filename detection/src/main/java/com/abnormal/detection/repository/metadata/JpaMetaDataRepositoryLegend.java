@@ -2,6 +2,7 @@ package com.abnormal.detection.repository.metadata;
 
 import com.abnormal.detection.domain.cctv.Cctv;
 import com.abnormal.detection.domain.metadata.MetaData;
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ public class JpaMetaDataRepositoryLegend {
     private final EntityManager entityManager;
 
     @Transactional
+    @Column(length = 1000000000)
     public MetaData createMetaData(MetaData metaData) {
         // 고유 ID 생성 및 설정
         //store.setStoreId(null); // ID는 자동 생성

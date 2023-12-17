@@ -7,13 +7,18 @@ import com.abnormal.detection.domain.metadata.MetaData;
 import com.abnormal.detection.domain.metadata.Quality;
 import com.abnormal.detection.repository.cctv.JpaCctvRepositoryLegend;
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Lob;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -41,6 +46,36 @@ public class JpaMetaDataRepository implements MetaDataRepository{
 //디비 더미 insert
     private final JpaMetaDataRepositoryLegend jpaMetaDataRepositoryLegend;
 
+/*
+    // Path 및 fileContent, dum 변수 선언
+    // Path, fileContent, dum 변수 선언
+    Path filePath = Paths.get("경로/파일명.txt");
+    String fileContent;
+    String dum;
+
+    // 생성자
+    public JpaMetaDataRepository(EntityManager em, JpaMetaDataRepositoryLegend jpaMetaDataRepositoryLegend) {
+        this.em = em;
+        this.jpaMetaDataRepositoryLegend = jpaMetaDataRepositoryLegend;
+
+        // 생성자에서 파일 내용을 읽고 변수에 저장하는 코드 추가
+        try {
+            // 파일 내용을 문자열로 읽기
+            fileContent = Files.readString(filePath);
+
+            // 읽은 내용을 변수에 저장
+            dum = fileContent;
+
+            // 출력
+            System.out.println(dum);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+ */
+
+
     public MetaData makeMetaData(String foundTime, String entityFoundTime, Long cctvId, EntityType type, AbnormalType abnormalType, Quality quality, Long videoId, Long photoId, String base64Image) {
         MetaData metaData = new MetaData();
         metaData.setFoundTime(parseDate(foundTime));
@@ -60,7 +95,7 @@ public class JpaMetaDataRepository implements MetaDataRepository{
     public void init() {
         try {
             List<MetaData> metaDatas = new ArrayList<>();
-            metaDatas.add(makeMetaData("2020-08-06T12:04:00", "2020-08-06T12:05:00", 1L, PERSON, fight, HIGH, 1L, 1L,"asdfghjkl"));
+            metaDatas.add(makeMetaData("2023-12-10T12:04:00", "2023-12-10T12:05:00", 1L, PERSON, fight, HIGH, 1L, 1L,"asdfghjkl"));
             metaDatas.add(makeMetaData("2021-08-07T12:04:00", "2020-08-06T12:05:00", 1L, PERSON, assault, MIDDLE, 1L, 2L,"asdfghjkl"));
             metaDatas.add(makeMetaData("2022-08-08T12:04:00", "2020-08-06T12:05:00", 1L, PERSON, drunken, LOW, 1L, 3L,"asdfghjkl"));
 
