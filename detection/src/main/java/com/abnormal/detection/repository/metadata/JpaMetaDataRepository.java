@@ -7,10 +7,8 @@ import com.abnormal.detection.domain.metadata.MetaData;
 import com.abnormal.detection.domain.metadata.Quality;
 import com.abnormal.detection.repository.cctv.JpaCctvRepositoryLegend;
 import jakarta.annotation.PostConstruct;
-import jakarta.persistence.Column;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Lob;
-import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -328,19 +326,43 @@ public List<MetaData> getMetadataByDateRange(Date startDate, Date endDate) {
         em.persist(metaData);
         return metaData;
     }
-
+//lock
     @Override
+    @Transactional
     public MetaData updateMetadata(MetaData metaData) {
         MetaData toUpdate = em.find(MetaData.class, metaData.getMetaDataId());
 
         if (toUpdate != null) {
+            // 버전 확인
+            if (!toUpdate.getVersion().equals(metaData.getVersion())) {
+                // 버전 충돌이 발생한 경우 처리
+                throw new OptimisticLockException("Version mismatch");
+            }
+
+            // 나머지 업데이트 로직
+            toUpdate.setFoundTime(metaData.getFoundTime());
+            toUpdate.setEntityFoundTime(metaData.getEntityFoundTime());
             toUpdate.setCctvId(metaData.getCctvId());
-            toUpdate.setAbnormalType(metaData.getAbnormalType());
             toUpdate.setType(metaData.getType());
+            toUpdate.setAbnormalType(metaData.getAbnormalType());
             toUpdate.setQuality(metaData.getQuality());
             toUpdate.setVideoId(metaData.getVideoId());
-            toUpdate.setFoundTime(metaData.getFoundTime());
             toUpdate.setPhotoId(metaData.getPhotoId());
+            toUpdate.setBase64Image(metaData.getBase64Image());
+            /*
+            Date foundTime;
+            Date entityFoundTime;
+            Long cctvId;
+            EntityType type;
+            AbnormalType abnormalType;
+            Quality quality;
+            Long videoId;
+            Long photoId;
+            @Column(length = 1000000000)
+            String base64Image;
+             */
+            // 버전 증가
+            toUpdate.setVersion(toUpdate.getVersion() + 1);
 
             toUpdate = em.merge(toUpdate);
         }

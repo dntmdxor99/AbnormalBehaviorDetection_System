@@ -17,27 +17,20 @@ public class MetaData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long metaDataId;
 
-    //@Version
     Date foundTime;
-
-    //@Version
     Date entityFoundTime;
-
-    @Version
     Long cctvId;
-
     EntityType type;
     AbnormalType abnormalType;
     Quality quality;
-
-    //@Version
     Long videoId;
-
-    //@Version
     Long photoId;
-
     @Column(length = 1000000000)
     String base64Image;
+
+
+    @Version
+    private Long version;
 
     public MetaData() {
 
