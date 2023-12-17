@@ -22,7 +22,8 @@ public class Cctv {
     private Float latitude;// 위도
     private Float longitude;// 경도
     private Boolean is360Degree;//true,f로 초기화
-    private String channel;//protocol->채널
+    private String cctvIp; //nvr 주소
+    private String channel;//해당 cctv 채널의 수
     private String videoSize;
 
     public Cctv() {

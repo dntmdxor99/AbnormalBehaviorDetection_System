@@ -37,16 +37,15 @@ public class JpaMemoryCctvRepository implements CctvRepository {
     private String videoSize;
  */
     private final JpaCctvRepositoryLegend jpaCctvRepositoryLegend;
-    public Cctv makeCctv(String cctvName, String location, Float latitude, Float longitude, Boolean is360Degree,String channel, String videoSize){
+    public Cctv makeCctv(String cctvName, String location, Float latitude, Float longitude, Boolean is360Degree, String cctvIp, String channel, String videoSize){
         Cctv cctv = new Cctv();
         cctv.setCctvName(cctvName);
         cctv.setLocation(location);//주소값
         cctv.setLatitude(latitude);//위도
         cctv.setLongitude(longitude);//경도
         cctv.setIs360Degree(is360Degree);
-        //ip
-
-        cctv.setChannel(channel);//nvr 주소
+        cctv.setCctvIp(cctvIp);//nvr 주소
+        cctv.setChannel(channel);//해당 cctv 채널의 수
         cctv.setVideoSize(videoSize);
 
         return cctv;
@@ -56,8 +55,8 @@ public class JpaMemoryCctvRepository implements CctvRepository {
     public void init() {
         try {
             List<Cctv> cctvs = new ArrayList<>();
-            cctvs.add(makeCctv("우경정보1", "대구광역시 북구 대현로15길 17", (float)35.8845360, (float)128.608639, Boolean.TRUE, "118.45.212.161", "1920x1080"));
-            cctvs.add(makeCctv("우경정보2", "대구광역시 북구 대학로23길 5", (float)35.8947285, (float)128.611282,Boolean.TRUE, "118.45.212.161", "1920x1080"));
+            cctvs.add(makeCctv("우경정보1", "대구광역시 북구 대현로15길 17", (float)35.8845360, (float)128.608639, Boolean.TRUE, "118.45.212.161", "1","1920x1080"));
+            cctvs.add(makeCctv("우경정보2", "대구광역시 북구 대학로23길 5", (float)35.8947285, (float)128.611282,Boolean.TRUE, "118.45.212.161", "2","1920x1080"));
             /*
             cctvs.add(makeCctv("대규집", "대구광역시 북구 경대로7길 76", (float)35.886183654708, (float)128.606278956326,Boolean.TRUE, "127.33.44.5", "1920x1080"));
             cctvs.add(makeCctv("명빈 반지하집", "대구광역시 북구 대학로 80", (float)35.8890974884948, (float)128.614322336303,Boolean.TRUE, "127.33.44.5", "1920x1080"));
@@ -140,6 +139,7 @@ public class JpaMemoryCctvRepository implements CctvRepository {
             existingCctv.setLatitude(updatedCctv.getLatitude());
             existingCctv.setLongitude(updatedCctv.getLongitude());
             existingCctv.setIs360Degree(updatedCctv.getIs360Degree());
+            existingCctv.setCctvIp(updatedCctv.getCctvIp());
             existingCctv.setChannel(updatedCctv.getChannel());
             existingCctv.setVideoSize(updatedCctv.getVideoSize());
         }
