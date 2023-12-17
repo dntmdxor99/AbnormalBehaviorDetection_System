@@ -6,6 +6,7 @@ import com.abnormal.detection.domain.metadata.EntityType;
 import com.abnormal.detection.domain.metadata.MetaData;
 import com.abnormal.detection.domain.metadata.Quality;
 import com.abnormal.detection.service.metadata.MetaDataService;
+import jakarta.persistence.OptimisticLockException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -229,11 +230,25 @@ public class MetaDataController {
     public MetaData saveMetadata(@RequestBody MetaData metaData) {
         return metaDataService.saveMetadata(metaData);
     }
-
+/*
     @PostMapping("/update")
     public MetaData updateMetadata(@RequestBody MetaData metaData) {
         return metaDataService.updateMetadata(metaData);
     }
+
+ */
+    @PostMapping("/update")
+    public MetaData updateMetadata(@RequestBody MetaData metaData) {
+        try {
+            return metaDataService.updateMetadata(metaData);
+        } catch (OptimisticLockException e) {
+            // Optimistic Locking 예외 처리
+            // 클라이언트에게 충돌이 발생했음을 알리거나, 다른 처리를 수행할 수 있습니다.
+            e.printStackTrace();
+            return null; // 또는 적절한 응답 반환
+        }
+    }
+
 
     @DeleteMapping("/delete/{metaDataId}")
     public void deleteMetadata(@PathVariable Long metaDataId) {
