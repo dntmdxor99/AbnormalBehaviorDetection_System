@@ -7,3 +7,5 @@ yolov5/
 nohup.out
 meta_info/
 temp/
+results/
+*.out
