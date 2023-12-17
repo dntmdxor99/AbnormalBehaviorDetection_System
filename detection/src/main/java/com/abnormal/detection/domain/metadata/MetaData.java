@@ -3,24 +3,39 @@ package com.abnormal.detection.domain.metadata;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OptimisticLockType;
+import org.hibernate.annotations.OptimisticLocking;
 
 import java.util.Date;
 
 @Entity
 @Getter
 @Setter
+@OptimisticLocking(type = OptimisticLockType.VERSION)
 public class MetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long metaDataId;
+
+    //@Version
     Date foundTime;
+
+    //@Version
     Date entityFoundTime;
+
+    @Version
     Long cctvId;
+
     EntityType type;
     AbnormalType abnormalType;
     Quality quality;
+
+    //@Version
     Long videoId;
+
+    //@Version
     Long photoId;
+
     @Column(length = 1000000000)
     String base64Image;
 
