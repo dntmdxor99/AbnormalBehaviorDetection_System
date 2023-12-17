@@ -69,6 +69,8 @@ public class MetaDataService {
         return metaDataRepository.saveMetadata(metaData);
     }
 
+    //비관적 락 제거(낙관적 락 사용)
+    //@Lock(LockModeType.PESSIMISTIC_WRITE)
     public MetaData updateMetadata(MetaData metaData) {
         return metaDataRepository.updateMetadata(metaData);
     }
