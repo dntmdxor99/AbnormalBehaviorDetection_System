@@ -15,6 +15,8 @@ Ubuntu_testDataPath : './datasets/train'
 Ubuntu_testMetaInfoFile : './slowfast/data/meta_info/meta_info_test.txt'
 Ubuntu_pretrainedModelPath : '/home/woo/Desktop/job/project/AbnormalBehaviorDetection_System/AI/SlowFast/pretrained/last/top1.pth'
 
+cctvRoute : "rtsp://admin:!Levelup124@118.45.212.161:554/Streaming/channels/102"
+
 ResNet-50 : {
   middleDim : [0, 0, 64, 128, 256, 512],
   outputDim : [0, 64, 256, 512, 1024, 2048],
