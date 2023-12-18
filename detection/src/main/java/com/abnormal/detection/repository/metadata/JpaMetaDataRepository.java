@@ -23,10 +23,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.abnormal.detection.domain.metadata.AbnormalType.*;
 import static com.abnormal.detection.domain.metadata.EntityType.PERSON;
@@ -93,8 +90,11 @@ public class JpaMetaDataRepository implements MetaDataRepository{
     public void init() {
         try {
             List<MetaData> metaDatas = new ArrayList<>();
+/*
             metaDatas.add(makeMetaData("2023-12-10T12:04:00", "2023-12-10T12:05:00", 1L, PERSON, fight, HIGH, 1L, 1L,"asdfghjkl"));
+
             metaDatas.add(makeMetaData("2021-08-07T12:04:00", "2020-08-06T12:05:00", 1L, PERSON, assault, MIDDLE, 1L, 2L,"asdfghjkl"));
+
             metaDatas.add(makeMetaData("2022-08-08T12:04:00", "2020-08-06T12:05:00", 1L, PERSON, drunken, LOW, 1L, 3L,"asdfghjkl"));
 
             metaDatas.add(makeMetaData("2020-08-06T12:04:00", "2020-08-06T12:05:00", 2L, PERSON, swoon, HIGH, 2L, 4L,"asdfghjkl"));
@@ -104,6 +104,8 @@ public class JpaMetaDataRepository implements MetaDataRepository{
             metaDatas.add(makeMetaData("2020-08-06T12:04:00", "2020-08-06T12:05:00", 3L, PERSON, fight, HIGH, 3L, 7L,"asdfghjkl"));
             metaDatas.add(makeMetaData("2021-08-07T12:04:00", "2020-08-06T12:05:00", 3L, PERSON, fight, MIDDLE, 3L, 8L,"asdfghjkl"));
             metaDatas.add(makeMetaData("2022-08-08T12:04:00", "2020-08-06T12:05:00", 3L, PERSON, fight, LOW, 3L, 9L,"asdfghjkl"));
+
+             */
 
             for (MetaData metaData : metaDatas) {
                 jpaMetaDataRepositoryLegend.createMetaData(metaData);
@@ -180,7 +182,7 @@ public class JpaMetaDataRepository implements MetaDataRepository{
     //참고로 옵션검색은 한개라도 일치하면 검색됨
 public List<MetaData> getMetadataByDateRange(Date startDate, Date endDate) {
     // 시작일은 2020-08-06T03:03:00의 2020-08-06T00:00:00으로 설정
-    Calendar startCalendar = Calendar.getInstance();
+    Calendar startCalendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"));
     startCalendar.setTime(startDate);
     startCalendar.set(Calendar.HOUR_OF_DAY, 0);
     startCalendar.set(Calendar.MINUTE, 0);
@@ -188,7 +190,7 @@ public List<MetaData> getMetadataByDateRange(Date startDate, Date endDate) {
     startCalendar.set(Calendar.MILLISECOND, 0);
 
     // 종료일은 2020-08-06T04:07:00의 2020-08-07T00:00:00으로 설정
-    Calendar endCalendar = Calendar.getInstance();
+    Calendar endCalendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"));
     endCalendar.setTime(endDate);
     endCalendar.set(Calendar.HOUR_OF_DAY, 23);
     endCalendar.set(Calendar.MINUTE, 59);

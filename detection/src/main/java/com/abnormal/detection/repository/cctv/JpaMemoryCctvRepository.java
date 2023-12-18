@@ -55,9 +55,10 @@ public class JpaMemoryCctvRepository implements CctvRepository {
     public void init() {
         try {
             List<Cctv> cctvs = new ArrayList<>();
+/*
             cctvs.add(makeCctv("우경정보1", "대구광역시 북구 대현로15길 17", (float)35.8845360, (float)128.608639, Boolean.TRUE, "118.45.212.161", "1","1920x1080"));
             cctvs.add(makeCctv("우경정보2", "대구광역시 북구 대학로23길 5", (float)35.8947285, (float)128.611282,Boolean.TRUE, "118.45.212.161", "2","1920x1080"));
-            /*
+
             cctvs.add(makeCctv("대규집", "대구광역시 북구 경대로7길 76", (float)35.886183654708, (float)128.606278956326,Boolean.TRUE, "127.33.44.5", "1920x1080"));
             cctvs.add(makeCctv("명빈 반지하집", "대구광역시 북구 대학로 80", (float)35.8890974884948, (float)128.614322336303,Boolean.TRUE, "127.33.44.5", "1920x1080"));
             cctvs.add(makeCctv("한솔집", "대구광역시 북구 대현로19길 76-5", (float)35.8854896881863, (float)128.613390671173,Boolean.TRUE, "127.33.44.5", "1920x1080"));

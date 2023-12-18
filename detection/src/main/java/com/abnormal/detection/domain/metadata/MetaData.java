@@ -23,6 +23,7 @@ public class MetaData {
     EntityType type;
     AbnormalType abnormalType;
     Quality quality;
+
     Long videoId;
     Long photoId;
     @Column(length = 1000000000)
