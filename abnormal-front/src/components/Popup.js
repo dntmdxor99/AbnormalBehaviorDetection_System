@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import cancelIcon from '../assets/img/cancel.png';
-
+import jsmpeg from 'jsmpeg';
 
 const PopupContainer = styled.div`
   position: fixed;
@@ -27,7 +27,7 @@ const Header = styled.div`
 
 const Body = styled.div`
   width: 100%;
-  height: 100%
+  height: 100%;
 `
 
 const CloseButton = styled.button`
@@ -45,18 +45,36 @@ const CloseIcon = styled.img`
 
 const VideoContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 95%;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+  margin-top: 20px;
 `;
 
-// const Video = styled.video`
-//   width: 100%;
-//   height: auto;
-// `;
 
 const Popup = ({ onClose }) => {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    var client = new WebSocket('ws://localhost:9999');
+    var canvas = document.createElement('canvas');
+    var player = new jsmpeg(client, {
+      canvas: canvas,
+    });
+
+    // React ref로 설정
+    videoRef.current.appendChild(canvas);
+
+    // Clean up 함수에서 소켓 및 플레이어 해제
+    return () => {
+      client.close();
+      player.stop();
+    };
+  }, []);
+
+  
   return (
     <PopupContainer>  
       <Header>
@@ -65,8 +83,7 @@ const Popup = ({ onClose }) => {
         </CloseButton>
       </Header>
       <Body>
-        <VideoContainer>
-        </VideoContainer>
+        <VideoContainer ref={videoRef} />
       </Body>
     </PopupContainer>
   );

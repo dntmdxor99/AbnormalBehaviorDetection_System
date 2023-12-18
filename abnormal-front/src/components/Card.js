@@ -70,6 +70,7 @@ export default function MediaCard({
   quality,
   videoId,
   photoId,
+  onClick,
 }) {
   const date = new Date(entityFoundTime);
   const formattedDate = date.toLocaleDateString("ko-KR", {
@@ -103,7 +104,7 @@ export default function MediaCard({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small"> 영상 보기</Button>
+        <Button onClick={() => onClick()} size="small"> 영상 보기</Button>
       </CardActions>
     </Card>
   );

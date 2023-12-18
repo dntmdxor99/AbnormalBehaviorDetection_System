@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useRecoilValue } from "recoil";
 import resultState from "../recoil/resultState";
 import MediaCard from "../components/Card";
+import StoredVideo from "../components/StoredVideo";
+import axios from 'axios';
+
 
 const Container = styled.div`
   display: flex;
@@ -95,6 +98,70 @@ const ResultPage = () => {
   const cctvIds = recoilResultState.map((item) => item.cctvId);
   const uniquecctvIds = [...new Set(cctvIds)];
 
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [selectedVideoData, setSelectedVideoData] = useState(null);
+
+  const handleVideoClick = async () => {
+    // const startDateObj = new Date(uniqueFoundTimes[0]);
+    // const endDateObj = new Date(uniqueFoundTimes[uniqueFoundTimes.length - 1]);
+
+    // const startYear = startDateObj.getFullYear().toString();
+    // const startMonth = (startDateObj.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 +1, 두 자리로 패딩
+    // const start_Date = startDateObj.getDate().toString().padStart(2, '0'); // 두 자리로 패딩
+    // const startHour = startDateObj.getHours().toString().padStart(2, '0'); // 두 자리로 패딩
+    // const startMin = startDateObj.getMinutes().toString().padStart(2, '0'); // 두 자리로 패딩
+
+    // const endYear = endDateObj.getFullYear().toString();
+    // const endMonth = (endDateObj.getMonth() + 1).toString().padStart(2, '0');
+    // const end_Date = endDateObj.getDate().toString().padStart(2, '0');
+    // const endHour = endDateObj.getHours().toString().padStart(2, '0');
+    // const endMin = endDateObj.getMinutes().toString().padStart(2, '0');
+
+    const requestData = {
+      ip: "118.45.212.161",
+      channel: "1",
+      startYear: '2023',
+      startMonth: '12',
+      startDate: '10',
+      startHour: '20',
+      startMin: '01',
+      endYear: '2023',
+      endMonth: '12',
+      endDate: '10',
+      endHour: '20',
+      endMin: '06',
+    };
+
+    console.log(requestData);
+
+    try {
+      const response = await axios.post('http://172.20.56.247:8080/videos', requestData, {
+        responseType: 'arraybuffer',
+      });
+      
+      // const blob = new Blob([response.data], {type: 'video/mp4'});
+
+      // const videoFile = new File([blob], 'downloaded_video.mp4', {type: 'video/mp4'});
+
+      // const a = document.createElement('a');
+      // a.href = URL.createObjectURL(videoFile);
+      // a.download = 'downloaded_video.mp4';
+
+      // document.body.appendChild(a);
+      // a.click();
+      // document.body.removeChild(a);
+
+      setPopupOpen(true);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const closePopup = () => {
+    setPopupOpen(false);
+  };
+
+
   return (
     <div>
        <Container>
@@ -151,12 +218,14 @@ const ResultPage = () => {
                   videoId={videoId}
                   photoId={photoId}
                   base64Image={base64Image}
+                  onClick={handleVideoClick}
                 />
               );
             }
           )}
           </Grid>
 
+          {popupOpen && <StoredVideo onClose={closePopup} />}
       </Container>
     </div>
   );

@@ -46,6 +46,7 @@ const CctvPage = () => {
     latitude: "",
     longitude: "",
     is360Degree: "",
+    cctvIp: "",
     channel: "",
     videoSize: "",
   });
@@ -94,57 +95,73 @@ const CctvPage = () => {
                 <form onSubmit={onSubmit}>
                   <h2>CCTV 등록</h2>
                   <label>
-                    ID
+                    ID:
                     <input
                       type="text"
                       name="cctvId"
                       value={""}
                       onChange={onChange}
+                      style={{marginleft: "10px", marginBottom: "5px"}}
                     />
                   </label>
                   <label>
-                    Name
+                    Name:
                     <input
                       type="text"
                       name="cctvName"
                       value={cctvData.cctvName}
                       onChange={onChange}
+                      style={{marginleft: "10px", marginBottom: "5px"}}
                     />
                   </label>
                   <label>
-                    Location
+                    Location:
                     <input
                       type="text"
                       name="location"
                       value={cctvData.location}
                       onChange={onChange}
+                      style={{marginleft: "10px", marginBottom: "5px"}}
                     />
                   </label>
                   <label>
-                    360Degree
+                    360Degree:
                     <input
                       type="text"
                       name="is360Degree"
                       value={cctvData.is360Degree}
                       onChange={onChange}
+                      style={{marginleft: "10px", marginBottom: "5px"}}
                     />
                   </label>
                   <label>
-                    Channel
+                    CCTV IP:
+                    <input
+                      type="text"
+                      name="cctvIp"
+                      value={cctvData.cctvIp}
+                      onChange={onChange}
+                      style={{marginleft: "10px", marginBottom: "5px"}}
+                    />
+                  </label>
+                  <label>
+                    Channel:
                     <input
                       type="text"
                       name="channel"
                       value={cctvData.channel}
                       onChange={onChange}
+                      style={{marginleft: "10px", marginBottom: "5px"}}
                     />
                   </label>
                   <label>
-                    VideoSize
+                    VideoSize:
                     <input
                       type="text"
                       name="videoSize"
                       value={cctvData.videoSize}
                       onChange={onChange}
+                      style={{marginleft: "10px", marginBottom: "5px"}}
                     />
                   </label>
                   <Button type="submit">등록</Button>

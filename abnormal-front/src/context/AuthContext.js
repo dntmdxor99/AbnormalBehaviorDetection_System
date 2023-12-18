@@ -10,8 +10,17 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const login = (userData) => {
-    setUser({userData: userData.username});
+    setUser({
+      userData: {
+        username: userData.username, 
+        token: userData.token
+      }
+    });  
     localStorage.setItem('login-token', userData.token);
+    localStorage.setItem('user', JSON.stringify({
+      username: userData.username,
+      token: userData.token
+    }));
   };
 
   const logout =  async () => {
@@ -26,6 +35,7 @@ export const AuthProvider = ({ children }) => {
 
       setUser(null);
       localStorage.removeItem('login-token');
+      localStorage.removeItem('user');
     } catch (error) {
       console.error('로그아웃 중 에러 발생', error);
     }
@@ -35,14 +45,16 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem('login-token');
-      if (token) {
+      const storedUser = localStorage.getItem('user');
+      console.log('Stored User:', storedUser);
+      if (token && storedUser) {
         try {
-          const response = await API.get('/users/login', {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
-          setUser({ username: response.data.username, token });
+          // const response = await API.get('/users/login', {
+          //   headers: {
+          //     Authorization: `Bearer ${token}`
+          //   }
+          // });
+          setUser(JSON.parse(storedUser));
         } catch (error) {
           console.log("오류1");
           console.error('오류 발생', error);

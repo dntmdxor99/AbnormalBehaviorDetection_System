@@ -14,6 +14,8 @@ import "../App.css";
 import cctvIdState from "../recoil/cctvIdState.js";
 import SelectDate from "../components/SelectDate.jsx";
 import resultState from "../recoil/resultState";
+import Popup from "../components/Popup.js";
+
 
 const Frame = styled.div`
   width: 100vw;
@@ -138,6 +140,9 @@ function SearchPage() {
 
   const setRecoilResultState = useSetRecoilState(resultState);
   const [sendResult, setSendResult] = useState([]);
+  
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupContent, setPopupContent] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -181,9 +186,23 @@ function SearchPage() {
     const { value } = event.target;
     if (value === "real-time") {
       setIsRealTimeSelected(true);
+  
+      setShowPopup(true);
+      setPopupContent(
+        <Popup
+          onClose={handleClosePopup}
+        />
+      );
     } else {
       setIsRealTimeSelected(false);
+      setShowPopup(false);
+      setPopupContent(null);
     }
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    setPopupContent(null);
   };
 
   useEffect(() => {
@@ -207,14 +226,12 @@ function SearchPage() {
     return result;
   };
 
-  const blank = [
-    {
-      startDate: "",
-      endDate: "",
-      cctvId: "",
-      abnormalType: "",
-    },
-  ];
+  const blank = [{
+    startDate: "",
+    endDate: "",
+    cctvId: "",
+    abnormalType: "",
+  }]
 
   useEffect(() => {
     console.log(cctvId, activeStates.length, selectedDateRange);
@@ -294,6 +311,9 @@ function SearchPage() {
                         )}
                       </RadioButton>
                     </RadioButtonGroup>
+                    {showPopup && (
+                      <Popup content={popupContent} onClose={handleClosePopup} />
+                    )}
                     {!isRealTimeSelected && (
                       <Contents>
                         이상행동 선택

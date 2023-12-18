@@ -60,8 +60,8 @@ const LoginPage = () => {
 
 
   useEffect( () => {
-    //checkLoginStatus();
-  })
+    checkLoginStatus();
+  }, []);
 
   
   const checkLoginStatus = async () => {
@@ -69,13 +69,13 @@ const LoginPage = () => {
 
     if (token) {
       try {
-        const response = await API.get('/user/info', {
+        const response = await API.get('/users/login', {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
 
-        console.log('사용자 정보:', response.data);
+        login({ username: response.data.userData });
       } catch (error) {
         console.error('오류발생');
       }
@@ -106,6 +106,7 @@ const LoginPage = () => {
 
       if (response.status === 200) {
         login({username: data.userId});
+        console.log(data.userId);
         localStorage.clear()
         localStorage.setItem('login-token', response.data)
         
@@ -173,4 +174,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-
