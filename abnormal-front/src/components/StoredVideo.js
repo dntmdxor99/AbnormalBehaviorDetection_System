@@ -54,7 +54,7 @@ const VideoContainer = styled.div`
 `;
 
 const StoredVideo = ({ onClose }) => {
-
+    
     return (
         <PopupContainer>  
         <Header>
@@ -65,10 +65,10 @@ const StoredVideo = ({ onClose }) => {
         <Body>
             <VideoContainer>
                 <video controls style={{width: "100%", height: "100%", objectFit: 'cover'}} autoPlay>
-                    <source src="http://172.20.56.247:8080/stream" type="video/mp4" />
+                    <source src="http://172.20.56.218:8080/stream" type="video/mp4" />
                 </video>
             </VideoContainer>
-        </Body>
+        </Body> 
         </PopupContainer>
     );
 };

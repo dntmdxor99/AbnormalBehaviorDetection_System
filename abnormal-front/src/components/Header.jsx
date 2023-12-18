@@ -103,7 +103,7 @@ const Header = () => {
   const navigate = useNavigate();
   const { user, logout, loading } = useAuth();
   console.log(user);
-
+  
 
   const handleHeaderClick = (path) => {
     if (!user) {
@@ -154,7 +154,7 @@ const Header = () => {
       {user !== null && !loading && (
         <MenuBarButtons>
           <>
-            <span>아이디 명: 님</span>
+            <span>KNU123님</span>
             <Link to="/" style={logoutButtonStyle} onClick={logout}>
               로그아웃
             </Link>

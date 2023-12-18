@@ -83,6 +83,12 @@ const SignupForm = styled.form`
     font-size: 14px;
     margin-top: 5px;
   }
+
+  .message {
+    color: blue; // 파란색으로 변경
+    margin-top: 5px;
+    font-size: 14px;
+  }
 `;
 
 const CenteredContainer = styled.div`
@@ -136,6 +142,9 @@ const SignUpPage = () => {
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [idAvailabilityMessage, setIdAvailabilityMessage] = useState('');
 
+  const [authMessage, setAuthMessage] = useState('');
+  const [idCheckMessage, setIdCheckMessage] = useState('');
+
   const [inputValue, setInputValue] = useState({
     userNumber: "",
     employeeNumber: "",
@@ -173,28 +182,22 @@ const SignUpPage = () => {
 
     return passwordRegex.test(password);
   };
-  
-  const checkDuplicateId = async () => {
-    try {
-      const response = await API.post('/users/check-duplicate-id', { userId: inputValue.userId });
-  
-      if (response.data.available) {
-        // 아이디 사용 가능한 경우
-        setIdAvailabilityMessage('사용 가능한 아이디입니다.');
-        // 기타 필요한 로직 추가 가능
-      } else {
-        // 아이디 중복된 경우
-        setIdAvailabilityMessage('이미 존재하는 아이디입니다.');
-        // 기타 필요한 로직 추가 가능
-      }
-    } catch (error) {
-      console.error('서버와의 통신 중 오류 발생', error);
-    }
+
+  const handleCheckDuplicateId = async () => {
+    // 인증 로직 추가 (예: 서버와 통신하여 인증 성공 여부 판단)
+    // ...
+
+    // 인증 성공 시 메시지 변경
+    setAuthMessage('인증 완료');
   };
 
-  const handleCheckDuplicateId = () => {
-    checkDuplicateId();
-  }
+  const checkDuplicateId = async () => {
+    // 중복 확인 로직 추가 (예: 서버와 통신하여 중복 여부 판단)
+    // ...
+
+    // 중복이 아닌 경우 메시지 변경
+    setIdCheckMessage('사용 가능한 아이디입니다.');
+  };
 
   const handleSignUp = async (e) => {
     e.preventDefault()
@@ -249,9 +252,9 @@ const SignUpPage = () => {
                       onChange={(e) => inputChangeHandler(e, 'employeeNumber')}
                       style={{width: 322, marginBottom: '15px', marginTop: '15px', marginLeft: '-11.3px' }}
                     />
-                    <button className='authentication-button' type='button'>인증</button>
+                    <button className='authentication-button' type='button' onClick={handleCheckDuplicateId}>인증</button>
                   </div>
-
+                  {authMessage && <div className="message">{authMessage}</div>}
                   <label>회사명</label>
                   <input 
                     type='text' 
@@ -272,8 +275,9 @@ const SignUpPage = () => {
                       onChange={(e) => inputChangeHandler(e, 'userId')}
                       style={{width: 600, marginBottom: '18px', marginTop: '15px', marginLeft: '-11.3px' }}
                     />
-                    <button className='doublecheck-button' type='button' onClick={handleCheckDuplicateId}>중복확인</button>
+                    <button className='doublecheck-button' type='button' onClick={checkDuplicateId}>중복확인</button>
                   </div>
+                  {idCheckMessage && <div className="message">{idCheckMessage}</div>}
                   { idAvailabilityMessage && <div style={{ color: idAvailabilityMessage.includes('가능') ? 'blue' : 'red' }}>{idAvailabilityMessage}</div> }
 
                   <label>비밀번호</label>

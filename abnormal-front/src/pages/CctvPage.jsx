@@ -1,7 +1,4 @@
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import PageLayout from "../components/PageLayout";
 import API from "../utils/API";
@@ -18,8 +15,9 @@ const Container = styled.div`
   border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
+  justify-content: center;
   margin: 20px 0;
-  width: 350px;
+  width: 400px;
   &:not(:first-child) {
     margin-left: 50px;
   }
@@ -89,79 +87,79 @@ const CctvPage = () => {
       <Frame>
         <div className="cctv">
           <div className="cctv-main">
-            <h1 className="cctv-main-title">현재 등록된 CCTV</h1>
+            <h1 className="cctv-main-title" style={{marginTop: '-20px', marginBottom: '40px'}}>현재 등록된 CCTV</h1>
             <div style={{ display: "flex" }}>
               <Container>
                 <form onSubmit={onSubmit}>
-                  <h2>CCTV 등록</h2>
-                  <label>
+                  <h2 style={{textAlign: "center"}}>CCTV 등록</h2>
+                  <label style={{ display: "flex", justifyContent: "space-between" }}>
                     ID:
                     <input
                       type="text"
                       name="cctvId"
                       value={""}
                       onChange={onChange}
-                      style={{marginleft: "10px", marginBottom: "5px"}}
+                      style={{marginBottom: "5px"}}
                     />
                   </label>
-                  <label>
+                  <label style={{ display: "flex", justifyContent: "space-between" }}>
                     Name:
                     <input
                       type="text"
                       name="cctvName"
                       value={cctvData.cctvName}
                       onChange={onChange}
-                      style={{marginleft: "10px", marginBottom: "5px"}}
+                      style={{marginBottom: "5px"}}
                     />
                   </label>
-                  <label>
+                  <label style={{ display: "flex", justifyContent: "space-between" }}>
                     Location:
                     <input
                       type="text"
                       name="location"
                       value={cctvData.location}
                       onChange={onChange}
-                      style={{marginleft: "10px", marginBottom: "5px"}}
+                      style={{marginBottom: "5px"}}
                     />
                   </label>
-                  <label>
+                  <label style={{ display: "flex", justifyContent: "space-between" }}>
                     360Degree:
                     <input
                       type="text"
                       name="is360Degree"
                       value={cctvData.is360Degree}
                       onChange={onChange}
-                      style={{marginleft: "10px", marginBottom: "5px"}}
+                      style={{marginBottom: "5px"}}
                     />
                   </label>
-                  <label>
+                  <label style={{ display: "flex", justifyContent: "space-between" }}>
                     CCTV IP:
                     <input
                       type="text"
                       name="cctvIp"
                       value={cctvData.cctvIp}
                       onChange={onChange}
-                      style={{marginleft: "10px", marginBottom: "5px"}}
+                      style={{marginBottom: "5px"}}
                     />
                   </label>
-                  <label>
+                  <label style={{ display: "flex", justifyContent: "space-between" }}>
                     Channel:
                     <input
                       type="text"
                       name="channel"
                       value={cctvData.channel}
                       onChange={onChange}
-                      style={{marginleft: "10px", marginBottom: "5px"}}
+                      style={{marginBottom: "5px"}}
                     />
                   </label>
-                  <label>
+                  <label style={{ display: "flex", justifyContent: "space-between" }}>
                     VideoSize:
                     <input
                       type="text"
                       name="videoSize"
                       value={cctvData.videoSize}
                       onChange={onChange}
-                      style={{marginleft: "10px", marginBottom: "5px"}}
+                      style={{marginBottom: "5px"}}
                     />
                   </label>
                   <Button type="submit">등록</Button>
@@ -169,7 +167,7 @@ const CctvPage = () => {
               </Container>
               <Container>
                 <form onSubmit={onDelete}>
-                  <h2>CCTV 삭제</h2>
+                  <h2 style={{ textAlign: "center" }}>CCTV 삭제</h2>
                   <label>
                     ID:
                     <input
@@ -177,6 +175,7 @@ const CctvPage = () => {
                       name="deleteId"
                       value={deleteId}
                       onChange={onIdChange}
+                      style={{ marginLeft: "5px" }}
                     />
                   </label>
                   <Button type="button" onClick={onDelete}>

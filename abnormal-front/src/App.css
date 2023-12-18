@@ -72,7 +72,7 @@
 }
 
 .abnormal-main {
-  display: flex;
+  display: block;
   height: 100vh;
   padding-left: 5vw;
   margin-top: 50px;
@@ -82,6 +82,7 @@
   width: 100%;
   text-align: left;
   font-size: 3.5em;
+  margin-top: 5px;
   margin-left: 5px;
 }
 
@@ -95,15 +96,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-left: 6vw;
   height: 100vh;
 }
 
 .cctv-main-title {
   width: 100%;
-  text-align: left;
+  text-align: center;
   font-size: 3.5em;
-  margin-left: 5px;
 }
 
 .ask {
@@ -111,7 +110,7 @@
 }
 
 .ask-main {
-  display: flex;
+  display: block;
   height: 100vh;
   padding-left: 5vw;
   margin-top: 50px;
@@ -121,6 +120,7 @@
   width: 100%;
   text-align: left;
   font-size: 3.5em;
+  margin-top: 5px;
   margin-left: 5px;
 }
 

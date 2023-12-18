@@ -85,13 +85,13 @@ export default function MediaCard({
   return (
     <Card sx={{ width: 250, height: 300, marginRight: 2, marginBottom: 2 }}>
       <img
-        src={`data:image/png;base64,${base64Image}`}
+        src={`data:image/jpg;base64,${base64Image}`}
         width="100px"
         height="100px"
       />
       {/* <CardMedia
         sx={{ height: 100 }}
-        image={`data:image/png;base64,${base64Image}`
+        image={`data:image/jpg;base64,${base64Image}`
         }
       /> */}
       <CardContent>

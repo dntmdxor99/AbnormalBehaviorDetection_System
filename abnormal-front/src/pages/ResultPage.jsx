@@ -135,8 +135,9 @@ const ResultPage = () => {
     console.log(requestData);
 
     try {
-      const response = await axios.post('http://172.20.56.247:8080/videos', requestData, {
+      const response = await axios.post('http://172.20.56.218:8080/videos', requestData, {
         responseType: 'arraybuffer',
+        timeout: 300000
       });
       
       // const blob = new Blob([response.data], {type: 'video/mp4'});
@@ -150,7 +151,7 @@ const ResultPage = () => {
       // document.body.appendChild(a);
       // a.click();
       // document.body.removeChild(a);
-
+      console.log(response);
       setPopupOpen(true);
     } catch (error) {
       console.error('Error:', error);
