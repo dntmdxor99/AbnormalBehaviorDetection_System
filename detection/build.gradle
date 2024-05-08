@@ -48,6 +48,20 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 }
 
+springBoot {
+	mainClass = 'com.abnormal.detection.DetectionApplication'
+}
+
+
+bootRun {
+	// profiles 설정
+	if (project.hasProperty('spring.profiles.active')) {
+		systemProperty "spring.profiles.active", project.findProperty('spring.profiles.active')
+	}
+}
+
+
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
