@@ -1,5 +1,7 @@
 # AbnormalBehaviorDetection-System
 
+<img width="591" alt="Image" src="https://github.com/user-attachments/assets/221571a0-00dc-4f40-9341-ff7e6aeb0452" />
+
 ## git commit message head
 Feat : 새로운 기능 추가, 기존의 기능을 요구 사항에 맞추어 수정  
 Fix : 기능에 대한 버그 수정  
